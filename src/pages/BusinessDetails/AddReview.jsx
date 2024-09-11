@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { RotatingLines } from 'react-loader-spinner';
 import { useParams } from "react-router-dom";
 import tickIcon from "../../assets/images/tick.png";
 import {
@@ -11,7 +10,6 @@ import {
 import { setupAxios } from "../../utils/axiosClient";
 import { ToastContainer, toast } from "react-toastify";
 
-// Define StarRating component here
 const StarRating = ({ rating, setRating }) => {
     const handleRating = (value) => {
         setRating(value);
@@ -63,7 +61,7 @@ const AddReview = () => {
         e.preventDefault();
         setLoadingReview(true);
         setupAxios();
-        setSubmitSuccess(false); // Hide previous success state
+        setSubmitSuccess(false);
         setSubmitError(false);
         const userId = localStorage.getItem("user_id");
         console.log("Retrieved User ID:", userId);
@@ -85,21 +83,21 @@ const AddReview = () => {
             console.log("Updated reviews fetched:", resp.data);
 
             setAllReview(resp?.data);
-            // Show success image and message
+
             setSubmitSuccess(true);
 
-            // Reset form fields
+
             setRating(0);
             setReview("");
             setFile(null);
             setBase64Image("");
             toast.success("Review Sent successfully");
             setTimeout(() => {
-                setSubmitSuccess(false); // Reset success state after 3 seconds
+                setSubmitSuccess(false);
             }, 3000);
             window.location.reload();
         } catch (error) {
-            setSubmitError(true); // Show error message
+            setSubmitError(true);
 
             if (error.response) {
                 console.error("Error Response:", error.response.data);
@@ -131,7 +129,7 @@ const AddReview = () => {
         setLoadingReview(true);
         setupAxios();
         try {
-            const res = await reviewGet(Number(bussiness)); // Changed to use "bussiness"
+            const res = await reviewGet(Number(bussiness));
             setAllReview(res?.data);
         } catch (error) {
             console.error(error);
@@ -199,7 +197,7 @@ const AddReview = () => {
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                         id="message"
-                        rows="4"
+                        rows="7"
                         className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-[#87cdff] min-h-20 resize-none"
                         placeholder="Write your Review"
                     ></textarea>

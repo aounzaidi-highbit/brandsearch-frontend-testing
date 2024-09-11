@@ -40,7 +40,7 @@ export default function MainComponent() {
       <Route path="signin" element={<SignIn />} />
       <Route path="signup" element={<SignUp />} />
       <Route path="business-details/:bussiness" element={<BusinessDetails />} />
-      <Route path="businessList" element={<BusinessList />} />
+      <Route path="business-list" element={<BusinessList />} />
       <Route path="/*" element={<ErrorPage />} />
     </Routes>
   );

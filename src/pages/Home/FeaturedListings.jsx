@@ -19,22 +19,22 @@ import { Link } from "react-router-dom";
 export default function FeaturedListings() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [visibleProfiles, setVisibleProfiles] = useState(8); // Default is 8 profiles
+  const [visibleProfiles, setVisibleProfiles] = useState(8);
 
   const updateVisibleProfiles = () => {
     const width = window.innerWidth;
-    if (width < 640) { // Mobile screen
-      setVisibleProfiles(3); // Show only 3 cards on mobile
+    if (width < 640) {
+      setVisibleProfiles(3);
     } else {
-      setVisibleProfiles(8); // Show 8 cards for larger screens
+      setVisibleProfiles(8);
     }
   };
 
   useEffect(() => {
-    updateVisibleProfiles(); // Set the initial number of profiles based on current window size
-    window.addEventListener('resize', updateVisibleProfiles); // Update on resize
+    updateVisibleProfiles();
+    window.addEventListener('resize', updateVisibleProfiles);
 
-    // Cleanup event listener on component unmount
+
     return () => {
       window.removeEventListener('resize', updateVisibleProfiles);
     };
@@ -145,8 +145,7 @@ export default function FeaturedListings() {
           </span>
         </h2>
       </div>
-
-      <div className="container px-0 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 my-20 mx-auto">
+      <div className="container px-0 grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 my-20 mx-auto">
         {loading ? (
           <Loader />
         ) : profiles.length === 0 ? (
@@ -154,13 +153,12 @@ export default function FeaturedListings() {
         ) : (
           profiles.slice(0, visibleProfiles).map((profile) => {
             const websiteURL = ensureProtocol(profile.website);
-
             return (
               <div
                 key={profile.id}
                 data-aos="fade-right"
                 data-aos-delay="300"
-                className="bg-white border my-6 border-[#EAF7FF] sm:w-[90%] mx-auto mb-3 xl:mb-0 lg:w-[90%] rounded-3xl flex max-h-[390px] min-h-[400px] flex-col pt-2 px-5 pb-5 shadow-light-shadow hover:animate-grow"
+                className="bg-white xsm:mx-8 border my-6 border-[#EAF7FF] sm:w-[90%] mx-auto mb-3 xl:mb-0 lg:w-[90%] rounded-3xl flex max-h-[390px] min-h-[400px] flex-col pt-2 px-5 pb-5 shadow-light-shadow hover:animate-grow"
               >
                 <div>
                   <div className="flex items-center justify-center mt-2">
@@ -199,7 +197,7 @@ export default function FeaturedListings() {
                       <span className="gradient"> {capitalizeWords(profile.name)}</span>
                     </h4>
                     <h6 className="text-[16px] font-normal flex items-center mb-2">
-                      <span className=""> {profile.country} </span>
+                      <span className=""> Pakistan {profile.country} </span>
                       <img src={location} alt="location" className="ps-1" />
                     </h6>
                     <p className="text-[#8A8A8A] text-[14px] min-h-16 overflow-hidden">

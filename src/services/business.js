@@ -20,7 +20,7 @@ const reviewGet = async (params) => {
 
 const getRatingDetails = async (brandId) => {
   const response = await reviewGet(brandId);
-  return response.data; // Return the rating details
+  return response.data;
 };
 
 export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails };

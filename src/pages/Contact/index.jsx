@@ -14,9 +14,8 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Flattened data structure for the API
     const data = {
-      name: name, // Plain strings, no nested objects
+      name: name,
       email: email,
       phone: phone,
       subject: subject,
@@ -31,7 +30,6 @@ export default function Contact() {
 
       if (response.status === 200) {
         setStatus("Message sent successfully!");
-        // Reset form fields
         setName('');
         setEmail('');
         setPhone('');
@@ -46,7 +44,6 @@ export default function Contact() {
     }
   };
 
-
   return (
     <div>
       <div className="bg-contact-image bg-cover bg-no-repeat bg-center lg:h-[513px]">
@@ -54,15 +51,14 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2 gap-6 place-items-center">
             <div className="">
               <h2 className="mb-4 pt-20 lg:pt-0">
-                <span className="text-6xl lg:text-7xl font-normal">
+                <span className="text-6xl lg:text-5xl font-normal">
                   <span className="gradient font-extrabold">Contact</span> Us
                 </span>
               </h2>
               <p className="text-[#464F54] lg:text-xl">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-              </p>
+              Got questions or feedback? We're here to help! Contact us anytime and we'll get back to you quickly</p>
             </div>
-            <div className="pt-20">
+            <div className="pt-10">
               <img src={postIMG} alt="post Image" className="lg:h-[433px]" />
             </div>
           </div>
@@ -79,6 +75,7 @@ export default function Contact() {
                 <input
                   className="rounded-lg appearance-none shadow-box-shadow block w-full bg-transparent text-[#000] border p-4 leading-tight focus:border-black focus:outline-[#87cdff]"
                   id="your-name"
+                  placeholder="Enter Your Name Here"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -92,6 +89,7 @@ export default function Contact() {
                 <input
                   className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
                   id="your-email"
+                  placeholder="Enter Your Email Here"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -105,6 +103,7 @@ export default function Contact() {
                 <input
                   className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-[#87cdff]"
                   id="your-phone"
+                  placeholder="Enter Your Mobile Number Here"
                   type="number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -118,6 +117,7 @@ export default function Contact() {
                 <input
                   className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
                   id="your-subject"
+                  placeholder="Enter Subject of Contact Here"
                   type="text"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
@@ -131,8 +131,9 @@ export default function Contact() {
               </label>
               <textarea
                 id="message"
-                rows="4"
-                className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
+                rows="7"
+                placeholder="Enter Your Message Here"
+                className="rounded-lg resize-none appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
@@ -140,7 +141,7 @@ export default function Contact() {
             </div>
             <button
               type="submit"
-              className="gradient2 shadow-box-shadow text-xl lg:text-2xl font-bold p-3 rounded-lg text-white hover:bg-[#287BB7]"
+              className="gradient2 shadow-box-shadow text-xl lg:text-2xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Message"}

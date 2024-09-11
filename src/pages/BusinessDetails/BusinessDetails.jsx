@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import star from "../../assets/images/star-details.svg";
 import world from "../../assets/images/world.png";
 import reviewIcon from "../../assets/images/review-icon.png";
 import Vector from "../../assets/images/Vector.png";
-import mariaProfile from "../../assets/images/maria.png";
 import calander from "../../assets/images/calander.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import fullStar from "../../assets/images/full-star.png";
@@ -16,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -33,13 +31,10 @@ export default function BusinessDetails() {
   const [loading, setLoading] = useState(true);
   const [loadingReview, setLoadingReview] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
-  const [highRatingReviews, setHighRatingReviews] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 10;
   const currentDate = new Date();
-  const day = currentDate.getDate();
   const [reviews, setReviews] = useState([]);
-  const year = currentDate.getFullYear();
   const [buttonText, setButtonText] = useState('Share');
   const [icon, setIcon] = useState(copyIcon);
   const handleShareClick = () => {
@@ -119,7 +114,6 @@ export default function BusinessDetails() {
     if (reviews.length > 0) {
       const totalReviews = reviews.length;
 
-      // Log the reviews array to check its structure
       console.log("Reviews Array:", reviews);
 
       const ratingCounts = reviews.reduce((acc, review) => {
@@ -131,9 +125,6 @@ export default function BusinessDetails() {
         return acc;
       }, {});
 
-      // Log ratingCounts for debugging
-      console.log("Rating Counts:", ratingCounts);
-
       const ratingPercentages = {
         5: ((ratingCounts[5] || 0) / totalReviews) * 100,
         4: ((ratingCounts[4] || 0) / totalReviews) * 100,
@@ -141,8 +132,6 @@ export default function BusinessDetails() {
         2: ((ratingCounts[2] || 0) / totalReviews) * 100,
         1: ((ratingCounts[1] || 0) / totalReviews) * 100,
       };
-
-      console.log("Rating Percentages:", ratingPercentages);
 
       setRatingPercentages(ratingPercentages);
     } else {
@@ -163,29 +152,18 @@ export default function BusinessDetails() {
     setLoadingReview(true);
     setupAxios();
     try {
-      // Fetch reviews using the updated API
       const res = await reviewGet(Number(bussiness));
-
-      // The reviews are now inside res.data.ratings
       const reviews = res?.data?.ratings || [];
       console.log("reviews = ", reviews);
-
-      // No need for filtering, as the brand_profile is already specific in the API response
       const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
 
-      // Calculate and set the average rating
       setAverageRating(res?.data?.average_rating || 0);
-
-      // Set total review count from API response
       setTotalReviews(res?.data?.rating_count || 0);
-
-      // Update state with the sorted reviews
       setReviews(sortedReviews);
       setAllReview(sortedReviews);
       setReviewFetchDate(new Date());
     } catch (error) {
       console.error(error);
-      // Handle errors: clear reviews and reset state
       setAllReview([]);
       setTotalReviews(0);
       setAverageRating(0);
@@ -196,26 +174,26 @@ export default function BusinessDetails() {
 
   const [slidesPerView, setSlidesPerView] = useState(1);
 
-  // Function to determine slidesPerView based on window size
+
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width < 500) {
-      setSlidesPerView(1.3); // 1 slide for small screens
+      setSlidesPerView(1.3);
     } else if (width < 640) {
-      setSlidesPerView(1.75); // 2 slides for medium screens
+      setSlidesPerView(1.75);
     } else if (width < 1024) {
-      setSlidesPerView(2); // 2.5 slides for large screens
+      setSlidesPerView(2);
     } else
-      setSlidesPerView(2.5); // 2.5 slides for large screens
+      setSlidesPerView(2.5);
   };
 
-  // Effect to set up the event listener and handle initial load
+
   useEffect(() => {
-    updateSlidesPerView(); // Set initial slidesPerView based on current window size
-    window.addEventListener('resize', updateSlidesPerView); // Update on resize
+    updateSlidesPerView();
+    window.addEventListener('resize', updateSlidesPerView);
 
     return () => {
-      window.removeEventListener('resize', updateSlidesPerView); // Clean up the listener
+      window.removeEventListener('resize', updateSlidesPerView);
     };
   }, []);
 
@@ -254,7 +232,7 @@ export default function BusinessDetails() {
   const toggleReadMore = (reviewId) => {
     setExpandedReviews((prevState) => ({
       ...prevState,
-      [reviewId]: !prevState[reviewId], // Toggle between true/false
+      [reviewId]: !prevState[reviewId],
     }));
   };
 
@@ -285,7 +263,6 @@ export default function BusinessDetails() {
             <div className="flex gap-2 items-center">
               <div className="flex justify-center items-center">
                 <a target={profile.website} href={modifyWebsiteUrl(profile.website)}>
-                  {/* <img src={worldOuter} alt="world-outer" className="w-10 -mt-2" /> */}
                   <img src={world} alt="world" className="w-8 lg:w-10 ml-1" />
                 </a>
               </div>
@@ -541,11 +518,8 @@ export default function BusinessDetails() {
           </div>
         </div>
       </div>
-      {/* show review */}
-      <div className="">
-        {/* Profile details can be displayed here if necessary */}
+      <div className="" id="showReview">
         <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
-          {/* Render reviews */}
           {loadingReview ? (
             <p>Loading reviews...</p>
           ) : (

@@ -1,13 +1,11 @@
 import brandLogo from "../../assets/images/brand-logo.svg";
 import forwardImg from "../../assets/images/forward.svg";
+import user from "../../assets/images/user.png";
 import { Link, Router, useLocation } from "react-router-dom";
 
-// categoryy code
 import React, { useEffect, useState } from "react";
 import { setupAxios } from "../../utils/axiosClient";
 import { getAllCategories } from "../../services/categories";
-
-// categoryy code
 
 export default function Header() {
   const [currentStatus, SetCurrentStatus] = useState(true);
@@ -15,7 +13,6 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCatOpen, setIsCatOpen] = useState(false);
   let location = useLocation();
-  // categoryy code
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -80,7 +77,7 @@ export default function Header() {
             >
               <img src={brandLogo} className="h-8" alt="Brand Logo" />
             </a>
-            <ul className="hidden md:flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  dark:border-gray-700">
+            <ul className="hidden md:flex flex-col font-medium gap-5 p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-4 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  dark:border-gray-700">
               <li>
                 {location?.pathname === "/" ? (
                   <a
@@ -100,70 +97,13 @@ export default function Header() {
                   </a>
                 )}
               </li>
-              {/* <li>
-                <div className="relative">
-                  <button
-                    className=" flex items-center py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white  dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    About
-                    <svg
-                      className="-mr-1 ml-2 h-5 w-5 hover:rotate-180"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L10 12.586l4.293-4.293a1 1 0 111.414 1.414l-5 5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-
-                  {isOpen && (
-                    <div
-                      className="absolute right-0 mt-0 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="py-1">
-                      <Link to="businessList"><div className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                           BusinessList
-                        </div>
-                        </Link>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Option 2
-                        </a>
-                        <a
-                          href="#"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Option 3
-                        </a>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </li> */}
-
-              {/* <li>
-                <a className="block py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
-                  Services
-                </a>
-              </li> */}
-              {location?.pathname === "/businessList" ? (
+              {location?.pathname === "/business-list" ? (
                 <li>
                   <a
                     href="#"
                     className="block py-2 px-3 md:p-0 text-[#287BB7] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                   >
-                    <Link to="/businessList"> Bussiness List</Link>
+                    <Link to="/business-list"> Bussiness List</Link>
                   </a>
                 </li>
               ) : (
@@ -172,7 +112,7 @@ export default function Header() {
                     href="#"
                     className="block py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                   >
-                    <Link to="/businessList"> Bussiness List</Link>
+                    <Link to="/business-list"> Bussiness List</Link>
                   </a>
                 </li>
               )}
@@ -232,7 +172,7 @@ export default function Header() {
                               return (
                                 <Link className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer md:hover:text-[#287BB7]"
                                   key={item?.id}
-                                  to={`/businessList?category=${item?.name}`}
+                                  to={`/business-list?category=${item?.name}`}
                                   onClick={() => window.scrollTo(0, 0)}
                                 >
                                   {capitalizeWords(item?.name)} <br />
@@ -249,6 +189,18 @@ export default function Header() {
             </ul>
           </div>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            {/* <div className="flex gap-4">
+              {token ? (
+                <button
+                  type="button"
+                  className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg lg:text-[18px] px-4 py-2 text-center"
+                >
+                  <img src={user} alt="forwarding" className="w-8" />Usman
+                </button>
+              ) : (
+                <></>
+              )}
+            </div> */}
             <div className="flex gap-4">
               {token ? (
                 <button
@@ -268,7 +220,6 @@ export default function Header() {
                   </Link>
                 </button>
               )}
-
               <button
                 type="button"
                 className="text-white bg-[#287BB7] hover:bg-[#287BB7] hover:text-[#ffffff] focus:ring-4 focus:outline-none font-bold rounded-lg lg:text-[18px] px-4 py-2 text-center"
@@ -311,93 +262,21 @@ export default function Header() {
               className="items-center justify-between w-full md:flex md:w-auto"
               id="navbar-cta"
             >
-              <ul className="md:hidden flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-[#464F54] dark:border-gray-700">
+              <ul className="md:hidden flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-[#464F54] dark:border-gray-700">
                 <li>
-                  <a
-                    href="/"
-                    className="block py-2 px-3 md:p-0 text-white bg-blue-700 rounded md:bg-transparent md:text-[#287BB7] md:dark:text-blue-500"
-                    aria-current="page"
-                  >
-                    Home
-                  </a>
-                </li>
-                {/* <li>
-                  <div className="relative">
-                    <button
-                      className=" flex items-center py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      About
-                      <svg
-                        className="-mr-1 ml-2 h-5 w-5 hover:rotate-180"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.707 14.707a1 1 0 01-1.414 0l-5-5a1 1 0 111.414-1.414L10 12.586l4.293-4.293a1 1 0 111.414 1.414l-5 5z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                  <Link to="/" className="block py-2 px-3 md:p-0 text-[#464F54] focus:bg-[#287BB7] focus:text-white rounded md:bg-transparent md:text-[#287BB7] md:dark:text-blue-500 active:text-white"
+                  > Home</Link>
 
-                    {isOpen && (
-                      <div
-                        className="absolute right-0 mt-0 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        <div className="py-1">
-                          <a
-                            href="businessList"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            <Link to="businessList"> BusinessList</Link>
-                          </a>
-                          <a
-                            href="#"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            About 2
-                          </a>
-                          <a
-                            href="#"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          >
-                            About 3
-                          </a>
-
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </li> */}
-                {/* <li>
-                  <a
-                    href="#"
-                    className="block py-2 px-3 md:p-0 text-[#464F54] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    <Link to=""> Services</Link>
-                  </a>
-                </li> */}
-                <li>
-                  <a
-                    href="#"
-                    className="block py-2 px-3 md:p-0 text-[#464F54] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    <Link to="/businessList"> Bussiness List</Link>
-                  </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="block py-2 px-3 md:p-0 text-[#464F54] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                  >
-                    <Link to="/contact"> Contact</Link>
-                  </a>
+
+                  <Link to="/business-list" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
+                  > Bussiness List</Link>
+                </li>
+                <li>
+
+                  <Link to="/contact" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
+                  > Contact</Link>
                 </li>
               </ul>
             </div>

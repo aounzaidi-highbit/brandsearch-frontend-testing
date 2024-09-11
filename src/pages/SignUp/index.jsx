@@ -4,6 +4,8 @@ import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';  // Import axios for making API requests
 import { HTTP_CLIENT } from "../../utils/axiosClient";
 
 export default function Signup() {
@@ -20,6 +22,24 @@ export default function Signup() {
     password2: "",
     first_name: "",
     phone: "",
+  });
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (response) => {  // onSuccess callback when Google login is successful
+      try {
+        // Send the access_token to your backend API for authentication
+        const res = await axios.post('/api/dj-rest-auth/google/', {
+          access_token: response.access_token,
+        });
+        console.log(res.data);  // Log the response data (can be removed later)
+        navigate('/dashboard');  // Redirect the user to the dashboard after successful login
+      } catch (error) {
+        console.error('Login failed:', error);  // Log any errors that occur during the login process
+      }
+    },
+    onError: (error) => {
+      console.error('Google login failed:', error);  // Log any errors if Google login fails
+    },
   });
 
   const handleChange = (e) => {
@@ -94,6 +114,7 @@ export default function Signup() {
             <button
               className="flex mx-auto items-center xsm:gap-[6px] justify-center gap-4 px-4 py-4 font-medium xsm:text-sm text-lg border rounded-full w-[95%] shadow-box-shadow"
               type="button"
+              onClick={() => handleGoogleLogin()}
             >
               <img src={google} alt="google" className="w-8" /> Continue With Google
             </button>

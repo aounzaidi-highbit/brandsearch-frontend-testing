@@ -8,7 +8,6 @@ import { useLocation } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import star from "../../assets/images/star-details.svg";
 import defaultImg from "../../assets/images/default-brand.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import fullStar from "../../assets/images/full-star.png";
@@ -43,16 +42,14 @@ export default function BusinessList() {
   const handlePageClick = (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(event.selected);
+    setLoading(true); // Reset loading state
   };
 
   const getProfile = async () => {
     setupAxios();
     try {
       setLoading(true);
-      // Fetch profiles based on category, page number, and search term (if any)
       const res = await getAllProfiles(category, currentPage + 1, 10, value);
-
-      // Filter results if there's a search term
       if (value) {
         const filteredProfiles = res?.data?.results?.filter((item) =>
           item.name.toLowerCase().includes(value.toLowerCase())
@@ -61,8 +58,6 @@ export default function BusinessList() {
       } else {
         setProfile(res?.data?.results || []);
       }
-
-      // Set the total count for pagination
       setTotal(res?.data?.count);
     } catch (error) {
       console.error("Error fetching profiles:", error);
@@ -71,12 +66,10 @@ export default function BusinessList() {
     }
   };
 
-
   const ensureProtocol = (url) => {
     if (!url) return '#';
     return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
   };
-
 
   useEffect(() => {
     getProfile();
@@ -108,11 +101,9 @@ export default function BusinessList() {
     const fullStarsCount = Math.floor(rating);
     const halfStarNeeded = rating % 1 !== 0;
     const emptyStarsCount = 5 - fullStarsCount - (halfStarNeeded ? 1 : 0);
-
     const fullStars = Array(fullStarsCount).fill(<img src={fullStar} alt="full-star" className="w-4" />);
     const halfStar = halfStarNeeded ? <img src={halfStarImage} alt="half-star" className="w-4" /> : null;
     const emptyStars = Array(emptyStarsCount).fill(<img src={blankStar} alt="empty-star" className="w-4" />);
-
     return [...fullStars, halfStar, ...emptyStars];
   };
 
@@ -166,7 +157,7 @@ export default function BusinessList() {
                         </div>
                         <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
                           <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                            <span className="font-bold">{capitalizeWords(item?.name)}</span>
+                            <Link to={`/business-details/${item.id}`} className="font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</Link>
                           </h2>
                           <div className="my-2">
                             <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
@@ -224,7 +215,7 @@ export default function BusinessList() {
               previousLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Previous</span>}
               forcePage={currentPage}
               onPageChange={handlePageClick}
-              pageCount={1}
+              pageCount={Math.ceil(total / 10)}
               pageLinkClassName="w-full h-full flex items-center justify-center"
               pageClassName="item pagination-page border text-gray-900"
               pageRangeDisplayed={3}

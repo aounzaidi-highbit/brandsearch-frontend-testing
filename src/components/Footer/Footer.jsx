@@ -54,13 +54,13 @@ export default function Index() {
   };
 
   return (
-    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover xsm:mt-96">
+    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover xsm:mt-[500px]">
       <div
         className="container mx-auto relative md:h-80 lg:pt-28"
         data-aos="flip-right"
         data-aos-duration="1500"
       >
-        <div className="flex justify-center items-center h-full xsm:w-[80%] sm:w-[65%] mx-auto">
+        <div className="flex justify-center items-center h-full xsm:w-[90%] sm:w-[65%] mx-auto">
           <img
             src={footerImg}
             alt="Footer Image"
@@ -76,15 +76,10 @@ export default function Index() {
           </div>
         ) : (
           <div className="mb-24 lg:mt-44 text-center absolute inset-0 flex flex-col items-center justify-end lg:justify-center">
-            <h4 className="font-bold lg:text-4xl md:text-2xl mb-2"><span className="gradient3">Subscribe</span> Now</h4>
+            <h4 className="font-bold lg:text-4xl xsm:text-2xl md:text-2xl mb-2"><span className="gradient3">Subscribe</span> <span className="font-normal">Now</span></h4>
             <h3 className="md:text-2xl lg:text-4xl">
-              <span className="gradient3 font-black">Get All </span> Updates And
-              <span className="gradient3 font-black relative">
-                <img
-                  className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
-                  src={Vector}
-                  alt="arrow"
-                />
+              <span className="gradient3 font-black xsm:text-xl">Get All </span> <span className="xsm:text-xl">Updates And</span>
+              <span className="gradient3 font-black relative xsm:text-xl">
                 {" "}Offers
               </span>
             </h3>
@@ -92,7 +87,7 @@ export default function Index() {
               <input
                 type="email"
                 value={email}
-                className="shadow-box-shadow text-[10px] md:text-[15px] focus:outline-none font-medium text-[#287BB7] rounded-lg lg:rounded-full p-1 md:px-4 py-2 md:py-5 bg-white w-full"
+                className="shadow-box-shadow text-[10px] md:text-[15px] focus:outline-none font-medium text-[#287BB7] rounded-lg lg:rounded-full p-1 md:px-4 py-3 md:py-5 bg-white w-full"
                 placeholder="Enter Your Email to Stay Updated"
                 onChange={(e) => setEmail(e.target.value)}
               />

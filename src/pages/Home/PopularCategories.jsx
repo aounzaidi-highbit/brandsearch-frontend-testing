@@ -57,9 +57,9 @@ export default function PopularCategories() {
         }, 3000)
       ) : (
         <div className="flex flex-col items-center ">
-          <img src={bgCategories} alt="Categories-Image" className="w-full h-[60vh] 2xl:h-[55vh] bg-[#287BB7] " />
+          <img src={bgCategories} alt="Categories-Image" className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#287BB7] " />
 
-          <div className="absolute flex justify-center items-center w-full mt-10 pt-6 "
+          <div className="absolute flex justify-center items-center w-full mt-8 pt-6 "
             data-aos-delay="300"
             data-aos="zoom-in"
           >
@@ -88,7 +88,7 @@ export default function PopularCategories() {
             </button>
             <div
               ref={sliderRef}
-              className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-center"
+              className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-center xsm:justify-start xsm:px-0"
             >
               {loading ? (
                 <Loader />
@@ -96,7 +96,7 @@ export default function PopularCategories() {
                 category.map((item) => (
                   <Link
                     key={item?.id}
-                    to={`/businessList?category=${item?.name}`}
+                    to={`/business-list?category=${item?.name}`}
                     onClick={() => window.scrollTo(0, 0)}
                     className="rounded-md shadow-box-shadow hover:animate-grow "
                   >
