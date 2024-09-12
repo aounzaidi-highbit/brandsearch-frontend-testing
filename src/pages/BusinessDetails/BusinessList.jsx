@@ -22,13 +22,13 @@ export default function BusinessList() {
   const name = queryParams.get("name");
   const category = queryParams.get("category");
   const [text, setText] = useState(name || "");
-  const [value] = useDebounce(text, 1000);
+  const [value] = useDebounce(text, 100);
   const [loading, setLoading] = useState(true);
-
   const [profile, setProfile] = useState([]);
   const [total, setTotal] = useState(0);
   const [ratings, setRatings] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
+  const [isSearchMode, setIsSearchMode] = useState(false);
 
   const capitalizeWords = (str) => {
     if (!str) return '';
@@ -42,23 +42,26 @@ export default function BusinessList() {
   const handlePageClick = (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setCurrentPage(event.selected);
-    setLoading(true); // Reset loading state
+    setLoading(true);
   };
 
   const getProfile = async () => {
     setupAxios();
     try {
       setLoading(true);
-      const res = await getAllProfiles(category, currentPage + 1, 10, value);
       if (value) {
+        const res = await getAllProfiles(category, 1, total, value);
         const filteredProfiles = res?.data?.results?.filter((item) =>
           item.name.toLowerCase().includes(value.toLowerCase())
         );
         setProfile(filteredProfiles || []);
+        setIsSearchMode(true);
       } else {
+        const res = await getAllProfiles(category, currentPage + 1, 10);
         setProfile(res?.data?.results || []);
+        setTotal(res?.data?.count);
+        setIsSearchMode(false);
       }
-      setTotal(res?.data?.count);
     } catch (error) {
       console.error("Error fetching profiles:", error);
     } finally {
@@ -76,20 +79,26 @@ export default function BusinessList() {
   }, [category, value, currentPage]);
 
   const fetchRatings = async () => {
-    const ratingsData = {};
-    for (const item of profile) {
-      try {
+    try {
+      const ratingsData = await Promise.all(profile.map(async (item) => {
         const data = await getRatingDetails(item.id);
-        ratingsData[item.id] = {
-          averageRating: data.average_rating || 0,
-          totalReviews: data.rating_count || 0,
+        return { id: item.id, averageRating: data.average_rating || 0, totalReviews: data.rating_count || 0 };
+      }));
+
+      const ratingsMap = {};
+      ratingsData.forEach((item) => {
+        ratingsMap[item.id] = {
+          averageRating: item.averageRating,
+          totalReviews: item.totalReviews,
         };
-      } catch (error) {
-        console.error(`Error fetching ratings for brand ${item.id}:`, error);
-      }
+      });
+
+      setRatings(ratingsMap);
+    } catch (error) {
+      console.error("Error fetching ratings:", error);
     }
-    setRatings(ratingsData);
   };
+
 
   useEffect(() => {
     if (profile.length > 0) {
@@ -150,10 +159,10 @@ export default function BusinessList() {
                           <img
                             src={item?.logo || defaultImg}
                             className="rounded-full w-[108px] h-[108px] flex items-center"
-                            onError={(e) => {
-                              e.target.src = defaultImg;
-                            }}
+                            loading="lazy"
+                            onError={(e) => { e.target.src = defaultImg; }}
                           />
+
                         </div>
                         <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
                           <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
@@ -200,7 +209,7 @@ export default function BusinessList() {
           </div>
         </div>
 
-        <div className="my-5">
+        <div className="my-5 xsm:my-20">
           {total > 0 && (
             <ReactPaginate
               className="flex m-auto justify-center"

@@ -35,21 +35,40 @@ export default function BusinessDetails() {
   const reviewsPerPage = 10;
   const currentDate = new Date();
   const [reviews, setReviews] = useState([]);
-  const [buttonText, setButtonText] = useState('Share');
   const [icon, setIcon] = useState(copyIcon);
+  const [buttonText, setButtonText] = useState("Share");
+
   const handleShareClick = () => {
-    navigator.clipboard.writeText(window.location.href).then(() => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        setButtonText('Link Copied');
+        setIcon(tickIcon);
+
+        setTimeout(() => {
+          setButtonText('Share');
+          setIcon(copyIcon);
+        }, 3000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    } else {
+      const tempInput = document.createElement("input");
+      tempInput.value = window.location.href;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      tempInput.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+
       setButtonText('Link Copied');
       setIcon(tickIcon);
-
       setTimeout(() => {
         setButtonText('Share');
         setIcon(copyIcon);
       }, 3000);
-    }).catch(err => {
-      console.error('Failed to copy: ', err);
-    });
+    }
   };
+
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -178,7 +197,7 @@ export default function BusinessDetails() {
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width < 500) {
-      setSlidesPerView(1.3);
+      setSlidesPerView(1.2);
     } else if (width < 640) {
       setSlidesPerView(1.75);
     } else if (width < 1024) {
@@ -252,7 +271,7 @@ export default function BusinessDetails() {
                 <div className="flex">
                   <span className="bg-[#287BB7] font-bold text-white rounded-lg p-2 mx-1">{averageRating.toFixed(1) || "0"}</span>
                   <div>
-                    <div className="flex xsm:justify-center">{renderStars(averageRating)}</div>
+                    <div className="flex xsm:justify-center mb-1">{renderStars(averageRating)}</div>
                     <h6 className="font-normal text-[#8D8D8D]">
                       <div> ({`${totalReviews} Reviews` || "0 Reviews"})</div>
                     </h6>
@@ -280,7 +299,7 @@ export default function BusinessDetails() {
             >
               <span className="flex justify-center w-[100%] items-center">
                 <img src={reviewIcon} alt="review-icon" className="w-12 lg:w-16 filter invert" />
-                <span className="text-white lg:font-bold text-sm lg:text-lg">
+                <span className="text-white lg:font-bold text-sm lg:text-xl">
                   Write Review
                 </span>
               </span>
@@ -289,7 +308,7 @@ export default function BusinessDetails() {
               onClick={handleShareClick}>
               <span className="flex items-center gap-1 md:gap-4 ">
                 <img src={icon} alt="save" className="w-7 lg:w-10" />
-                <span className="text-[#287BB7] font-bold lg:text-lg">
+                <span className="text-[#287BB7] font-bold lg:text-xl">
                   {buttonText}
                 </span>
               </span>
@@ -325,7 +344,7 @@ export default function BusinessDetails() {
                 <span className="text-xl lg:text-2xl block font-bold mb-1">
                   {profile?.name}
                 </span>
-                <span className="flex flex-col text-2xl lg:text-4xl font-light relative items-center">
+                <span className="flex flex-col text-2xl lg:text-3xl font-light relative items-center">
                   <span><span className="gradient font-black">Facebook </span>Followers</span>
                   <a href={profile.facebook} className="flex items-center" target="_blank">
                     <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
@@ -372,13 +391,13 @@ export default function BusinessDetails() {
           </div>
         </div>
       </div>
-      <div className="container px-0 mb-60">
+      <div className="container mb-60">
         <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
-          <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-28 absolute text-white mt-3 xl:mt-52 ml-10">
+          <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
             <span className="font-bold "> Recommended </span><br /> Reviews
           </h2>
-          <div className="xsm:w-full w-[50%] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
-          <div className="mt-20 xsm:mt-20 ml-20 lg:ml-52 xsm:ml-16 xl:ml-80 w-[80%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
+          <div className="xsm:w-full xsm:h-[60vh] w-[50%] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
+          <div className="mt-20 xsm:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
             <Swiper
               modules={[Navigation]}
               spaceBetween={50}
@@ -393,16 +412,16 @@ export default function BusinessDetails() {
             >
               {reviews.slice(0, 5).map((review, index) => (
                 <SwiperSlide key={index} className="swiper-slide">
-                  <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-80 flex flex-col p-6 w-[110%] md:w-full">
+                  <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
                     <div
-                      className={`p-1 mb-2 text-[#747474] min-h-52 max-h-52 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
+                      className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
                         }`}
                     >
                       {review.description}
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 pt-2">
                       <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
-                        {getInitials(review.user.name || "Anonymous")}
+                        {getInitials(review.user.first_name || "Anonymous")}
                       </div>
                       <div className="flex flex-col lg:text-lg font-bold">
                         <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
@@ -436,7 +455,7 @@ export default function BusinessDetails() {
       <div className="bg-[#f3f8fb] rounded-lg pt-20">
         <div className="p-4">
           <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-center items-center">
-            <div className="w-[60%] text-center lg:text-left justify-center items-center lg:w-[50%] px-4">
+            <div className=" text-center lg:text-left justify-center items-center lg:w-[50%] px-4">
               <div className="">
                 <h2 className="xsm:text-2xl text-4xl font-normal">
                   <span className="font-bold gradient"> Over All </span> Rating
@@ -454,8 +473,7 @@ export default function BusinessDetails() {
                 {`(${totalReviews} Reviews)`}
               </h6>
               <p className="text-[#BBBBBB] xsm:text-lg text-xl">
-                Lorem Ipsum is simply dummy text of the printing and
-                typesetting industry.
+                Here are reviews from customers of this brand. Explore them to gain insights into their experiences and feedback.
               </p>
             </div>
             <div className="">
@@ -520,9 +538,7 @@ export default function BusinessDetails() {
       </div>
       <div className="" id="showReview">
         <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
-          {loadingReview ? (
-            <p>Loading reviews...</p>
-          ) : (
+          {(
             currentReviews.map((review) => {
               const isExpanded = expandedReviews[review.id];
               const truncatedDescription = review.description.substring(0, 180);
@@ -533,7 +549,7 @@ export default function BusinessDetails() {
                   <div className="flex justify-between">
                     <div className="flex gap-2">
                       <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
-                        {getInitials(review.user.first_name || "A")}
+                        {getInitials(review.user.first_name + review.user.last_name || "A")}
                       </div>
                       <div className="">
                         <label className="ml-1 font-bold text-[16px] md:text-xl">{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</label>
@@ -548,7 +564,7 @@ export default function BusinessDetails() {
                     </p>
                   </div>
 
-                  <div className="ml-1 my-2 text-sm md:text-lg text-[#888686]">
+                  <div className="ml-1 my-2 text-sm md:text-lg text-[#888686] xsm:text-start">
                     <p>
                       {isExpanded ? review.description : truncatedDescription}
                       {review.description.length > 100 && (
@@ -567,7 +583,7 @@ export default function BusinessDetails() {
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-[#287BB7] text-white' : 'bg-gray-200 text-gray-600'}`}
               >
                 {index + 1}
               </button>

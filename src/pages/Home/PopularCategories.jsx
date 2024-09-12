@@ -39,25 +39,26 @@ export default function PopularCategories() {
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -207, behavior: 'smooth' });
+      sliderRef.current.scrollBy({ left: -200, behavior: 'smooth' });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 207, behavior: 'smooth' });
+      sliderRef.current.scrollBy({ left: 200, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="h-[40vh] relative mb-60">
+    <div className="h-[40vh] relative mb-60 ">
       {category?.length === 0 ? (
         setTimeout(() => {
           <NoData />;
         }, 3000)
       ) : (
         <div className="flex flex-col items-center ">
-          <img src={bgCategories} alt="Categories-Image" className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#287BB7] " />
+          {/* <img src={bgCategories} alt="Categories-Image" className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#e7f1f7] " /> */}
+          <div className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#3d88be] shadow-box-shadow"></div>
 
           <div className="absolute flex justify-center items-center w-full mt-8 pt-6 "
             data-aos-delay="300"
@@ -78,7 +79,7 @@ export default function PopularCategories() {
             </h2>
           </div>
 
-          <div className="absolute max-w-[79%] mt-28 flex items-center ml-30 p-10 2xl:mt-40">
+          <div className="absolute max-w-[69%] mt-28 flex items-center ml-30 xsm:max-w-[90%] p-10 2xl:mt-40">
             <button
               onClick={scrollLeft}
               className="absolute left-0 z-10 bg-white p-0 rounded-full w-10 text-4xl font-bold text-[#287BB7] hover:shadow-box-shadow"
@@ -88,7 +89,7 @@ export default function PopularCategories() {
             </button>
             <div
               ref={sliderRef}
-              className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-center xsm:justify-start xsm:px-0"
+              className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-start"
             >
               {loading ? (
                 <Loader />
@@ -100,8 +101,9 @@ export default function PopularCategories() {
                     onClick={() => window.scrollTo(0, 0)}
                     className="rounded-md shadow-box-shadow hover:animate-grow "
                   >
+                    {console.log("data in category: " + JSON.stringify(category))}
                     <div
-                      className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col p-8 w-44 "
+                      className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col p-8 w-44"
                     >
                       <div className="flex justify-center items-center w-full h-full">
                         <img src={cloths} alt="cloths" className="mb-4" />
@@ -111,7 +113,7 @@ export default function PopularCategories() {
                           {capitalizeWords(item?.name)}
                         </h2>
                         <p className="text-[#9B9B9B] mx-auto text-center text-[15px] font-medium">
-                          607 Items
+                          {item.brand_count}
                         </p>
                       </div>
                     </div>

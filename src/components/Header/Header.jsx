@@ -1,16 +1,16 @@
 import brandLogo from "../../assets/images/brand-logo.svg";
 import forwardImg from "../../assets/images/forward.svg";
-import user from "../../assets/images/user.png";
-import { Link, Router, useLocation } from "react-router-dom";
+// import user from "../../assets/images/user.png";
+import { Link, useLocation } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import { setupAxios } from "../../utils/axiosClient";
 import { getAllCategories } from "../../services/categories";
 
 export default function Header() {
-  const [currentStatus, SetCurrentStatus] = useState(true);
+  // const [currentStatus, SetCurrentStatus] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const [isCatOpen, setIsCatOpen] = useState(false);
   let location = useLocation();
   const [category, setCategory] = useState([]);
@@ -50,13 +50,13 @@ export default function Header() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
+  // const handleMouseEnter = () => {
+  //   setIsOpen(true);
+  // };
 
-  const handleMouseLeave = () => {
-    setIsOpen(false);
-  };
+  // const handleMouseLeave = () => {
+  //   setIsOpen(false);
+  // };
 
   const handleMouseEnterCat = () => {
     setIsCatOpen(true);
@@ -256,7 +256,7 @@ export default function Header() {
           {/* mobile view */}
           <div
             className={`md:hidden ${isMobileMenuOpen ? "block" : "hidden"
-              } w-[100%] bg-white box-shadow mt-2`}
+              } w-[100%] bg-white shadow-box-shadow mt-2`}
           >
             <div
               className="items-center justify-between w-full md:flex md:w-auto"
@@ -270,12 +270,12 @@ export default function Header() {
                 </li>
                 <li>
 
-                  <Link to="/business-list" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
+                  <Link to="/business-list" className="block py-2 px-3 md:p-0 text-[#464F54] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] focus:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > Bussiness List</Link>
                 </li>
                 <li>
 
-                  <Link to="/contact" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
+                  <Link to="/contact" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > Contact</Link>
                 </li>
               </ul>

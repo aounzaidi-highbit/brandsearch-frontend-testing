@@ -145,7 +145,7 @@ export default function FeaturedListings() {
           </span>
         </h2>
       </div>
-      <div className="container px-0 grid sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 my-20 mx-auto">
+      <div className="container px-0 grid sm:grid-cols-2 lg:grid-cols-3 lg:px-32 my-20 mx-auto">
         {loading ? (
           <Loader />
         ) : profiles.length === 0 ? (

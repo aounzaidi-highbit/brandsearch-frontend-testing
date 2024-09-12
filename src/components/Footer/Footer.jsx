@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import footerImg from "../../assets/images/image.png";
 import bell from "../../assets/images/bell.svg";
-import Vector from "../../assets/images/Vector.png";
 import fb from "../../assets/images/fb.png";
 import twitter from "../../assets/images/twitter.png";
 import yt from "../../assets/images/yt.png";
@@ -30,6 +29,10 @@ export default function Index() {
 
     try {
       const fullUrl = `${defaultConfig.Base_URL}/api/subscribe/`;
+      if (email === "") {
+        setMessage("Please Enter Valid Email");
+        return
+      }
       const response = await axios.post(fullUrl, {
         email: email,
         subscribe_at: new Date().toISOString(),
@@ -54,7 +57,7 @@ export default function Index() {
   };
 
   return (
-    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover xsm:mt-[500px]">
+    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover xsm:mt-[120px]">
       <div
         className="container mx-auto relative md:h-80 lg:pt-28"
         data-aos="flip-right"
@@ -70,7 +73,7 @@ export default function Index() {
 
         {(subState) ? (
           <div className="p-10 lg:mt-32 text-center absolute inset-0 flex flex-col items-center justify-end lg:justify-center">
-            <h3 className={`lg:text-4xl md:text-2xl ${isError ? "text-red-500" : ""}`}>
+            <h3 className={`lg:text-4xl md:text-2xl ${isError ? "text-red-500" : "text-[#287BB7] font-bold text-xl mb-20"}`}>
               {message}
             </h3>
           </div>
@@ -83,27 +86,25 @@ export default function Index() {
                 {" "}Offers
               </span>
             </h3>
-            <div className="flex-col lg:flex items-center relative mt-6 lg:mt-10 w-[50%] lg:w-[50%] mx-auto">
+            <div className="flex-col lg:flex items-center relative mt-6 lg:mt-10 lg:w-[50%] mx-auto">
               <input
                 type="email"
                 value={email}
-                className="shadow-box-shadow text-[10px] md:text-[15px] focus:outline-none font-medium text-[#287BB7] rounded-lg lg:rounded-full p-1 md:px-4 py-3 md:py-5 bg-white w-full"
+                className="shadow-box-shadow text-[12px] md:text-[15px] focus:outline-none font-medium text-[#287BB7] rounded-lg lg:rounded-full p-2 md:px-4 py-3 md:py-5 bg-white w-full"
                 placeholder="Enter Your Email to Stay Updated"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button
-                className="bg-[#287BB7] justify-center hover:bg-[#287BB7] text-sm md:text-xl font-bold px-3 py-2 md:px-4 md:py-[18px] text-white w-full lg:w-[40%] rounded-lg lg:rounded-full lg:rounded-l-none absolute right-0 flex gap-2 items-center"
+                className="bg-[#287BB7] justify-center hover:bg-[#287BB7] text-md md:text-xl font-bold px-3 py-2 md:px-4 md:py-[18px] text-white w-full lg:w-[40%] rounded-lg lg:rounded-full lg:rounded-l-none absolute right-0 flex gap-2 items-center"
                 onClick={handleButtonClick}
                 disabled={loading}
               >
-                <img src={bell} className="w-3 sm:w-6" alt="bell icon" />
+                <img src={bell} className="w-4 sm:w-6" alt="bell icon" />
                 Subscribe
               </button>
-              {message && (
-                <p className={`mt-2 ${isError ? "text-red-500" : "text-green-500"}`}>
-                  {message}
-                </p>
-              )}
+              <p className="absolute xsm:text-xs mt-1 top-20 text-red-500">
+                {message}
+              </p>
             </div>
           </div>
         )}

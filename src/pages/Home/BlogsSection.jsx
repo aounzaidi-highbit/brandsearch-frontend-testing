@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 const BlogsSection = () => {
     return (
         <div className='container px-0'>
-            <div className="relative my-60 flex justify-center w-full">
-                {/* Blue Background Card */}
+            <div className="relative my-60 xsm:mb-[150%] flex justify-center w-full">
                 <div className="bg-[#e7f1f7] xsm:rounded-tr-[40px] xsm:rounded-tl-[40px] md:rounded-[40px] xsm:rounded-bl-0 sm:h-[20vh] xsm:-mt-40 md:h-[30vh] lg:h-[55vh] 2xl:h-[45vh] xsm:top-0 xsm:px-0 p-10 flex items-center lg:mx-10">
                     <div className="text-black xsm:w-full w-[50%] px-10">
                         <h1 className="sm:text-sm xsm:text-xl md:text-xl lg:text-2xl xl:text-[32px] font-bold">Get in Touch with Us</h1>
@@ -22,7 +21,7 @@ const BlogsSection = () => {
                     </div>
                 </div>
 
-                <div className="xsm:w-full xsm:left-0 flex xsm:-mb-[465px] flex-col justify-center absolute sm:top-[100px] xsm:top-[360px] xsm:bottom-0 md:top-[130px] sm:h-[30vh] lg:top-[150px] right-32 lg:h-[50vh] xl:h-[75vh] 2xl:h-[55vh] 2xl:top-[210px] -translate-y-1/2 shadow-box-shadow border-2 bg-white rounded-[40px] xsm:rounded-t-none w-[38%] p-10 lg:right-30">
+                <div className="xsm:w-full xsm:left-0 flex xsm:-mb-[465px] flex-col justify-center absolute sm:top-[100px] xsm:top-[360px] xsm:bottom-0 md:top-[130px] sm:h-[30vh] lg:top-[150px] right-32 lg:h-[50vh] xl:h-[75vh] 2xl:h-[60vh] 2xl:top-[170px] -translate-y-1/2 shadow-box-shadow border-2 bg-white rounded-[40px] xsm:rounded-t-none w-[38%] p-10 lg:right-30">
                     <h1 className=" font-bold sm:text-sm flex lg:mt-5 flex-col gap-2 lg:text-2xl xl:text-[32px] md:text-xl">
                         <span className='xsm:text-xl '>Discover Insights</span>
                         <span className='xsm:text-xl '>in Our Latest Blog Posts</span>
