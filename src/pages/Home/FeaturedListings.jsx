@@ -187,7 +187,6 @@ export default function FeaturedListings() {
                         </div>
                       </div>
                       <a target="_blank" href={websiteURL}>
-                        {/* <img src={worldOuter} alt="website" className="rounded-lg" /> */}
                         <img src={world} alt="website" className="w-8 rounded-lg  ml-[9px]" />
                       </a>
                     </div>

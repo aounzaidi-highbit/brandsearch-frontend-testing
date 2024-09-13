@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import google from "../../assets/images/google.png";
 import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
@@ -25,7 +25,14 @@ export default function Signup() {
     phone: "",
   });
 
-  const [formErrors, setFormErrors] = useState({}); // State to hold validation errors
+  const [formErrors, setFormErrors] = useState({});
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (response) => {

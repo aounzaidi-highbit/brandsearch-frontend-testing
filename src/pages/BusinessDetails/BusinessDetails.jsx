@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import world from "../../assets/images/world.png";
 import reviewIcon from "../../assets/images/review-icon.png";
-import Vector from "../../assets/images/Vector.png";
 import calander from "../../assets/images/calander.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import fullStar from "../../assets/images/full-star.png";
@@ -10,11 +9,12 @@ import blankStar from "../../assets/images/blank-star.png";
 import facebook from "../../assets/images/facebook.png";
 import instagram from "../../assets/images/instagram.png";
 import OurListed from "../Home/OurListed";
-import { useParams } from "react-router-dom";
+import { Link, useFetcher, useParams } from "react-router-dom";
 import { getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
+import location from "../../assets/images/location.png";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -95,14 +95,12 @@ export default function BusinessDetails() {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      setIsAuthenticated(true);
+      setIsAuthenticated(!!token);
     }
   }, []);
 
   useEffect(() => {
-
     getReviews();
-
   }, [bussiness]);
 
   useEffect(() => {
@@ -133,7 +131,7 @@ export default function BusinessDetails() {
     if (reviews.length > 0) {
       const totalReviews = reviews.length;
 
-      console.log("Reviews Array:", reviews);
+      // console.log("Reviews Array:", reviews);
 
       const ratingCounts = reviews.reduce((acc, review) => {
         if (review.rating) {
@@ -173,7 +171,7 @@ export default function BusinessDetails() {
     try {
       const res = await reviewGet(Number(bussiness));
       const reviews = res?.data?.ratings || [];
-      console.log("reviews = ", reviews);
+      // console.log("reviews = ", reviews);
       const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
 
       setAverageRating(res?.data?.average_rating || 0);
@@ -236,13 +234,9 @@ export default function BusinessDetails() {
     const fullStarsCount = Math.floor(rating);
     const halfStarNeeded = rating % 1 !== 0;
     const emptyStarsCount = 5 - fullStarsCount - (halfStarNeeded ? 1 : 0);
-
     const fullStars = Array(fullStarsCount).fill(<img src={fullStar} alt="full-star" className="w-4" />);
-
     const halfStar = halfStarNeeded ? <img src={halfStarImage} alt="half-star" className="w-4" /> : null;
-
     const emptyStars = Array(emptyStarsCount).fill(<img src={blankStar} alt="empty-star" className="w-4" />);
-
     return [...fullStars, halfStar, ...emptyStars];
   };
 
@@ -265,13 +259,18 @@ export default function BusinessDetails() {
           <h2 className="text-[25px] md:text-[28px]">
             <span className="font-bold gradient"> {profile?.name}</span>
           </h2>
-          <div className="flex flex-col items-center md:flex-row justify-center gap-5 md:gap-14 lg:justify-center lg:gap-28 w-full">
+          <p className="lg:w-[50%] md:w-[65%] w-[90%] text-center">{profile?.description}</p>
+          <h6 className="text-[18px] font-bold gradient flex items-center">
+            <img src={location} alt="location" />
+            <span> Pakistan {profile.country} </span>
+          </h6>
+          <div className="flex flex-col items-center my-5 md:flex-row justify-center gap-5 md:gap-14 lg:justify-center lg:gap-48 w-full">
             <div className="items-center xsm:text-center">
               <div className="items-center">
                 <div className="flex">
                   <span className="bg-[#287BB7] font-bold text-white rounded-lg p-2 mx-1">{averageRating.toFixed(1) || "0"}</span>
                   <div>
-                    <div className="flex xsm:justify-center mb-1">{renderStars(averageRating)}</div>
+                    <div className="flex justify-center mb-1">{renderStars(averageRating)}</div>
                     <h6 className="font-normal text-[#8D8D8D]">
                       <div> ({`${totalReviews} Reviews` || "0 Reviews"})</div>
                     </h6>
@@ -279,27 +278,62 @@ export default function BusinessDetails() {
                 </div>
               </div>
             </div>
-            <div className="flex gap-2 items-center">
-              <div className="flex justify-center items-center">
-                <a target={profile.website} href={modifyWebsiteUrl(profile.website)}>
+            <a target={profile.website} href={modifyWebsiteUrl(profile.website)}>
+              <div className="flex gap-2 items-center">
+                <div className="flex justify-center items-center">
                   <img src={world} alt="world" className="w-8 lg:w-10 ml-1" />
-                </a>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <h2 className="text-[15px] font-light leading-5">
+                    Live <span className="font-bold gradient"> Site </span>
+                  </h2>
+                  <p className="text-[#666666]">{profile.website}</p>
+                </div>
               </div>
-              <div className="">
-                <h2 className="text-[15px] font-light leading-5">
-                  Live <span className="font-bold gradient"> Site </span>
+            </a>
+          </div>
+          <div className="flex gap-5 md:gap-8 lg:gap-36">
+            <div>
+              <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
+                <img src={facebook} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
+                <span><span className="gradient font-black">Facebook </span>Followers</span>
+                <Link to={profile.facebook} className="flex items-center" target="_blank">
+                  <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
+                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-[#287BB7] hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Facebook Page</span>
+                </Link>
+              </span>
+              <div className="flex justify-center items-center flex-col py-2 md:py-4">
+                <h2 className="gradient font-black text-xl  lg:text-4xl">
+                  {profile?.facebook_followers}+
                 </h2>
-                <p className="text-[#666666]">{profile.website}</p>
+              </div>
+            </div>
+
+            <div>
+              <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
+                <img src={instagram} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
+
+                <span><span className="gradient font-black">Instagram </span>Followers</span>
+                <Link to={profile.insta} className="flex items-center" target="_blank">
+                  <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
+                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-[#287BB7] hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Instagram Account</span>
+                </Link>
+              </span>
+              <div className="flex justify-center items-center flex-col py-2 md:py-4">
+                <h2 className="gradient font-black text-xl  lg:text-4xl">
+                  {profile?.insta_followers}+
+                </h2>
               </div>
             </div>
           </div>
+
           <div className="flex justify-center gap-4 w-full">
             <button className=" flex items-center justify-center border bg-[#287BB7] w-[50%] lg:w-[20%] h-16 p-6 rounded-[10px]"
               onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}
             >
-              <span className="flex justify-center w-[100%] items-center">
-                <img src={reviewIcon} alt="review-icon" className="w-12 lg:w-16 filter invert" />
-                <span className="text-white lg:font-bold text-sm lg:text-xl">
+              <span className="flex justify-between w-[100%] items-center">
+                <img src={reviewIcon} alt="review-icon" className="w-12 lg:w-12 filter invert" />
+                <span className="text-white lg:font-bold text-sm lg:text-[16px]">
                   Write Review
                 </span>
               </span>
@@ -307,152 +341,63 @@ export default function BusinessDetails() {
             <button className=" flex items-center justify-center border border-[#287BB7] w-[50%] lg:w-[20%] h-16 p-6 rounded-[10px] bg-white"
               onClick={handleShareClick}>
               <span className="flex items-center gap-1 md:gap-4 ">
-                <img src={icon} alt="save" className="w-7 lg:w-10" />
-                <span className="text-[#287BB7] font-bold lg:text-xl">
+                <img src={icon} alt="save" className="w-7 lg:w-8" />
+                <span className="text-[#287BB7] font-bold lg:text-lg">
                   {buttonText}
                 </span>
               </span>
             </button>
           </div>
         </div >
-        <div className="flex justify-center items-center my-0 lg:my-16">
-          <h2 className="text-[#000000] text-center">
-            <span className="text-xl lg:text-2xl block font-bold mb-1 gradient">
-              Followers
-            </span>
-            <span className="text-2xl lg:text-4xl font-light relative">
-              <span className="gradient font-black">Top </span> Brand in one
-              place
-              <img
-                className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
-                src={Vector}
-                alt="arrow"
-              />
-            </span>
-          </h2>
-        </div>
       </div>
-      <div className="">
-        <div className="grid sm:grid-cols-2 ">
-          <div className="">
-            <div className="flex flex-col justify-center items-center">
-              <div className="my-12">
-                <img src={facebook} alt="brand-icon" className="w-[120px] md:w-[150px] rounded-full h-[120px] md:h-[150px]" />
-                <img src={profile.logo} alt="brand-icon" className="-mt-8 ml-24 w-[30px] md:w-[50px] rounded-full h-[30px] md:h-[50px] border-2  border-[#287BB7]" />
-              </div>
-              <h2 className="text-[#000000] text-center">
-                <span className="text-xl lg:text-2xl block font-bold mb-1">
-                  {profile?.name}
-                </span>
-                <span className="flex flex-col text-2xl lg:text-3xl font-light relative items-center">
-                  <span><span className="gradient font-black">Facebook </span>Followers</span>
-                  <a href={profile.facebook} className="flex items-center" target="_blank">
-                    <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                    <span className="text-sm mx-1 text text-[#287BB7] hover:text-[#4ea0db] font-bold">Visit Facebook</span>
-                  </a>
-                </span>
-              </h2>
-              <div className="flex justify-center items-center flex-col py-4 lg:py-10">
-                <h2 className="gradient font-black text-xl lg:text-4xl">
-                  {profile?.facebook_followers}
-                </h2>
-                <p className="font-light text-black">{profile?.name}</p>
-              </div>
-            </div>
-            <div className="lg:w-[80%] mx-auto box-shadow2 rounded-[10px]">
-            </div>
-          </div>
-          <div className="lg:border-l-2 border-[#287BB7]">
-            <div className="flex flex-col justify-center items-center">
-              <div className="my-12">
-                <img src={instagram} alt="brand-icon" className="w-[120px] md:w-[150px] rounded-full h-[120px] md:h-[150px]" />
-                <img src={profile.logo} alt="brand-icon" className="-mt-8 ml-24 w-[30px] md:w-[50px] rounded-full h-[30px] md:h-[50px] border-2  border-[#287BB7]" />
-              </div>                  <h2 className="text-[#000000] text-center">
-                <span className="text-xl lg:text-2xl block font-bold mb-1">
-                  {profile?.name}
-                </span>
-                <span className="flex flex-col text-2xl items-center lg:text-4xl font-light relative">
-                  <span><span className="gradient font-black">Instagram </span>Followers</span>
-                  <a href={profile.insta} className="flex items-center" target="_blank">
-                    <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                    <span className="text-sm mx-1 text text-[#287BB7] hover:text-[#4ea0db] font-bold">Visit Instagram</span>
-                  </a>
-                </span>
-              </h2>
-              <div className="flex justify-center items-center flex-col py-4 lg:py-10">
-                <h2 className="gradient font-black text-xl lg:text-4xl">
-                  {profile?.insta_followers}
-                </h2>
-                <p className="font-light text-black">{profile?.name}</p>
-              </div>
-            </div>
-            <div className="lg:w-[80%] mx-auto box-shadow2 rounded-md">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container mb-60">
-        <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
-          <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
-            <span className="font-bold "> Recommended </span><br /> Reviews
-          </h2>
-          <div className="xsm:w-full xsm:h-[60vh] w-[50%] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
-          <div className="mt-20 xsm:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
-            <Swiper
-              modules={[Navigation]}
-              spaceBetween={50}
-              slidesPerView={slidesPerView}
-              onInit={(swiper) => {
-                swiper.params.navigation.prevEl = prevRef.current;
-                swiper.params.navigation.nextEl = nextRef.current;
-                swiper.navigation.init();
-                swiper.navigation.update();
-              }}
-              className="multiple-slide-carousel swiper-container relative"
-            >
-              {reviews.slice(0, 5).map((review, index) => (
-                <SwiperSlide key={index} className="swiper-slide">
-                  <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
-                    <div
-                      className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
-                        }`}
-                    >
-                      {review.description}
-                    </div>
-                    <div className="flex items-center gap-2 pt-2">
-                      <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
-                        {getInitials(review.user.first_name || "Anonymous")}
+
+      {reviews.length > 2 ?
+        (<div className="container mb-72 xsm:mb-40">
+          <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
+            <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
+              <span className="font-bold "> Recommended </span><br /> Reviews
+            </h2>
+            <div className="xsm:w-full xsm:h-[60vh] w-[50%] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
+            <div className="mt-20 xsm:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
+              <Swiper
+                modules={[Navigation]}
+                spaceBetween={50}
+                slidesPerView={slidesPerView}
+                onInit={(swiper) => {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                  swiper.navigation.init();
+                  swiper.navigation.update();
+                }}
+                className="multiple-slide-carousel swiper-container relative"
+              >
+                {reviews.slice(0, 5).map((review, index) => (
+                  <SwiperSlide key={index} className="swiper-slide">
+                    <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
+                      <div
+                        className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
+                          }`}
+                      >
+                        {review.description}
                       </div>
-                      <div className="flex flex-col lg:text-lg font-bold">
-                        <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
-                        <div className="flex">{renderStars(review.rating)}</div>
+                      <div className="flex items-center gap-2 pt-2">
+                        <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
+                          {getInitials(review.user.first_name || "Anonymous")}
+                        </div>
+                        <div className="flex flex-col lg:text-lg font-bold">
+                          <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
+                          <div className="flex">{renderStars(review.rating)}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-
-            <div className="absolute flex  m-auto left-0 right-0 w-fit mt-12 gap-4">
-              <button
-                ref={prevRef}
-                className="!w-12 !h-12 !p-2 text-[50px] bg-[#287BB7] text-white flex justify-center items-center rounded-full"
-                aria-label="Previous Slide">
-                &lt;
-              </button>
-              <button
-                ref={nextRef}
-                className="!w-12 !h-12 !p-2 text-[50px] bg-[#287BB7] text-white flex justify-center items-center border rounded-full "
-                aria-label="Next Slide">
-                &gt;
-              </button>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </div>
           </div>
-        </div>
-      </div>
+        </div>) : (<></>)}
 
-      <div className="bg-[#f3f8fb] rounded-lg pt-20">
+      <div className="bg-[#f3f8fb] rounded-lg pt-32">
         <div className="p-4">
           <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-center items-center">
             <div className=" text-center lg:text-left justify-center items-center lg:w-[50%] px-4">
@@ -545,7 +490,7 @@ export default function BusinessDetails() {
 
               return (
                 <div key={review.id} className="flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl w-[90%] md:w-[70%] mx-auto">
-                  {console.log("data of review is = " + JSON.stringify(review))}
+                  {/* {console.log("data of review is = " + JSON.stringify(review))} */}
                   <div className="flex justify-between">
                     <div className="flex gap-2">
                       <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
@@ -600,8 +545,7 @@ export default function BusinessDetails() {
           {isAuthenticated ? (
             <AddReview />
           ) : (
-            <SignIn brandId={bussiness} text={"To Post Review"} customStyles={{ backgroundColor: 'white', height: '75vh' }}
-            />
+            <SignIn brandId={bussiness} text={"To Post Review"} customStyles={{ backgroundColor: 'white', height: '75vh' }} />
           )}
         </div>
       </div >

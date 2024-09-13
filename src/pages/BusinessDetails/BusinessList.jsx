@@ -49,19 +49,34 @@ export default function BusinessList() {
     setupAxios();
     try {
       setLoading(true);
+
       if (value) {
         const res = await getAllProfiles(category, 1, total, value);
         const filteredProfiles = res?.data?.results?.filter((item) =>
           item.name.toLowerCase().includes(value.toLowerCase())
         );
-        setProfile(filteredProfiles || []);
+
+        let allProfiles = filteredProfiles || [];
+        const pageCount = Math.ceil(res?.data?.count / 10);
+
+        for (let page = 2; page <= pageCount; page++) {
+          const paginatedRes = await getAllProfiles(category, page, 10, value);
+          const paginatedFilteredProfiles = paginatedRes?.data?.results?.filter((item) =>
+            item.name.toLowerCase().includes(value.toLowerCase())
+          );
+          allProfiles = allProfiles.concat(paginatedFilteredProfiles || []);
+        }
+
+        setProfile(allProfiles);
         setIsSearchMode(true);
+        setTotal(allProfiles.length);
       } else {
         const res = await getAllProfiles(category, currentPage + 1, 10);
         setProfile(res?.data?.results || []);
         setTotal(res?.data?.count);
         setIsSearchMode(false);
       }
+
     } catch (error) {
       console.error("Error fetching profiles:", error);
     } finally {
@@ -137,12 +152,12 @@ export default function BusinessList() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             type="text"
-            className="py-4 pl-28 pr-6 text-[#464F54] w-full border-2 border-[#287BB7] rounded-[10px] placeholder:text-[#464F54] box-shadow2 focus:outline-none placeholder-gray-500"
+            className=" py-4 pl-28 pr-6 shadow-box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-full px-4 bg-white w-full border"
             placeholder="Cloths Brands"
           />
         </div>
         <div className="">
-          <div className="max-w-5xl m-auto">
+          <div className="max-w-5xl m-auto min-h-[90vh]">
             {
               loading ? (
                 <Loader />
@@ -154,7 +169,7 @@ export default function BusinessList() {
                   const websiteURL = ensureProtocol(item.website);
                   return (
                     <div key={item.id} className="xsm:text-sm flex flex-col md:flex-row justify-between items-center py-2 rounded-xl mb-6 px-4 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
-                      <div className="flex items-center xsm:flex-col">
+                      <div className="flex items-center xsm:flex-col w-full">
                         <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
                           <img
                             src={item?.logo || defaultImg}
@@ -198,7 +213,7 @@ export default function BusinessList() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center mx-auto justify-center h-full w-full md:w-[150px]">
+                      <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
                         <Link to={`/business-details/${item.id}`} className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></Link>
                       </div>
                     </div>

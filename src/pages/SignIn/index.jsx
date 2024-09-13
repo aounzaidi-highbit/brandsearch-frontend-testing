@@ -3,13 +3,20 @@ import google from "../../assets/images/google.svg";
 import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
-  const [errorMessage, setErrorMessage] = useState(""); // New state for error messages
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const access_token = localStorage.getItem('access_token');
+  //   if (access_token) {
+  //     navigate('/business-details/');
+  //   }
+  // }, [navigate]);
 
   const handleChange = (e) => {
     setFormValues({

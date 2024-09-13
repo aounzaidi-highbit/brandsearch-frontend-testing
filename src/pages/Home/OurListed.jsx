@@ -46,31 +46,31 @@ export default function OurListed() {
         >
           <div className="flex gap-20 place-items-center">
             <div className="">
-              <img src={faiza} alt="our listed" />
+              <img src={faiza} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={mariab} alt="our listed" />
+              <img src={mariab} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={sapphire} alt="our listed" />
+              <img src={sapphire} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={clothing} alt="our listed" />
+              <img src={clothing} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={agha} alt="our listed" />
+              <img src={agha} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={khaadi} alt="our listed" />
+              <img src={khaadi} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={zaha} alt="our listed" />
+              <img src={zaha} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={bonanza} alt="our listed" />
+              <img src={bonanza} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
-              <img src={sana} alt="our listed" />
+              <img src={sana} alt="our listed" className="xsm:w-28" />
             </div>
             <div className="">
               <img src="" />
