@@ -23,7 +23,7 @@ const DynamicTitle = () => {
             case "/business-list":
                 return "Business List";
             default:
-                if (pathname.includes("business-details")) {
+                if (pathname.includes("review")) {
                     return "Business Details";
                 }
                 return "Error Page";

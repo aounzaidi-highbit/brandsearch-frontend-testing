@@ -18,6 +18,7 @@ const refreshToken = async () => {
 
     localStorage.setItem("access_token", access_token);
     localStorage.setItem("refresh_token", new_refresh_token);
+    localStorage.setItem("userIsLoggedIn", true);
 
     console.log("Tokens refreshed and stored in localStorage.");
 

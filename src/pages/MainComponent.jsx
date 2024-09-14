@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import HeroSection from "./Home/HeroSection";
 import PopularCategories from "./Home/PopularCategories";
 import FeaturedListings from "./Home/FeaturedListings";
@@ -16,8 +16,11 @@ import About from "./About/About";
 import BlogsSection from "./Home/BlogsSection";
 import UserLog from "./Home/UserLog";
 import DynamicTitle from "./DynamicTitle";
+import useAuth from '../middlewares/useAuth';
+
 
 export default function MainComponent() {
+  const isAuthenticated = useAuth();
   return (
     <>
       <DynamicTitle />
@@ -39,9 +42,12 @@ export default function MainComponent() {
         <Route path="policy" element={<Policy />} />
         <Route path="faqs" element={<Faqs />} />
         <Route path="about" element={<About />} />
-        <Route path="signin" element={<SignIn />} />
+        <Route
+          path="/signin"
+          element={isAuthenticated ? <Navigate to="/" /> : <SignIn />}
+        />
         <Route path="signup" element={<SignUp />} />
-        <Route path="business-details/:bussiness" element={<BusinessDetails />} />
+        <Route path="review/:name/:bussiness" element={<BusinessDetails />} />
         <Route path="business-list" element={<BusinessList />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>

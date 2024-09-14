@@ -30,6 +30,17 @@ export default function BusinessList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isSearchMode, setIsSearchMode] = useState(false);
 
+  const slugify = (text) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .replace(/\s+/g, '-')         // Replace spaces with -
+      .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
+      .replace(/\-\-+/g, '-')       // Replace multiple - with single -
+      .replace(/^-+/, '')           // Trim - from start of text
+      .replace(/-+$/, '');          // Trim - from end of text
+  };
+
   const capitalizeWords = (str) => {
     if (!str) return '';
     return str
@@ -181,7 +192,7 @@ export default function BusinessList() {
                         </div>
                         <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
                           <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                            <Link to={`/business-details/${item.id}`} className="font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</Link>
+                            <Link to={`/review/${item.id}`} className="font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</Link>
                           </h2>
                           <div className="my-2">
                             <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
@@ -205,7 +216,7 @@ export default function BusinessList() {
                             {item.description?.length > 170 ? (
                               <div className="">
                                 {item.description.substring(0, 170)}
-                                <Link to={`/business-details/${item.id}`} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
+                                <Link to={`/review/${item.id}`} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
                               </div>
                             ) : (
                               item.description
@@ -214,7 +225,7 @@ export default function BusinessList() {
                         </div>
                       </div>
                       <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
-                        <Link to={`/business-details/${item.id}`} className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></Link>
+                        <Link to={`/review/${slugify(item.name)}/${item.id}`} className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></Link>
                       </div>
                     </div>
                   );
@@ -223,7 +234,6 @@ export default function BusinessList() {
             }
           </div>
         </div>
-
         <div className="my-5 xsm:my-20">
           {total > 0 && (
             <ReactPaginate
@@ -244,7 +254,6 @@ export default function BusinessList() {
               pageClassName="item pagination-page border text-gray-900"
               pageRangeDisplayed={3}
             />
-
           )}
         </div>
         <OurListed />

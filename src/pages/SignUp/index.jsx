@@ -27,12 +27,12 @@ export default function Signup() {
 
   const [formErrors, setFormErrors] = useState({});
 
-  useEffect(() => {
-    const access_token = localStorage.getItem('access_token');
-    if (access_token) {
-      navigate('/');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const access_token = localStorage.getItem('access_token');
+  //   if (access_token) {
+  //     navigate('/');
+  //   }
+  // }, [navigate]);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (response) => {
@@ -84,9 +84,10 @@ export default function Signup() {
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
+        localStorage.setItem("userIsLoggedIn", true);
         console.log("Token stored in localStorage:", token);
         console.log("User ID stored:", user_id);
-        navigate(`/business-details/#DropReview`);
+        navigate(`/review/#DropReview`);
       } else {
         const loginResponse = await HTTP_CLIENT.post('/api/auth/login', {
           email: formData.email,
@@ -99,7 +100,7 @@ export default function Signup() {
           localStorage.setItem('refresh_token', refresh);
           localStorage.setItem('user_id', user.pk);
           if (brandId) {
-            navigate(`/business-details/${brandId}#dropReview`);
+            navigate(`/review/${brandId}#dropReview`);
           } else {
             navigate('/');
           }
@@ -145,7 +146,6 @@ export default function Signup() {
                   value={formData.first_name}
                   onChange={handleChange}
                 />
-                {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
                 <input
                   type="text"
                   name="last_name"
@@ -154,8 +154,8 @@ export default function Signup() {
                   value={formData.last_name}
                   onChange={handleChange}
                 />
-                {formErrors.last_name && <p className="text-red-500">{formErrors.last_name}</p>}
               </div>
+              {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
               <div className="flex flex-col w-full">
                 <input
                   type="text"

@@ -3,20 +3,14 @@ import google from "../../assets/images/google.svg";
 import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useGoogleLogin } from '@react-oauth/google';
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const access_token = localStorage.getItem('access_token');
-  //   if (access_token) {
-  //     navigate('/business-details/');
-  //   }
-  // }, [navigate]);
 
   const handleChange = (e) => {
     setFormValues({
@@ -36,7 +30,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       );
 
       console.log("Response from server:", response.data);
-
+      localStorage.setItem("userIsLoggedIn", true);
       const { access, refresh, user } = response.data;
       const user_id = user.pk;
       if (access && refresh) {
@@ -51,7 +45,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
         navigate("/");
       } else {
         console.error("Token not provided in response.");
-        setErrorMessage("Unexpected error, please try again."); // Generic error message
+        setErrorMessage("Unexpected error, please try again.");
       }
     } catch (error) {
       if (error.response) {
@@ -89,6 +83,23 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
     };
   }, []);
 
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        const res = await axios.post('/api/dj-rest-auth/google/', {
+          access_token: response.access_token,
+        });
+        console.log(res.data);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error('Login failed:', error);
+      }
+    },
+    onError: (error) => {
+      console.error('Google login failed:', error);
+    },
+  });
+
   return (
     <div
       className="px-4 lg:px-10 mx-auto xsm:py-2 text-center sm:pt-6 sm:pb-60 xsm:mt-20"
@@ -103,7 +114,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       <div className="shadow-box-shadow flex justify-center items-center max-w-3xl mx-auto rounded-[10px] h-[65vh] xsm:h-auto bg-white">
         <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto">
           <h2 className="pt-5 mb-6">
-            <span className="xsm:text-xl text-2xl font-semibold">
+            <span className="xsm:text-xl text-2xl gap-2 flex">
               <span className="gradient font-semibold">Login {text}</span>
             </span>
           </h2>
@@ -115,29 +126,35 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
             <button
               className="flex mx-auto items-center xsm:gap-[6px] justify-center gap-4 px-4 py-4 font-medium xsm:text-sm text-lg border rounded-full w-[95%] shadow-box-shadow"
               type="button"
+              onClick={() => handleGoogleLogin()}
             >
               <img src={google} alt="google" className="w-8" /> Continue With Google
             </button>
             <p className="text-xl mx-auto mt-3">or</p>
             <div className="p-2">
-              <div className="flex flex-col w-full">
-                <input
-                  type="text"
-                  name="email"
-                  placeholder="Enter Email"
-                  className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                  value={formValues.email}
-                  onChange={handleChange}
-                />
-                <div className="relative">
+              <div className="flex flex-col gap-5 w-full">
+                <div class="relative">
                   <input
-                    type={showPassword1 ? "text" : "password"}
-                    name="password"
-                    placeholder="Enter Password"
-                    className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                    value={formValues.password}
+                    type="email"
+                    name="email"
+                    required
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formValues.email}
                     onChange={handleChange}
                   />
+                  <label
+                    for="email"
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-500 pointer-events-none transition-all duration-500 transform 
+                    ${formValues.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                    Enter Email
+                  </label>
+                </div>
+
+                <div className="relative">
+                  <div class="relative">
+                    <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formValues.password} onChange={handleChange} />
+                    <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-500 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
+                  </div>
                   <img
                     src={showPassword1 ? hidePassword : showPassword}
                     alt="toggle-password1"

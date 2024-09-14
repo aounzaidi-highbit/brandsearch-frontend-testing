@@ -1,5 +1,5 @@
 import brandLogo from "../../assets/images/brand-logo.svg";
-import forwardImg from "../../assets/images/forward.svg";
+import forwardImg from "../../assets/images/forward.png";
 import { Link, useLocation } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";

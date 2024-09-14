@@ -204,7 +204,7 @@ export default function FeaturedListings() {
                         ? `${profile.description.substring(0, 65)} ...`
                         : profile.description || "No Description Available"}
                     </p>
-                    <Link to={`/business-details/${profile.id}`} onClick={() => window.scrollTo(0, 0)}>
+                    <Link to={`/review/${profile.id}`} onClick={() => window.scrollTo(0, 0)}>
                       <button className="gradient2 text-lg p-3 rounded-2xl text-white w-full mb-0 hover:shadow-box-shadow">
                         View Details
                       </button>

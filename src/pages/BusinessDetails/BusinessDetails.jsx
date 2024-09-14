@@ -9,7 +9,7 @@ import blankStar from "../../assets/images/blank-star.png";
 import facebook from "../../assets/images/facebook.png";
 import instagram from "../../assets/images/instagram.png";
 import OurListed from "../Home/OurListed";
-import { Link, useFetcher, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -24,7 +24,8 @@ import copyIcon from '../../assets/images/copy.png';
 import tickIcon from "../../assets/images/tick.png";
 
 export default function BusinessDetails() {
-  const { bussiness } = useParams();
+  const { name, bussiness } = useParams();
+  const navigate = useNavigate(); // Hook to programmatically navigate and update the URL
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allReview, setAllReview] = useState([]);
   const [profile, setProfile] = useState([]);
@@ -39,6 +40,9 @@ export default function BusinessDetails() {
   const [buttonText, setButtonText] = useState("Share");
 
   const handleShareClick = () => {
+
+
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(window.location.href).then(() => {
         setButtonText('Link Copied');
@@ -105,7 +109,6 @@ export default function BusinessDetails() {
 
   useEffect(() => {
     getProfile();
-    getReviews();
   }, []);
 
   const getProfile = async () => {
@@ -130,8 +133,6 @@ export default function BusinessDetails() {
   useEffect(() => {
     if (reviews.length > 0) {
       const totalReviews = reviews.length;
-
-      // console.log("Reviews Array:", reviews);
 
       const ratingCounts = reviews.reduce((acc, review) => {
         if (review.rating) {
@@ -171,7 +172,6 @@ export default function BusinessDetails() {
     try {
       const res = await reviewGet(Number(bussiness));
       const reviews = res?.data?.ratings || [];
-      // console.log("reviews = ", reviews);
       const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
 
       setAverageRating(res?.data?.average_rating || 0);
@@ -191,7 +191,6 @@ export default function BusinessDetails() {
 
   const [slidesPerView, setSlidesPerView] = useState(1);
 
-
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width < 500) {
@@ -203,7 +202,6 @@ export default function BusinessDetails() {
     } else
       setSlidesPerView(2.5);
   };
-
 
   useEffect(() => {
     updateSlidesPerView();
