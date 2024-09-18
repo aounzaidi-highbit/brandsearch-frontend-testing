@@ -1,5 +1,6 @@
 import axios from "axios";
-axios.defaults.baseURL = "https://myapi.brandsearchengine.com/api/";
+// axios.defaults.baseURL = "https://myapi.brandsearchengine.com/api/";
+axios.defaults.baseURL = "http://192.168.100.163:8000/api/";
 
 class Account {
   constructor() {

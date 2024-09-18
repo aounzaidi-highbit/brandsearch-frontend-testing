@@ -1,14 +1,10 @@
+// addReview.jsx
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import tickIcon from "../../assets/images/tick.png";
-import {
-    addReview,
-    getSingleProfiles,
-    reviewGet,
-} from "../../services/business";
+import { addReview, getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
-import { ToastContainer, toast } from "react-toastify";
 
 const StarRating = ({ rating, setRating }) => {
     const handleRating = (value) => {
@@ -38,19 +34,22 @@ const StarRating = ({ rating, setRating }) => {
     );
 };
 
-const AddReview = () => {
-    const [rating, setRating] = useState("");
+const AddReview = ({ brandId }) => {
+    const [rating, setRating] = useState(0);
     const [review, setReview] = useState("");
     const [loadingReview, setLoadingReview] = useState(false);
     const [base64Image, setBase64Image] = useState("");
-    const { bussiness } = useParams();
-    const [allReview, setAllReview] = useState("");
+    const [allReview, setAllReview] = useState([]);
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState([]);
 
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState(false);
+    // console.log("id form got = " + brandId);
+
+    const bussiness = brandId;
+    // console.log("id form bussiness = " + bussiness);
 
     useEffect(() => {
         getProfile();
@@ -66,10 +65,14 @@ const AddReview = () => {
         const userId = localStorage.getItem("user_id");
         console.log("Retrieved User ID:", userId);
 
+        // Convert bussiness to number and log for debugging
+        const brandProfileId = parseInt(bussiness);
+        console.log("Business ID:", brandProfileId);
+
         const payload = {
             description: review,
             proof_of_order: base64Image,
-            brand_profile: Number(bussiness),
+            brand_profile: brandProfileId, // Ensure this is a valid number
             rating: rating,
             user: userId,
         };
@@ -79,32 +82,28 @@ const AddReview = () => {
             const reviewResponse = await addReview(payload);
             console.log("Review submission response:", reviewResponse);
 
-            const resp = await reviewGet(Number(bussiness));
+            const resp = await reviewGet(brandProfileId);
             console.log("Updated reviews fetched:", resp.data);
 
             setAllReview(resp?.data);
 
             setSubmitSuccess(true);
 
-
             setRating(0);
             setReview("");
             setFile(null);
             setBase64Image("");
-            toast.success("Review Sent successfully");
             setTimeout(() => {
                 setSubmitSuccess(false);
             }, 3000);
-            window.location.reload();
+            // getReviews(); // Reload reviews without full page reload
         } catch (error) {
             setSubmitError(true);
 
             if (error.response) {
                 console.error("Error Response:", error.response.data);
-                toast.error(`Error: ${error.response.data.message || "Bad Request"}`);
             } else {
                 console.error("Error Message:", error.message);
-                toast.error("An unexpected error occurred.");
             }
         } finally {
             setLoadingReview(false);
@@ -158,10 +157,10 @@ const AddReview = () => {
             <input {...getInputProps()} />
             <div className="w-full flex flex-col items-center justify-center">
                 <div className="w-[36px] h-[36px]">
-                    <img src="/icons/Upload icon.svg" alt="" />
+                    <img src="/icons/Upload icon.svg" alt="Uploaded-Image" />
                 </div>
-                <div className="text-[12px] font-bold leading-[18px] text-[#0F0F0F]">
-                    Drag & Drop Files or <span className="text-primary">Browse</span>
+                <div className="text-[16px] leading-[18px] text-[#0F0F0F]">
+                    Drag & Drop File or <span className="text-primary">Browse</span>
                 </div>
                 <div className="mt-[10px] text-[10px] 2xl:text-[12px] font-normal leading-[12px] 2xl:leading-[18px] text-[#676767]">
                     {file?.name || "Supported formats: JPEG, PNG"}
@@ -205,30 +204,27 @@ const AddReview = () => {
                 {loadingReview ? (
                     <button
                         type="button"
-                        className="gradient2 text-xl lg:text-[22px] flex items-center justify-center font-bold h-[60px] w-[200px] rounded-md text-white"
+                        className="gradient2 text-xl flex items-center justify-center px-[31.5px] py-2 rounded-md text-white min-w-[16%]"
                     >
-                        {/* White loader */}
-                        <div className="loader w-6 h-6 border-4 border-t-4 border-white border-opacity-50 rounded-full animate-spin"></div>
+                        Loading ...
                     </button>
                 ) : submitSuccess ? (
                     <button
                         type="button"
-                        className="gradient2 text-xl lg:text-[20px] py-2 px-3 flex gap-2 justify-center items-center rounded-md text-white"
+                        className="gradient2 text-xl py-2 px-3 flex gap-2.5 justify-center items-center rounded-md text-white min-w-[16%]"
                         disabled
                     >
-                        <img src={tickIcon} className="w-10" alt="submit-icon" />
+                        <img src={tickIcon} className="w-8" alt="submit-icon" />
                         Submitted
                     </button>
                 ) : (
                     <button
                         type="submit"
-                        className="gradient2 text-xl lg:text-[20px] py-2 px-3 rounded-md text-white"
+                        className="gradient2 min-w-[16%] text-xl py-2 px-3 rounded-md text-white"
                     >
                         Submit Review
                     </button>
                 )}
-
-
             </form>
         </div>
     );

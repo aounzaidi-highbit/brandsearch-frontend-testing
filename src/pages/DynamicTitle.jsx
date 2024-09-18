@@ -24,7 +24,7 @@ const DynamicTitle = () => {
                 return "Business List";
             default:
                 if (pathname.includes("review")) {
-                    return "Business Details";
+                    return "Review Brand";
                 }
                 return "Error Page";
         }

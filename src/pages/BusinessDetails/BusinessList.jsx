@@ -4,7 +4,7 @@ import search from "../../assets/images/search-list.png";
 import OurListed from "../Home/OurListed";
 import { getAllProfiles, getRatingDetails } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
@@ -15,8 +15,10 @@ import halfStarImage from "../../assets/images/half-star.png";
 import blankStar from "../../assets/images/blank-star.png";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
+import { capitalizeWords, ensureProtocol, slugify } from "../../utils/helper";
 
-export default function BusinessList() {
+const BusinessList = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const name = queryParams.get("name");
@@ -28,27 +30,31 @@ export default function BusinessList() {
   const [total, setTotal] = useState(0);
   const [ratings, setRatings] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
-  const [isSearchMode, setIsSearchMode] = useState(false);
+  // const [isSearchMode, setIsSearchMode] = useState(false);
 
-  const slugify = (text) => {
-    return text
-      .toString()
-      .toLowerCase()
-      .replace(/\s+/g, '-')         // Replace spaces with -
-      .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
-      .replace(/\-\-+/g, '-')       // Replace multiple - with single -
-      .replace(/^-+/, '')           // Trim - from start of text
-      .replace(/-+$/, '');          // Trim - from end of text
+  const handleBrandClick = (item) => {
+    navigate(`/review/${slugify(item.name)}`, { state: { id: item.id } });
   };
 
-  const capitalizeWords = (str) => {
-    if (!str) return '';
-    return str
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
+  // const slugify = (text) => {
+  //   return text
+  //     .toString()
+  //     .toLowerCase()
+  //     .replace(/\s+/g, '-')         // Replace spaces with -
+  //     .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
+  //     .replace(/\-\-+/g, '-')       // Replace multiple - with single -
+  //     .replace(/^-+/, '')           // Trim - from start of text
+  //     .replace(/-+$/, '');          // Trim - from end of text
+  // };
+
+  // const capitalizeWords = (str) => {
+  //   if (!str) return '';
+  //   return str
+  //     .toLowerCase()
+  //     .split(' ')
+  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //     .join(' ');
+  // };
 
   const handlePageClick = (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -60,7 +66,6 @@ export default function BusinessList() {
     setupAxios();
     try {
       setLoading(true);
-
       if (value) {
         const res = await getAllProfiles(category, 1, total, value);
         const filteredProfiles = res?.data?.results?.filter((item) =>
@@ -79,13 +84,13 @@ export default function BusinessList() {
         }
 
         setProfile(allProfiles);
-        setIsSearchMode(true);
+        // setIsSearchMode(true);
         setTotal(allProfiles.length);
       } else {
         const res = await getAllProfiles(category, currentPage + 1, 10);
         setProfile(res?.data?.results || []);
         setTotal(res?.data?.count);
-        setIsSearchMode(false);
+        // setIsSearchMode(false);
       }
 
     } catch (error) {
@@ -95,10 +100,10 @@ export default function BusinessList() {
     }
   };
 
-  const ensureProtocol = (url) => {
-    if (!url) return '#';
-    return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
-  };
+  // const ensureProtocol = (url) => {
+  //   if (!url) return '#';
+  //   return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
+  // };
 
   useEffect(() => {
     getProfile();
@@ -124,7 +129,6 @@ export default function BusinessList() {
       console.error("Error fetching ratings:", error);
     }
   };
-
 
   useEffect(() => {
     if (profile.length > 0) {
@@ -176,7 +180,7 @@ export default function BusinessList() {
                 <NoData />
               ) : (
                 profile?.map((item) => {
-                  const displayDomain = item.website.replace(/^https?:\/\//, '').replace(/^www\./, '');
+                  // const displayDomain = item.website.replace(/^https?:\/\//, '').replace(/^www\./, '');
                   const websiteURL = ensureProtocol(item.website);
                   return (
                     <div key={item.id} className="xsm:text-sm flex flex-col md:flex-row justify-between items-center py-2 rounded-xl mb-6 px-4 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
@@ -192,7 +196,7 @@ export default function BusinessList() {
                         </div>
                         <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
                           <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                            <Link to={`/review/${item.id}`} className="font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</Link>
+                            <a onClick={() => handleBrandClick(item)} className="cursor-pointer font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</a>
                           </h2>
                           <div className="my-2">
                             <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
@@ -208,7 +212,7 @@ export default function BusinessList() {
                             <div>
                               <a href={websiteURL} className="flex items-center" target="_blank" rel="noopener noreferrer">
                                 <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                                <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{displayDomain}</span>
+                                <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{item.website}</span>
                               </a>
                             </div>
                           </div>
@@ -216,7 +220,7 @@ export default function BusinessList() {
                             {item.description?.length > 170 ? (
                               <div className="">
                                 {item.description.substring(0, 170)}
-                                <Link to={`/review/${item.id}`} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
+                                <Link onClick={() => handleBrandClick(item)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
                               </div>
                             ) : (
                               item.description
@@ -225,7 +229,8 @@ export default function BusinessList() {
                         </div>
                       </div>
                       <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
-                        <Link to={`/review/${slugify(item.name)}/${item.id}`} className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></Link>
+                        <button onClick={() => handleBrandClick(item)}
+                          className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></button>
                       </div>
                     </div>
                   );
@@ -261,3 +266,4 @@ export default function BusinessList() {
     </>
   );
 }
+export default BusinessList;

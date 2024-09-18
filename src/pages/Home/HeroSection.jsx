@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import Vector from "../../assets/images/Vector.png";
 import brandsIcon from "../../assets/images/brands-icon.png";
 import search from "../../assets/images/search.svg";
-import frame from "../../assets/images/frame.png";
-import google from "../../assets/images/google.png";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
@@ -15,11 +12,12 @@ export default function HeroSection() {
       navigate(`/business-list?name=${name}`);
     }
   };
+  
 
   return (
     <div className="bg-hero-background bg-no-repeat" data-aos="zoom-in" data-aos-delay="300">
-      <div className="xl:ml-32 grid lg:grid-cols-2 place-items-center xsm:flex py-1 xsm:h-[78vh] xl:py-0 xsm:mx-10 xsm:gap-0 xsm:mb-10 gap-32">
-        <div className="2xl:-mt-20">
+      <div className="xl:ml-32 grid lg:grid-cols-2 place-items-center xsm:flex xsm:h-[78vh] xl:py-0 xsm:mx-10 xsm:gap-0 xsm:mb-10 gap-32">
+        <div className="2xl:my-52 my-32">
           <div className="flex">
             <h2 className="text-4xl xsm:text-4xl lg:text-5xl 2xl:text-7xl mb-8 lg:mb-0 lg:w-[90%]">
               <span className="font-normal block">Explore All </span>
@@ -28,9 +26,9 @@ export default function HeroSection() {
               </span>{" "}
               listings
             </h2>
-            <div className="lg:w-[16%] hidden lg:block lg:-mr-10">
-              <img src={frame} alt="" />
-            </div>
+            {/* <div className="lg:w-[20%] -mr-80 hidden lg:block ">
+              <img src={frame} />
+            </div> */}
           </div>
           <p className="text-[#464F54] lg:text-xl my-8 xsm:my-2">
             Discover top clothing brands, leave your reviews, and shape the future of fashion. Your opinion drives the trends.
@@ -68,7 +66,7 @@ export default function HeroSection() {
         </div>
         <div className="">
           <img
-            className=" items-center hidden lg:block my-32 xl:w-[75%]"
+            className=" items-center hidden lg:block xl:w-[75%]"
             src={brandsIcon}
             alt="brands icon"
           />

@@ -17,6 +17,8 @@ import BlogsSection from "./Home/BlogsSection";
 import UserLog from "./Home/UserLog";
 import DynamicTitle from "./DynamicTitle";
 import useAuth from '../middlewares/useAuth';
+import UpdatePassword from "./UpdatePassword/UpdatePassword";
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
 
 
 export default function MainComponent() {
@@ -47,7 +49,9 @@ export default function MainComponent() {
           element={isAuthenticated ? <Navigate to="/" /> : <SignIn />}
         />
         <Route path="signup" element={<SignUp />} />
-        <Route path="review/:name/:bussiness" element={<BusinessDetails />} />
+        <Route path="forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPassword />} />
+        <Route path="update-password/:u_id/:token" element={isAuthenticated ? <Navigate to="/" /> : <UpdatePassword />} />
+        <Route path="review/:name" element={<BusinessDetails />} />
         <Route path="business-list" element={<BusinessList />} />
         <Route path="/*" element={<ErrorPage />} />
       </Routes>

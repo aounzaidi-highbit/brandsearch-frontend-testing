@@ -27,13 +27,6 @@ export default function Signup() {
 
   const [formErrors, setFormErrors] = useState({});
 
-  // useEffect(() => {
-  //   const access_token = localStorage.getItem('access_token');
-  //   if (access_token) {
-  //     navigate('/');
-  //   }
-  // }, [navigate]);
-
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (response) => {
       try {
@@ -137,46 +130,109 @@ export default function Signup() {
             <p className="text-xl mx-auto mt-3">or</p>
 
             <div className="p-2">
-              <div className="sm:flex gap-1 my-1">
-                <input
+              <div className="sm:flex gap-1 mb-3">
+                {/* <input
                   type="text"
                   name="first_name"
                   placeholder="Enter First Name"
                   className="border rounded-xl ml-1 xsm:mb-2 p-4 w-full focus:outline-[#87cdff]"
                   value={formData.first_name}
                   onChange={handleChange}
-                />
-                <input
+                /> */}
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    name="first_name"
+                    required
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                  />
+                  <label
+                    for="first_name"
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1 ${formData.first_name ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''}`}>
+                    Enter First Name
+                  </label>
+                </div>
+                {/* <input
                   type="text"
                   name="last_name"
                   placeholder="Enter Last Name"
                   className="border rounded-xl ml-1 p-4 w-full focus:outline-[#87cdff]"
                   value={formData.last_name}
                   onChange={handleChange}
-                />
+                /> */}
+                <div class="relative w-full">
+                  <input
+                    type="text"
+                    name="last_name"
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                  />
+                  <label
+                    for="last_name"
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                      peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1 ${formData.last_name ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''}`}>
+                    Enter Last Name
+                  </label>
+                </div>
               </div>
               {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
-              <div className="flex flex-col w-full">
-                <input
+              <div className="flex flex-col w-full gap-3">
+                {/* <input
                   type="text"
                   name="username"
                   placeholder="Enter Username"
                   className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
                   value={formData.username}
                   onChange={handleChange}
-                />
+                /> */}
+                <div class="relative">
+                  <input
+                    type="text"
+                    name="username"
+                    required
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
+                  <label
+                    for="username"
+                    class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1">
+                    Enter Username
+                  </label>
+                </div>
                 {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
-                <input
+                {/* <input
                   type="text"
                   name="email"
                   placeholder="Enter Email"
                   className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
                   value={formData.email}
                   onChange={handleChange}
-                />
+                /> */}
+                <div class="relative">
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                  <label
+                    for="email"
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                    Enter Email
+                  </label>
+                </div>
                 {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
                 <div className="relative">
-                  <input
+                  {/* <input
                     type={showPassword1 ? "text" : "password"}
                     name="password1"
                     placeholder="Enter Password"
@@ -189,11 +245,23 @@ export default function Signup() {
                     alt="toggle-password1"
                     className="w-6 absolute top-4 right-4 cursor-pointer"
                     onClick={() => setShowPassword1(!showPassword1)}
-                  />
+                  /> */}
+                  <div className="relative">
+                    <div class="relative">
+                      <input type={showPassword1 ? "text" : "password"} name="password1" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password1} onChange={handleChange} />
+                      <label for="password1" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
+                    </div>
+                    <img
+                      src={showPassword1 ? showPassword : hidePassword}
+                      alt="toggle-password1"
+                      className="w-6 absolute top-5 right-4 cursor-pointer"
+                      onClick={() => setShowPassword1(!showPassword1)}
+                    />
+                  </div>
                   {formErrors.password1 && <p className="text-red-500">{formErrors.password1}</p>}
                 </div>
                 <div className="relative">
-                  <input
+                  {/* <input
                     type={showPassword2 ? "text" : "password"}
                     name="password2"
                     placeholder="Confirm Password"
@@ -206,17 +274,45 @@ export default function Signup() {
                     alt="toggle-password2"
                     className="w-6 absolute top-4 right-4 cursor-pointer"
                     onClick={() => setShowPassword2(!showPassword2)}
-                  />
+                  /> */}
+                  <div className="relative">
+                    <div class="relative">
+                      <input type={showPassword2 ? "text" : "password"} name="password2" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password2} onChange={handleChange} />
+                      <label for="password2" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Confirm Password</label>
+                    </div>
+                    <img
+                      src={showPassword2 ? showPassword : hidePassword}
+                      alt="toggle-password2"
+                      className="w-6 absolute top-5 right-4 cursor-pointer"
+                      onClick={() => setShowPassword2(!showPassword2)}
+                    />
+                  </div>
                   {formErrors.password2 && <p className="text-red-500">{formErrors.password2}</p>}
                 </div>
-                <input
+                {/* <input
                   type="text"
                   name="phone"
                   placeholder="Enter Phone"
                   className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
                   value={formData.phone}
                   onChange={handleChange}
-                />
+                /> */}
+                <div class="relative">
+                  <input
+                    type="text"
+                    name="phone"
+                    required
+                    class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                    value={formData.phone}
+                    onChange={handleChange}
+                  />
+                  <label
+                    for="phone"
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                    Enter Phone
+                  </label>
+                </div>
                 {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
               </div>
             </div>

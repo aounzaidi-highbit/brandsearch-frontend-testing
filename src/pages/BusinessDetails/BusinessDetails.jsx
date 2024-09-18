@@ -8,13 +8,13 @@ import halfStarImage from "../../assets/images/half-star.png";
 import blankStar from "../../assets/images/blank-star.png";
 import facebook from "../../assets/images/facebook.png";
 import instagram from "../../assets/images/instagram.png";
+import allStars from "../../assets/images/all-stars.png";
 import OurListed from "../Home/OurListed";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { getSingleProfiles, reviewGet } from "../../services/business";
-import { setupAxios } from "../../utils/axiosClient";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { getSingleProfiles, getRatingDetails } from "../../services/business";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
-import location from "../../assets/images/location.png";
+import locationIcon from "../../assets/images/location.png";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -22,26 +22,99 @@ import AddReview from "./AddReview";
 import { SignIn } from "../SignIn";
 import copyIcon from '../../assets/images/copy.png';
 import tickIcon from "../../assets/images/tick.png";
+import { capitalizeWords } from "../../utils/helper";
 
 export default function BusinessDetails() {
-  const { name, bussiness } = useParams();
-  const navigate = useNavigate(); // Hook to programmatically navigate and update the URL
+  const { name } = useParams();
+  const location = useLocation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allReview, setAllReview] = useState([]);
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingReview, setLoadingReview] = useState(false);
-  const [averageRating, setAverageRating] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [ratings, setRatings] = useState({});
   const reviewsPerPage = 10;
-  const currentDate = new Date();
+  // const currentDate = new Date();
   const [reviews, setReviews] = useState([]);
   const [icon, setIcon] = useState(copyIcon);
   const [buttonText, setButtonText] = useState("Share");
+  const [averageRating, setAverageRating] = useState(0);
+  const { id } = location.state;
+
+  useEffect(() => {
+    const { id } = location.state;
+    if (!id) {
+      console.log("id not found! value of id is = " + id);
+      return;
+    }
+    const fetchProfile = async () => {
+      setLoading(true);
+      try {
+        const profileResponse = await getSingleProfiles(id);
+        setProfile(profileResponse.data);
+
+        const ratingDetailsResponse = await getRatingDetails(id);
+        const { average_rating, rating_count, ratings } = ratingDetailsResponse;
+        setAverageRating(average_rating);
+        setTotalReviews(rating_count);
+
+        const ratingCount = ratings.reduce((acc, review) => {
+          acc[review.rating] = (acc[review.rating] || 0) + 1;
+          return acc;
+        }, {});
+
+        const percentages = {};
+        for (let i = 1; i <= 5; i++) {
+          percentages[i] = (ratingCount[i] || 0) / rating_count * 100;
+        }
+        setRatingPercentages(percentages);
+
+        setAllReview(ratings);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // const fetchReviews = async (brandId) => {
+    //   setLoadingReview(true);
+    //   try {
+    //     const reviewsResponse = await reviewGet(brandId);
+    //     const reviewsData = reviewsResponse.data.ratings || [];
+    //     setAllReview(reviewsData); // Set allReview with the fetched reviews
+    //   } catch (error) {
+    //     console.error('Failed to fetch reviews:', error);
+    //   } finally {
+    //     setLoadingReview(false);
+    //   }
+    // };
+
+    fetchProfile();
+  }, [location.state]);
+
+  useEffect(() => {
+    const fetchProfileByName = async () => {
+      try {
+        if (!location.state?.id) {
+          const response = await getSingleProfiles(name);
+          const brandProfile = response.data;
+          setProfile(brandProfile);
+          setReviews(brandProfile.id);
+        }
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!location.state?.id) {
+      fetchProfileByName();
+    }
+  }, [name]);
 
   const handleShareClick = () => {
-
-
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(window.location.href).then(() => {
@@ -73,10 +146,10 @@ export default function BusinessDetails() {
     }
   };
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+  // const monthNames = [
+  //   "January", "February", "March", "April", "May", "June",
+  //   "July", "August", "September", "October", "November", "December"
+  // ];
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = allReview.slice(indexOfFirstReview, indexOfLastReview);
@@ -94,7 +167,7 @@ export default function BusinessDetails() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  const month = monthNames[currentDate.getMonth()];
+  // const month = monthNames[currentDate.getMonth()];
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -103,30 +176,30 @@ export default function BusinessDetails() {
     }
   }, []);
 
-  useEffect(() => {
-    getReviews();
-  }, [bussiness]);
+  // useEffect(() => {
+  //   getReviews();
+  // }, [bussiness]);
 
-  useEffect(() => {
-    getProfile();
-  }, []);
+  // useEffect(() => {
+  //   getProfile();
+  // }, []);
 
-  const getProfile = async () => {
-    setupAxios();
-    try {
-      const res = await getSingleProfiles(bussiness);
-      setProfile(res?.data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  const calculateAverageRating = (reviews) => {
-    if (reviews.length === 0) return 0;
-    const total = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return (total / reviews.length).toFixed(1);
-  };
+  // const getProfile = async () => {
+  //   setupAxios();
+  //   try {
+  //     const res = await getSingleProfiles(bussiness);
+  //     setProfile(res?.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  // const calculateAverageRating = (reviews) => {
+  //   if (reviews.length === 0) return 0;
+  //   const total = reviews.reduce((sum, review) => sum + review.rating, 0);
+  //   return (total / reviews.length).toFixed(1);
+  // };
   const [reviewFetchDate, setReviewFetchDate] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
 
@@ -157,37 +230,63 @@ export default function BusinessDetails() {
     }
   }, [reviews]);
 
-  const capitalizeWords = (str) => {
-    if (!str) return '';
-    return str
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
+  // const capitalizeWords = (str) => {
+  //   if (!str) return '';
+  //   return str
+  //     .toLowerCase()
+  //     .split(' ')
+  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+  //     .join(' ');
+  // };
 
-  const getReviews = async () => {
-    setLoadingReview(true);
-    setupAxios();
+  const fetchRatings = async () => {
     try {
-      const res = await reviewGet(Number(bussiness));
-      const reviews = res?.data?.ratings || [];
-      const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
+      const ratingsData = await Promise.all(profile.map(async (item) => {
+        const data = await getRatingDetails(item.id);
+        return { id: item.id, averageRating: data.average_rating || 0, totalReviews: data.rating_count || 0 };
+      }));
 
-      setAverageRating(res?.data?.average_rating || 0);
-      setTotalReviews(res?.data?.rating_count || 0);
-      setReviews(sortedReviews);
-      setAllReview(sortedReviews);
-      setReviewFetchDate(new Date());
+      const ratingsMap = {};
+      ratingsData.forEach((item) => {
+        ratingsMap[item.id] = {
+          averageRating: item.averageRating,
+          totalReviews: item.totalReviews,
+        };
+      });
+
+      setRatings(ratingsMap);
     } catch (error) {
-      console.error(error);
-      setAllReview([]);
-      setTotalReviews(0);
-      setAverageRating(0);
-    } finally {
-      setLoadingReview(false);
+      console.error("Error fetching ratings:", error);
     }
   };
+  useEffect(() => {
+    if (profile.length > 0) {
+      fetchRatings();
+    }
+  }, [profile]);
+
+  // const getReviews = async () => {
+  //   setLoadingReview(true);
+  //   setupAxios();
+  //   try {
+  //     const res = await reviewGet(Number(bussiness));
+  //     const reviews = res?.data?.ratings || [];
+  //     const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
+
+  //     setAverageRating(res?.data?.average_rating || 0);
+  //     setTotalReviews(res?.data?.rating_count || 0);
+  //     setReviews(sortedReviews);
+  //     setAllReview(sortedReviews);
+  //     setReviewFetchDate(new Date());
+  //   } catch (error) {
+  //     console.error(error);
+  //     setAllReview([]);
+  //     setTotalReviews(0);
+  //     setAverageRating(0);
+  //   } finally {
+  //     setLoadingReview(false);
+  //   }
+  // };
 
   const [slidesPerView, setSlidesPerView] = useState(1);
 
@@ -222,7 +321,6 @@ export default function BusinessDetails() {
       return `${firstInitial}${lastInitial}`;
     }
   };
-
   const modifyWebsiteUrl = (url) => {
     if (!url) return '#';
     return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
@@ -257,16 +355,16 @@ export default function BusinessDetails() {
           <h2 className="text-[25px] md:text-[28px]">
             <span className="font-bold gradient"> {profile?.name}</span>
           </h2>
-          <p className="lg:w-[50%] md:w-[65%] w-[90%] text-center">{profile?.description}</p>
+          <p className="lg:w-[70%] md:w-[65%] w-[90%] text-center">{profile?.description}</p>
           <h6 className="text-[18px] font-bold gradient flex items-center">
-            <img src={location} alt="location" />
+            <img src={locationIcon} alt="location-icon" />
             <span> Pakistan {profile.country} </span>
           </h6>
           <div className="flex flex-col items-center my-5 md:flex-row justify-center gap-5 md:gap-14 lg:justify-center lg:gap-48 w-full">
             <div className="items-center xsm:text-center">
               <div className="items-center">
                 <div className="flex">
-                  <span className="bg-[#287BB7] font-bold text-white rounded-lg p-2 mx-1">{averageRating.toFixed(1) || "0"}</span>
+                  <span className="bg-[#287BB7] font-bold text-white rounded-lg flex items-center text-xl px-2 mr-1">{averageRating.toFixed(1) || "0"}</span>
                   <div>
                     <div className="flex justify-center mb-1">{renderStars(averageRating)}</div>
                     <h6 className="font-normal text-[#8D8D8D]">
@@ -326,17 +424,17 @@ export default function BusinessDetails() {
           </div>
 
           <div className="flex justify-center gap-4 w-full">
-            <button className=" flex items-center justify-center border bg-[#287BB7] w-[50%] lg:w-[20%] h-16 p-6 rounded-[10px]"
+            <button className=" flex items-center justify-center border bg-[#287BB7] w-[50%] lg:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px]"
               onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}
             >
-              <span className="flex justify-between w-[100%] items-center">
-                <img src={reviewIcon} alt="review-icon" className="w-12 lg:w-12 filter invert" />
-                <span className="text-white lg:font-bold text-sm lg:text-[16px]">
+              <span className="flex gap-1 md:gap-4 w-[100%] items-center">
+                <img src={reviewIcon} alt="review-icon" className="w-12 filter invert" />
+                <span className="text-white lg:font-bold text-sm lg:text-[18px]">
                   Write Review
                 </span>
               </span>
             </button>
-            <button className=" flex items-center justify-center border border-[#287BB7] w-[50%] lg:w-[20%] h-16 p-6 rounded-[10px] bg-white"
+            <button className=" flex items-center justify-center border border-[#287BB7] w-[50%] lg:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px] bg-white"
               onClick={handleShareClick}>
               <span className="flex items-center gap-1 md:gap-4 ">
                 <img src={icon} alt="save" className="w-7 lg:w-8" />
@@ -349,14 +447,15 @@ export default function BusinessDetails() {
         </div >
       </div>
 
-      {reviews.length > 2 ?
+      {currentReviews.length > 2 ?
         (<div className="container mb-72 xsm:mb-40">
           <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
             <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
               <span className="font-bold "> Recommended </span><br /> Reviews
             </h2>
-            <div className="xsm:w-full xsm:h-[60vh] w-[50%] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
-            <div className="mt-20 xsm:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
+
+            <div className="xsm:w-full xsm:h-[60vh] w-[50%] 2xl:h-[55vh] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
+            <div className="mt-8 xsm:mt-20 2xl:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={50}
@@ -369,7 +468,7 @@ export default function BusinessDetails() {
                 }}
                 className="multiple-slide-carousel swiper-container relative"
               >
-                {reviews.slice(0, 5).map((review, index) => (
+                {currentReviews.slice(0, 5).map((review, index) => (
                   <SwiperSlide key={index} className="swiper-slide">
                     <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
                       <div
@@ -398,7 +497,7 @@ export default function BusinessDetails() {
       <div className="bg-[#f3f8fb] rounded-lg pt-32">
         <div className="p-4">
           <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-center items-center">
-            <div className=" text-center lg:text-left justify-center items-center lg:w-[50%] px-4">
+            <div className=" text-center lg:text-left justify-center items-center lg:w-[45%] px-4">
               <div className="">
                 <h2 className="xsm:text-2xl text-4xl font-normal">
                   <span className="font-bold gradient"> Over All </span> Rating
@@ -488,7 +587,6 @@ export default function BusinessDetails() {
 
               return (
                 <div key={review.id} className="flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl w-[90%] md:w-[70%] mx-auto">
-                  {/* {console.log("data of review is = " + JSON.stringify(review))} */}
                   <div className="flex justify-between">
                     <div className="flex gap-2">
                       <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
@@ -541,9 +639,9 @@ export default function BusinessDetails() {
             <span className=" font-bold" >Your Review</span>
           </h3>
           {isAuthenticated ? (
-            <AddReview />
+            <AddReview brandId={id} />
           ) : (
-            <SignIn brandId={bussiness} text={"To Post Review"} customStyles={{ backgroundColor: 'white', height: '75vh' }} />
+            <SignIn brandId={id} text={"To Post Review"} customStyles={{ backgroundColor: 'white', height: '75vh' }} />
           )}
         </div>
       </div >

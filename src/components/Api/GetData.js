@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const api = axios.create({ baseURL: "https://myapi.brandsearchengine.com/api/" });
+// const api = axios.create({ baseURL: "https://myapi.brandsearchengine.com/api/" });
+const api = axios.create({ baseURL: "http://192.168.100.163:8000/api/" });
 
 const refreshToken = async () => {
   const refresh_token = localStorage.getItem("refresh_token");

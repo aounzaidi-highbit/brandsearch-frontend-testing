@@ -57,7 +57,7 @@ export default function Header() {
   return (
     <div className=" ">
       <nav className="shadow-lg relative z-50 w-full">
-        <div className="flex flex-wrap items-center justify-between mx-auto py-6 h- container ">
+        <div className="flex flex-wrap items-center justify-between mx-auto py-4 container ">
           <div className="flex items-center gap-16 ">
             <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
               <img src={brandLogo} className="h-8" alt="Brand Logo" />

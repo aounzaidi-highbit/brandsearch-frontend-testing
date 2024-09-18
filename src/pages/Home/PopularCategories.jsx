@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Vector from "../../assets/images/vector-category.png";
 import cloths from "../../assets/images/cloths.png";
-import bgCategories from "../../assets/images/bg-categories.png";
-import { getAllCategories } from "../../services/categories";
+// import bgCategories from "../../assets/images/bg-categories.png";
+import { getAllCategories } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";

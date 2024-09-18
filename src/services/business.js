@@ -10,8 +10,8 @@ const getSingleProfiles = async (id) => {
   return await HTTP_CLIENT.get(`/api/profile/${id}`);
 };
 
-const addReview = async (params) => {
-  return await HTTP_CLIENT.post("/api/rating/", params);
+const addReview = async (id) => {
+  return await HTTP_CLIENT.post("/api/rating/", id);
 };
 
 const reviewGet = async (params) => {
@@ -23,4 +23,8 @@ const getRatingDetails = async (brandId) => {
   return response.data;
 };
 
-export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails };
+const getAllCategories = async () => {
+  return await HTTP_CLIENT.get("/api/category");
+};
+
+export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories };

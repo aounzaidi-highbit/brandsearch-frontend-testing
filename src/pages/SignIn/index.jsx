@@ -25,7 +25,8 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
 
     try {
       const response = await axios.post(
-        "https://myapi.brandsearchengine.com/api/auth/login/",
+        // "https://myapi.brandsearchengine.com/api/auth/login/",
+        "http://192.168.100.163:8000/api/auth/login/",
         formValues
       );
 
@@ -132,7 +133,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
             </button>
             <p className="text-xl mx-auto mt-3">or</p>
             <div className="p-2">
-              <div className="flex flex-col gap-5 w-full">
+              <div className="flex flex-col gap-5 w-full my-8">
                 <div class="relative">
                   <input
                     type="email"
@@ -144,7 +145,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                   />
                   <label
                     for="email"
-                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-500 pointer-events-none transition-all duration-500 transform 
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
                     ${formValues.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
                     Enter Email
                   </label>
@@ -153,14 +154,15 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                 <div className="relative">
                   <div class="relative">
                     <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formValues.password} onChange={handleChange} />
-                    <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-500 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
+                    <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
                   </div>
                   <img
-                    src={showPassword1 ? hidePassword : showPassword}
+                    src={showPassword1 ? showPassword : hidePassword}
                     alt="toggle-password1"
                     className="w-6 absolute top-5 right-4 cursor-pointer"
                     onClick={() => setShowPassword1(!showPassword1)}
                   />
+                  <div className="cursor-pointer absolute right-0 mt-2"><Link to="/forgot-password">Forgot Password?</Link></div>
                 </div>
               </div>
             </div>
