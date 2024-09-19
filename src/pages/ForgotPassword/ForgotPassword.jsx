@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HTTP_CLIENT } from '../../utils/axiosClient';
 
 const ForgotPassword = () => {
@@ -34,7 +34,7 @@ const ForgotPassword = () => {
                 <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto">
                     <span className="gradient font-semibold xsm:text-xl text-2xl">Forgot Password</span>
                     <div className="flex flex-col gap-5 w-full my-8">
-                        <form onSubmit={handleSubmit} className="w-full">
+                        <form onSubmit={handleSubmit} className="w-full" autoComplete='off'>
                             <div className="relative">
                                 <input
                                     type="email"
@@ -42,7 +42,7 @@ const ForgotPassword = () => {
                                     required
                                     value={email}
                                     onChange={handleEmailChange}
-                                    className="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                                    className="w-full p-4 border rounded-xl bg-white focus:bg-white outline-none focus:border-[#87cdff] peer transition-all duration-300"
                                     disabled={isEmailSent}
                                 />
                                 <label

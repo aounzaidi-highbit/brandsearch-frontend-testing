@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
 import { setupAxios } from "../../utils/axiosClient";
-import { getAllCategories } from "../../services/categories";
+import { getAllCategories } from "../../services/business";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -158,13 +158,21 @@ export default function Header() {
             </div> */}
             <div className="flex gap-4">
               {token ? (
-                <button
-                  onClick={() => handleLogout()}
-                  type="button"
-                  className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg lg:text-[18px] px-4 py-2 text-center"
-                >
-                  Logout
-                </button>
+                <div className="flex">
+                  <button
+                    type="button"
+                    className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg lg:text-[18px] px-4 py-2 text-center"
+                  >
+                    <Link to="user-reviews">My Reviews</Link>
+                  </button>
+                  <button
+                    onClick={() => handleLogout()}
+                    type="button"
+                    className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg lg:text-[18px] px-4 py-2 text-center"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <button
                   type="button"

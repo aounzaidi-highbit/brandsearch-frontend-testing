@@ -123,7 +123,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
           {errorMessage && (
             <p className="text-red-500 mb-4">{errorMessage}</p>
           )}
-          <form className="w-full flex flex-col" onSubmit={handleSubmit}>
+          <form className="w-full flex flex-col" onSubmit={handleSubmit} autoComplete='off'>
             <button
               className="flex mx-auto items-center xsm:gap-[6px] justify-center gap-4 px-4 py-4 font-medium xsm:text-sm text-lg border rounded-full w-[95%] shadow-box-shadow"
               type="button"
@@ -162,7 +162,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                     className="w-6 absolute top-5 right-4 cursor-pointer"
                     onClick={() => setShowPassword1(!showPassword1)}
                   />
-                  <div className="cursor-pointer absolute right-0 mt-2"><Link to="/forgot-password">Forgot Password?</Link></div>
+                  <div className="cursor-pointer absolute right-0 mt-2"><Link to="/forgot-password" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link></div>
                 </div>
               </div>
             </div>

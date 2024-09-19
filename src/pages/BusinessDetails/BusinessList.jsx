@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Vector from "../../assets/images/Vector.png";
 import search from "../../assets/images/search-list.png";
 import OurListed from "../Home/OurListed";
-import { getAllProfiles, getRatingDetails } from "../../services/business";
+import { getAllProfiles, getRatingDetails, getSearchProfile } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
@@ -10,12 +10,9 @@ import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import defaultImg from "../../assets/images/default-brand.png";
 import linkIcon from "../../assets/images/link-icon.png";
-import fullStar from "../../assets/images/full-star.png";
-import halfStarImage from "../../assets/images/half-star.png";
-import blankStar from "../../assets/images/blank-star.png";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
-import { capitalizeWords, ensureProtocol, slugify } from "../../utils/helper";
+import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
 
 const BusinessList = () => {
   const navigate = useNavigate();
@@ -24,37 +21,17 @@ const BusinessList = () => {
   const name = queryParams.get("name");
   const category = queryParams.get("category");
   const [text, setText] = useState(name || "");
-  const [value] = useDebounce(text, 100);
+  const [value] = useDebounce(text, 300);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState([]);
   const [total, setTotal] = useState(0);
-  const [ratings, setRatings] = useState({});
   const [currentPage, setCurrentPage] = useState(0);
-  // const [isSearchMode, setIsSearchMode] = useState(false);
+  const [ratings, setRatings] = useState({});
 
   const handleBrandClick = (item) => {
     navigate(`/review/${slugify(item.name)}`, { state: { id: item.id } });
+    window.scrollTo(0, 0)
   };
-
-  // const slugify = (text) => {
-  //   return text
-  //     .toString()
-  //     .toLowerCase()
-  //     .replace(/\s+/g, '-')         // Replace spaces with -
-  //     .replace(/[^\w\-]+/g, '')     // Remove all non-word chars
-  //     .replace(/\-\-+/g, '-')       // Replace multiple - with single -
-  //     .replace(/^-+/, '')           // Trim - from start of text
-  //     .replace(/-+$/, '');          // Trim - from end of text
-  // };
-
-  // const capitalizeWords = (str) => {
-  //   if (!str) return '';
-  //   return str
-  //     .toLowerCase()
-  //     .split(' ')
-  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //     .join(' ');
-  // };
 
   const handlePageClick = (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -62,59 +39,30 @@ const BusinessList = () => {
     setLoading(true);
   };
 
-  const getProfile = async () => {
+  const getProfile = async (page = 1) => {
     setupAxios();
     try {
-      setLoading(true);
+      let profileResults = [];
       if (value) {
-        const res = await getAllProfiles(category, 1, total, value);
-        const filteredProfiles = res?.data?.results?.filter((item) =>
-          item.name.toLowerCase().includes(value.toLowerCase())
-        );
-
-        let allProfiles = filteredProfiles || [];
-        const pageCount = Math.ceil(res?.data?.count / 10);
-
-        for (let page = 2; page <= pageCount; page++) {
-          const paginatedRes = await getAllProfiles(category, page, 10, value);
-          const paginatedFilteredProfiles = paginatedRes?.data?.results?.filter((item) =>
-            item.name.toLowerCase().includes(value.toLowerCase())
-          );
-          allProfiles = allProfiles.concat(paginatedFilteredProfiles || []);
-        }
-
-        setProfile(allProfiles);
-        // setIsSearchMode(true);
-        setTotal(allProfiles.length);
+        // Call the search API when there is a search query
+        const res = await getSearchProfile(value);
+        profileResults = res?.data?.results || [];
+        setTotal(res?.data?.count || 0);
       } else {
-        const res = await getAllProfiles(category, currentPage + 1, 10);
-        setProfile(res?.data?.results || []);
-        setTotal(res?.data?.count);
-        // setIsSearchMode(false);
+        // Call the all profiles API when there is no search query
+        const res = await getAllProfiles(category, page, 10);
+        profileResults = res?.data?.results || [];
+        setTotal(res?.data?.count || 0);
       }
 
-    } catch (error) {
-      console.error("Error fetching profiles:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      setProfile(profileResults);
 
-  // const ensureProtocol = (url) => {
-  //   if (!url) return '#';
-  //   return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
-  // };
-
-  useEffect(() => {
-    getProfile();
-  }, [category, value, currentPage]);
-
-  const fetchRatings = async () => {
-    try {
-      const ratingsData = await Promise.all(profile.map(async (item) => {
-        const data = await getRatingDetails(item.id);
-        return { id: item.id, averageRating: data.average_rating || 0, totalReviews: data.rating_count || 0 };
-      }));
+      const ratingsData = await Promise.all(
+        profileResults.map(async (item) => {
+          const data = await getRatingDetails(item.id);
+          return { id: item.id, averageRating: data.average_rating || 0, totalReviews: data.rating_count || 0 };
+        })
+      );
 
       const ratingsMap = {};
       ratingsData.forEach((item) => {
@@ -123,28 +71,17 @@ const BusinessList = () => {
           totalReviews: item.totalReviews,
         };
       });
-
       setRatings(ratingsMap);
     } catch (error) {
-      console.error("Error fetching ratings:", error);
+      console.error("Error fetching profiles or ratings:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (profile.length > 0) {
-      fetchRatings();
-    }
-  }, [profile]);
-
-  const renderStars = (rating) => {
-    const fullStarsCount = Math.floor(rating);
-    const halfStarNeeded = rating % 1 !== 0;
-    const emptyStarsCount = 5 - fullStarsCount - (halfStarNeeded ? 1 : 0);
-    const fullStars = Array(fullStarsCount).fill(<img src={fullStar} alt="full-star" className="w-4" />);
-    const halfStar = halfStarNeeded ? <img src={halfStarImage} alt="half-star" className="w-4" /> : null;
-    const emptyStars = Array(emptyStarsCount).fill(<img src={blankStar} alt="empty-star" className="w-4" />);
-    return [...fullStars, halfStar, ...emptyStars];
-  };
+    getProfile(currentPage + 1);
+  }, [category, value, currentPage]);
 
   return (
     <>
@@ -173,74 +110,73 @@ const BusinessList = () => {
         </div>
         <div className="">
           <div className="max-w-5xl m-auto min-h-[90vh]">
-            {
-              loading ? (
-                <Loader />
-              ) : profile.length === 0 ? (
-                <NoData />
-              ) : (
-                profile?.map((item) => {
-                  // const displayDomain = item.website.replace(/^https?:\/\//, '').replace(/^www\./, '');
-                  const websiteURL = ensureProtocol(item.website);
-                  return (
-                    <div key={item.id} className="xsm:text-sm flex flex-col md:flex-row justify-between items-center py-2 rounded-xl mb-6 px-4 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
-                      <div className="flex items-center xsm:flex-col w-full">
-                        <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
-                          <img
-                            src={item?.logo || defaultImg}
-                            className="rounded-full w-[108px] h-[108px] flex items-center"
-                            loading="lazy"
-                            onError={(e) => { e.target.src = defaultImg; }}
-                          />
-
-                        </div>
-                        <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
-                          <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                            <a onClick={() => handleBrandClick(item)} className="cursor-pointer font-bold hover:text-[#3e7eab]">{capitalizeWords(item?.name)}</a>
-                          </h2>
-                          <div className="my-2">
-                            <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
-                              <div className="flex mb-1">{renderStars(ratings[item.id]?.averageRating || 0)}
-                              </div>
-                              <h6 className="font-normal text-[#8D8D8D] xsm:flex">
-                                <span className="font-bold text-black">
-                                  {(ratings[item.id]?.averageRating ? parseFloat(ratings[item.id]?.averageRating).toFixed(1) : "0.0")}
-                                </span>{" "}
-                                ({`${ratings[item.id]?.totalReviews || "0"} Reviews`})
-                              </h6>
-                            </div>
-                            <div>
-                              <a href={websiteURL} className="flex items-center" target="_blank" rel="noopener noreferrer">
-                                <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                                <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{item.website}</span>
-                              </a>
-                            </div>
-                          </div>
-                          <p className="">
-                            {item.description?.length > 170 ? (
-                              <div className="">
-                                {item.description.substring(0, 170)}
-                                <Link onClick={() => handleBrandClick(item)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
-                              </div>
-                            ) : (
-                              item.description
-                            )}
-                          </p>
-                        </div>
+            {loading ? (
+              <Loader />
+            ) : profile.length === 0 ? (
+              <NoData />
+            ) : (
+              profile?.map((item) => {
+                const websiteURL = ensureProtocol(item.website);
+                return (
+                  <div key={item.id} className="xsm:text-sm flex flex-col md:flex-row justify-between items-center py-2 rounded-xl mb-6 px-4 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
+                    <div className="flex items-center xsm:flex-col w-full">
+                      <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
+                        <img
+                          src={item?.logo || defaultImg}
+                          className="rounded-full w-[108px] h-[108px] flex items-center"
+                          loading="lazy"
+                          onError={(e) => { e.target.src = defaultImg; }}
+                        />
                       </div>
-                      <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
-                        <button onClick={() => handleBrandClick(item)}
-                          className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 "><button className="">View</button></button>
+                      <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
+                        <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
+                          <a onClick={() => handleBrandClick(item)} className="cursor-pointer font-bold hover:text-[#3e7eab]">
+                            {capitalizeWords(item?.name)}
+                          </a>
+                        </h2>
+                        <div className="my-2">
+                          <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
+                            <div className="flex mb-1">{renderStars(ratings[item.id]?.averageRating || 0)}</div>
+                            <h6 className="font-normal text-[#8D8D8D] xsm:flex">
+                              <span className="font-bold text-black">
+                                {ratings[item.id]?.averageRating ? parseFloat(ratings[item.id]?.averageRating).toFixed(1) : "0.0"}
+                              </span>{" "}
+                              ({`${ratings[item.id]?.totalReviews || "0"} Reviews`})
+                            </h6>
+                          </div>
+                          <div>
+                            <a href={websiteURL} className="flex items-center" target="_blank" rel="noopener noreferrer">
+                              <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
+                              <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{item.website}</span>
+                            </a>
+                          </div>
+                        </div>
+                        <p className="">
+                          {item.description?.length > 170 ? (
+                            <div className="">
+                              {item.description.substring(0, 170)}
+                              <Link onClick={() => handleBrandClick(item)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
+                            </div>
+                          ) : (
+                            item.description
+                          )}
+                        </p>
                       </div>
                     </div>
-                  );
-                })
-              )
-            }
+                    <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
+                      <button onClick={() => handleBrandClick(item)}
+                        className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 ">
+                        View
+                      </button>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
         <div className="my-5 xsm:my-20">
-          {total > 0 && (
+          {total >= 9 && (
             <ReactPaginate
               className="flex m-auto justify-center"
               activeClassName="bg-[#287BB7] !text-white"
@@ -265,5 +201,6 @@ const BusinessList = () => {
       </div>
     </>
   );
-}
+};
+
 export default BusinessList;

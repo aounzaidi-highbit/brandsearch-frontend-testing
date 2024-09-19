@@ -156,9 +156,9 @@ const AddReview = ({ brandId }) => {
         >
             <input {...getInputProps()} />
             <div className="w-full flex flex-col items-center justify-center">
-                <div className="w-[36px] h-[36px]">
+                {/* <div className="w-[36px] h-[36px]">
                     <img src="/icons/Upload icon.svg" alt="Uploaded-Image" />
-                </div>
+                </div> */}
                 <div className="text-[16px] leading-[18px] text-[#0F0F0F]">
                     Drag & Drop File or <span className="text-primary">Browse</span>
                 </div>

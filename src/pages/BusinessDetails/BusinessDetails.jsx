@@ -4,15 +4,14 @@ import reviewIcon from "../../assets/images/review-icon.png";
 import calander from "../../assets/images/calander.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import fullStar from "../../assets/images/full-star.png";
-import halfStarImage from "../../assets/images/half-star.png";
 import blankStar from "../../assets/images/blank-star.png";
 import facebook from "../../assets/images/facebook.png";
 import instagram from "../../assets/images/instagram.png";
-import allStars from "../../assets/images/all-stars.png";
 import OurListed from "../Home/OurListed";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getSingleProfiles, getRatingDetails } from "../../services/business";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import defaultImg from "../../assets/images/default-brand.png";
 import { Navigation } from 'swiper/modules';
 import locationIcon from "../../assets/images/location.png";
 import 'swiper/css';
@@ -22,7 +21,7 @@ import AddReview from "./AddReview";
 import { SignIn } from "../SignIn";
 import copyIcon from '../../assets/images/copy.png';
 import tickIcon from "../../assets/images/tick.png";
-import { capitalizeWords } from "../../utils/helper";
+import { capitalizeWords, renderStars } from "../../utils/helper";
 
 export default function BusinessDetails() {
   const { name } = useParams();
@@ -34,12 +33,19 @@ export default function BusinessDetails() {
   const [currentPage, setCurrentPage] = useState(1);
   const [ratings, setRatings] = useState({});
   const reviewsPerPage = 10;
-  // const currentDate = new Date();
   const [reviews, setReviews] = useState([]);
   const [icon, setIcon] = useState(copyIcon);
   const [buttonText, setButtonText] = useState("Share");
   const [averageRating, setAverageRating] = useState(0);
   const { id } = location.state;
+
+  const stars = [
+    { rating: 5, starsFilled: 5 },
+    { rating: 4, starsFilled: 4 },
+    { rating: 3, starsFilled: 3 },
+    { rating: 2, starsFilled: 2 },
+    { rating: 1, starsFilled: 1 },
+  ];
 
   useEffect(() => {
     const { id } = location.state;
@@ -77,19 +83,6 @@ export default function BusinessDetails() {
       }
     };
 
-    // const fetchReviews = async (brandId) => {
-    //   setLoadingReview(true);
-    //   try {
-    //     const reviewsResponse = await reviewGet(brandId);
-    //     const reviewsData = reviewsResponse.data.ratings || [];
-    //     setAllReview(reviewsData); // Set allReview with the fetched reviews
-    //   } catch (error) {
-    //     console.error('Failed to fetch reviews:', error);
-    //   } finally {
-    //     setLoadingReview(false);
-    //   }
-    // };
-
     fetchProfile();
   }, [location.state]);
 
@@ -115,7 +108,6 @@ export default function BusinessDetails() {
   }, [name]);
 
   const handleShareClick = () => {
-
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(window.location.href).then(() => {
         setButtonText('Link Copied');
@@ -146,28 +138,17 @@ export default function BusinessDetails() {
     }
   };
 
-  // const monthNames = [
-  //   "January", "February", "March", "April", "May", "June",
-  //   "July", "August", "September", "October", "November", "December"
-  // ];
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = allReview.slice(indexOfFirstReview, indexOfLastReview);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const totalPages = Math.ceil(allReview.length / reviewsPerPage);
-  const [ratingPercentages, setRatingPercentages] = useState({
-    5: 0,
-    4: 0,
-    3: 0,
-    2: 0,
-    1: 0,
-  });
+  const [ratingPercentages, setRatingPercentages] = useState({ 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 });
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  // const month = monthNames[currentDate.getMonth()];
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -176,31 +157,6 @@ export default function BusinessDetails() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   getReviews();
-  // }, [bussiness]);
-
-  // useEffect(() => {
-  //   getProfile();
-  // }, []);
-
-  // const getProfile = async () => {
-  //   setupAxios();
-  //   try {
-  //     const res = await getSingleProfiles(bussiness);
-  //     setProfile(res?.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-  // const calculateAverageRating = (reviews) => {
-  //   if (reviews.length === 0) return 0;
-  //   const total = reviews.reduce((sum, review) => sum + review.rating, 0);
-  //   return (total / reviews.length).toFixed(1);
-  // };
-  const [reviewFetchDate, setReviewFetchDate] = useState(null);
   const [totalReviews, setTotalReviews] = useState(0);
 
   useEffect(() => {
@@ -230,15 +186,6 @@ export default function BusinessDetails() {
     }
   }, [reviews]);
 
-  // const capitalizeWords = (str) => {
-  //   if (!str) return '';
-  //   return str
-  //     .toLowerCase()
-  //     .split(' ')
-  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //     .join(' ');
-  // };
-
   const fetchRatings = async () => {
     try {
       const ratingsData = await Promise.all(profile.map(async (item) => {
@@ -264,29 +211,6 @@ export default function BusinessDetails() {
       fetchRatings();
     }
   }, [profile]);
-
-  // const getReviews = async () => {
-  //   setLoadingReview(true);
-  //   setupAxios();
-  //   try {
-  //     const res = await reviewGet(Number(bussiness));
-  //     const reviews = res?.data?.ratings || [];
-  //     const sortedReviews = reviews.sort((a, b) => b.rating - a.rating);
-
-  //     setAverageRating(res?.data?.average_rating || 0);
-  //     setTotalReviews(res?.data?.rating_count || 0);
-  //     setReviews(sortedReviews);
-  //     setAllReview(sortedReviews);
-  //     setReviewFetchDate(new Date());
-  //   } catch (error) {
-  //     console.error(error);
-  //     setAllReview([]);
-  //     setTotalReviews(0);
-  //     setAverageRating(0);
-  //   } finally {
-  //     setLoadingReview(false);
-  //   }
-  // };
 
   const [slidesPerView, setSlidesPerView] = useState(1);
 
@@ -325,15 +249,10 @@ export default function BusinessDetails() {
     if (!url) return '#';
     return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
   };
-
-  const renderStars = (rating) => {
-    const fullStarsCount = Math.floor(rating);
-    const halfStarNeeded = rating % 1 !== 0;
-    const emptyStarsCount = 5 - fullStarsCount - (halfStarNeeded ? 1 : 0);
-    const fullStars = Array(fullStarsCount).fill(<img src={fullStar} alt="full-star" className="w-4" />);
-    const halfStar = halfStarNeeded ? <img src={halfStarImage} alt="half-star" className="w-4" /> : null;
-    const emptyStars = Array(emptyStarsCount).fill(<img src={blankStar} alt="empty-star" className="w-4" />);
-    return [...fullStars, halfStar, ...emptyStars];
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
   };
 
   const [expandedReviews, setExpandedReviews] = useState({});
@@ -350,7 +269,7 @@ export default function BusinessDetails() {
       <div className="mt-28">
         < div className="mx-auto flex flex-col justify-between items-center gap-4 my-10 lg:mb-10 lg:mt-20 p-4 lg:py-8 rounded-[10px] xsm:w-[100%] w-[70%] bg-[#e7f1f7]" >
           <div className="-mt-28">
-            <img src={profile.logo} alt="image" className="w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-[#287BB7]" />
+            <img src={profile.logo || defaultImg} onError={(e) => { e.target.src = defaultImg }} alt="image" className="bg-white w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-[#287BB7]" />
           </div>
           <h2 className="text-[25px] md:text-[28px]">
             <span className="font-bold gradient"> {profile?.name}</span>
@@ -448,7 +367,9 @@ export default function BusinessDetails() {
       </div>
 
       {currentReviews.length > 2 ?
+
         (<div className="container mb-72 xsm:mb-40">
+
           <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
             <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
               <span className="font-bold "> Recommended </span><br /> Reviews
@@ -470,6 +391,7 @@ export default function BusinessDetails() {
               >
                 {currentReviews.slice(0, 5).map((review, index) => (
                   <SwiperSlide key={index} className="swiper-slide">
+                    {console.log("data in reveiw = " + JSON.stringify(review))}
                     <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
                       <div
                         className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
@@ -479,7 +401,7 @@ export default function BusinessDetails() {
                       </div>
                       <div className="flex items-center gap-2 pt-2">
                         <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
-                          {getInitials(review.user.first_name || "Anonymous")}
+                          {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
                         </div>
                         <div className="flex flex-col lg:text-lg font-bold">
                           <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
@@ -518,70 +440,30 @@ export default function BusinessDetails() {
                 Here are reviews from customers of this brand. Explore them to gain insights into their experiences and feedback.
               </p>
             </div>
-            <div className="">
-              <div className=" xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                5 Stars
-                <div className="flex justify-center items-center xsm:gap-2 gap-4">
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
+            <div>
+              {stars.map(({ rating, starsFilled }) => (
+                <div key={rating} className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
+                  {rating} Stars
+                  <div className="flex justify-center items-center xsm:gap-2 gap-4">
+                    {[...Array(starsFilled)].map((_, i) => (
+                      <img key={i} src={fullStar} alt="full-star" className="xsm:w-6" />
+                    ))}
+                    {[...Array(5 - starsFilled)].map((_, i) => (
+                      <img key={i} src={blankStar} alt="blank-star" className="xsm:w-6" />
+                    ))}
+                  </div>
+                  ({isNaN(ratingPercentages[rating]) ? '0' : ratingPercentages[rating].toFixed(0)}%)
                 </div>
-                ({ratingPercentages[5].toFixed(0)}%)
-              </div>
-              <div className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                4 Stars
-                <div className="flex justify-center items-center xsm:gap-2 gap-4">
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                </div>
-                ({ratingPercentages[4].toFixed(0)}%)
-              </div>
-              <div className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                3 Stars
-                <div className="flex justify-center items-center xsm:gap-2 gap-4">
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                </div>
-                ({ratingPercentages[3].toFixed(0)}%)
-              </div>
-              <div className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                2 Stars
-                <div className="flex justify-center items-center xsm:gap-2 gap-4">
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                </div>
-                ({ratingPercentages[2].toFixed(0)}%)
-              </div>
-              <div className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                1 Stars
-                <div className="ml-[6px] flex justify-center items-center xsm:gap-2 gap-4">
-                  <img src={fullStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                  <img src={blankStar} alt="star-image" className="xsm:w-6" />
-                </div>
-                ({ratingPercentages[1].toFixed(0)}%)
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
       <div className="" id="showReview">
         <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
-          {(
-            currentReviews.map((review) => {
+          {currentReviews
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sorting in descending order
+            .map((review) => {
               const isExpanded = expandedReviews[review.id];
               const truncatedDescription = review.description.substring(0, 180);
 
@@ -590,18 +472,20 @@ export default function BusinessDetails() {
                   <div className="flex justify-between">
                     <div className="flex gap-2">
                       <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
-                        {getInitials(review.user.first_name + review.user.last_name || "A")}
+                        {getInitials(review.user.first_name + " " + review.user.last_name || "A")}
                       </div>
                       <div className="">
-                        <label className="ml-1 font-bold text-[16px] md:text-xl">{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</label>
+                        <label className="ml-1 font-bold text-[16px] md:text-xl">
+                          {capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}
+                        </label>
                         <div className="flex xsm:w-3 md:gap-1 ml-1 mt-1">
                           {renderStars(review.rating)}
                         </div>
                       </div>
                     </div>
                     <p className="text-[#888686] flex justify-center text-[15px] xsm:text-[12px]">
-                      <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-1" />
-                      {reviewFetchDate?.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" />
+                      {formatDate(review.created_at)}
                     </p>
                   </div>
 
@@ -617,10 +501,10 @@ export default function BusinessDetails() {
                   </div>
                 </div>
               );
-            })
-          )}
+            })}
+
           <div className="pagination-controls flex justify-center mt-4">
-            {Array.from({ length: totalPages }, (_, index) => (
+            {currentReviews.length >= 9 && (Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
@@ -628,9 +512,8 @@ export default function BusinessDetails() {
               >
                 {index + 1}
               </button>
-            ))}
+            )))}
           </div>
-
         </div >
 
         <div className="dropReview container" id="dropReview">

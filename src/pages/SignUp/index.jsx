@@ -69,6 +69,7 @@ export default function Signup() {
     try {
       const response = await HTTP_CLIENT.post('/api/auth/registration', formData);
       console.log("Signup successful, server response:", response);
+      localStorage.setItem("userIsLoggedIn", true);
 
       const token = response.data.key;
       const user = response.data;
@@ -77,7 +78,6 @@ export default function Signup() {
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
-        localStorage.setItem("userIsLoggedIn", true);
         console.log("Token stored in localStorage:", token);
         console.log("User ID stored:", user_id);
         navigate(`/review/#DropReview`);
@@ -119,7 +119,7 @@ export default function Signup() {
               <span className="gradient xsm:text-xl text-2xl font-semibold">Create An Account</span>
             </span>
           </h2>
-          <form className="w-full flex flex-col" onSubmit={handleSubmit}>
+          <form className="w-full flex flex-col" onSubmit={handleSubmit} autoComplete='off'>
             <button
               className="flex mx-auto items-center xsm:gap-[6px] justify-center gap-4 px-4 py-4 font-medium xsm:text-sm text-lg border rounded-full w-[95%] shadow-box-shadow"
               type="button"
@@ -200,8 +200,8 @@ export default function Signup() {
                   />
                   <label
                     for="username"
-                    class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
-                    peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1">
+                    class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1 ${formData.username ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''}`}>
                     Enter Username
                   </label>
                 </div>

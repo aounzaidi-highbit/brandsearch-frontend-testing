@@ -1,26 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import Vector from "../../assets/images/vector-category.png";
 import cloths from "../../assets/images/cloths.png";
-// import bgCategories from "../../assets/images/bg-categories.png";
 import { getAllCategories } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
 import { Link } from "react-router-dom";
+import { capitalizeWords } from "../../utils/helper";
 
-export default function PopularCategories() {
+const PopularCategories = () => {
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
-
-  const capitalizeWords = (str) => {
-    if (!str) return '';
-    return str
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
 
   const getCategories = async () => {
     setupAxios();
@@ -57,7 +48,6 @@ export default function PopularCategories() {
         }, 3000)
       ) : (
         <div className="flex flex-col items-center ">
-          {/* <img src={bgCategories} alt="Categories-Image" className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#e7f1f7] " /> */}
           <div className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#3d88be] shadow-box-shadow"></div>
 
           <div className="absolute flex justify-center items-center w-full mt-8 pt-6 "
@@ -103,7 +93,7 @@ export default function PopularCategories() {
                   >
                     {console.log("data in category: " + JSON.stringify(category))}
                     <div
-                      className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col p-8 w-44"
+                      className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col w-44"
                     >
                       <div className="flex justify-center items-center w-full h-full">
                         <img src={cloths} alt="cloths" className="mb-4" />
@@ -134,3 +124,4 @@ export default function PopularCategories() {
     </div>
   );
 }
+export default PopularCategories;

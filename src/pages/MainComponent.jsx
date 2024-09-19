@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate, useParams } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HeroSection from "./Home/HeroSection";
 import PopularCategories from "./Home/PopularCategories";
 import FeaturedListings from "./Home/FeaturedListings";
@@ -19,6 +19,7 @@ import DynamicTitle from "./DynamicTitle";
 import useAuth from '../middlewares/useAuth';
 import UpdatePassword from "./UpdatePassword/UpdatePassword";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import UserReviews from "./UserReviews/UserReviews";
 
 
 export default function MainComponent() {
@@ -44,13 +45,11 @@ export default function MainComponent() {
         <Route path="policy" element={<Policy />} />
         <Route path="faqs" element={<Faqs />} />
         <Route path="about" element={<About />} />
-        <Route
-          path="/signin"
-          element={isAuthenticated ? <Navigate to="/" /> : <SignIn />}
-        />
         <Route path="signup" element={<SignUp />} />
+        <Route path="signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
         <Route path="forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPassword />} />
         <Route path="update-password/:u_id/:token" element={isAuthenticated ? <Navigate to="/" /> : <UpdatePassword />} />
+        <Route path="user-reviews" element={isAuthenticated && <UserReviews />} />
         <Route path="review/:name" element={<BusinessDetails />} />
         <Route path="business-list" element={<BusinessList />} />
         <Route path="/*" element={<ErrorPage />} />

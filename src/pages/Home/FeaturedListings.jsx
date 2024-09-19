@@ -7,12 +7,9 @@ import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { getRatingDetails, reviewGet } from "../../services/business";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
-import fullStar from "../../assets/images/full-star.png";
-import halfStarImage from "../../assets/images/half-star.png";
-import blankStar from "../../assets/images/blank-star.png";
 import AOS from "aos";
 import { useNavigate } from "react-router-dom";
-import { capitalizeWords, ensureProtocol, slugify } from "../../utils/helper";
+import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
 
 const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensureProtocol, capitalizeWords }) => {
   const websiteURL = ensureProtocol(profile.website);
@@ -29,13 +26,13 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
         className="bg-white xsm:mx-8 border border-[#EAF7FF] sm:w-[90%] mx-auto mb-3 xl:mb-0 lg:w-[90%] rounded-3xl flex flex-col px-5 shadow-box-shadow hover:animate-grow my-10"
       >
         <div>
-          <div className="flex items-center justify-center">
-            <div className="gradient-border w-[90px] h-[90px]">
+          <div className="mt-3 flex items-center justify-center">
+            <div className="w-[90px] h-[90px]">
               <img
                 loading="lazy"
                 src={profile?.logo || defaultImg}
                 alt="cloths"
-                className="w-[80px] h-[80px] rounded-full filter invert"
+                className="w-[80px] h-[80px] rounded-full border"
                 onError={(e) => {
                   e.target.src = defaultImg;
                 }}
@@ -162,50 +159,11 @@ export default function FeaturedListings() {
     });
   }, []);
 
-  const renderStars = (rating) => {
-    const fullStarsCount = Math.floor(rating);
-    const halfStarNeeded = rating % 1 !== 0;
-    const emptyStarsCount = 5 - fullStarsCount - (halfStarNeeded ? 1 : 0);
-
-    const fullStars = Array(fullStarsCount).fill(<img src={fullStar} alt="full-star" className="w-4" />);
-    const halfStar = halfStarNeeded ? <img src={halfStarImage} alt="half-star" className="w-4" /> : null;
-    const emptyStars = Array(emptyStarsCount).fill(<img src={blankStar} alt="empty-star" className="w-4" />);
-
-    return [...fullStars, halfStar, ...emptyStars];
-  };
-
   const navigate = useNavigate();
   const handleBrandClick = (profile) => {
     navigate(`/review/${slugify(profile.name)}`, { state: { id: profile.id } });
+    window.scrollTo({ top: 0 });
   };
-
-  // const slugify = (text) => {
-  //   return text
-  //     .toString()
-  //     .toLowerCase()
-  //     .replace(/\s+/g, "-") // Replace spaces with -
-  //     .replace(/[^\w\-]+/g, "") // Remove all non-word chars
-  //     .replace(/\-\-+/g, "-") // Replace multiple - with single -
-  //     .replace(/^-+/, "") // Trim - from start of text
-  //     .replace(/-+$/, ""); // Trim - from end of text
-  // };
-
-  // const capitalizeWords = (str) => {
-  //   if (!str) return "";
-  //   return str
-  //     .toLowerCase()
-  //     .split(" ")
-  //     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-  //     .join(" ");
-  // };
-
-  // const ensureProtocol = (url) => {
-  //   if (!url) return "#";
-  //   if (!/^https?:\/\//i.test(url)) {
-  //     return `https://${url}`;
-  //   }
-  //   return url;
-  // };
 
   return (
     <div className="sm:p-6">
@@ -229,7 +187,7 @@ export default function FeaturedListings() {
       ) : profiles.length === 0 ? (
         <NoData />
       ) : (
-        <div className="lg:px-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="lg:px-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
           {profiles.slice(0, visibleProfiles).map((profile) => (
             <ProfileCard
               key={profile.id}

@@ -5,6 +5,11 @@ const getAllProfiles = async (category, page, itemsPerPage, name) => {
     `/api/profile/?category=${category || ""}&page=${page || ""}&page_size=${itemsPerPage || ""}&name=${name || ""}`
   );
 };
+const getSearchProfile = async (name) => {
+  return await HTTP_CLIENT.get(
+    `/api/profile/?search=${name || ""}`
+  );
+};
 
 const getSingleProfiles = async (id) => {
   return await HTTP_CLIENT.get(`/api/profile/${id}`);
@@ -15,7 +20,7 @@ const addReview = async (id) => {
 };
 
 const reviewGet = async (params) => {
-  return await HTTP_CLIENT.get(`/api/rating/${params}/`);
+  return await HTTP_CLIENT.get(`/api/rating/brand/${params}/`);
 };
 
 const getRatingDetails = async (brandId) => {
@@ -27,4 +32,4 @@ const getAllCategories = async () => {
   return await HTTP_CLIENT.get("/api/category");
 };
 
-export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories };
+export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile };

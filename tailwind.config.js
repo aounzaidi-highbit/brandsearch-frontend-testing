@@ -43,7 +43,22 @@ module.exports = {
       borderGradient: {
         "border-gradient": "#287BB7",
       },
+      // Adding autofill background fix
+      colors: {
+        autofill: 'white', // This will ensure white background for autofill fields
+      },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')]
+  variants: {
+    extend: {
+      backgroundColor: ['autofill'], // Enabling autofill variant for background color
+    },
+  },
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+    // Custom autofill utility to fix browser autofill background color issue
+    function ({ addVariant }) {
+      addVariant('autofill', '&:-webkit-autofill');
+    }
+  ],
 };
