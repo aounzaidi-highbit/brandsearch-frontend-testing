@@ -1,7 +1,7 @@
 import React from "react";
 import postIMG from "../../assets/images/post-image.svg";
 
-export const Contact = () => {
+const Contact = () => {
   return (
     <div>
       <div className="bg-contact-image bg-cover bg-no-repeat bg-center lg:h-[513px] -mt-24 lg:-mt-24">
@@ -135,3 +135,4 @@ export const Contact = () => {
     </div>
   );
 };
+export default Contact

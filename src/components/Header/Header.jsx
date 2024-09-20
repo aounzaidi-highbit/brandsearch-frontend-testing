@@ -1,7 +1,7 @@
 import brandLogo from "../../assets/images/brand-logo.svg";
 import forwardImg from "../../assets/images/forward.png";
+import { capitalizeWords } from "../../utils/helper";
 import { Link, useLocation } from "react-router-dom";
-
 import React, { useEffect, useState } from "react";
 import { setupAxios } from "../../utils/axiosClient";
 import { getAllCategories } from "../../services/business";
@@ -12,15 +12,6 @@ export default function Header() {
   let location = useLocation();
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const capitalizeWords = (str) => {
-    if (!str) return '';
-    return str
-      .toLowerCase()
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
 
   const getCategories = async () => {
     setupAxios();

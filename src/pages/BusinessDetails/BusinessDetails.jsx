@@ -21,7 +21,7 @@ import AddReview from "./AddReview";
 import { SignIn } from "../SignIn";
 import copyIcon from '../../assets/images/copy.png';
 import tickIcon from "../../assets/images/tick.png";
-import { capitalizeWords, renderStars } from "../../utils/helper";
+import { capitalizeWords, formatDate, getInitials, renderStars } from "../../utils/helper";
 
 export default function BusinessDetails() {
   const { name } = useParams();
@@ -37,6 +37,7 @@ export default function BusinessDetails() {
   const [icon, setIcon] = useState(copyIcon);
   const [buttonText, setButtonText] = useState("Share");
   const [averageRating, setAverageRating] = useState(0);
+  const [showContent, setShowContent] = useState(false);
   const { id } = location.state;
 
   const stars = [
@@ -79,7 +80,10 @@ export default function BusinessDetails() {
       } catch (error) {
         console.error('Failed to fetch profile:', error);
       } finally {
-        setLoading(false);
+        setTimeout(() => {
+          setShowContent(true);
+          setLoading(false)
+        }, 10);
       }
     };
 
@@ -235,24 +239,9 @@ export default function BusinessDetails() {
     };
   }, []);
 
-  const getInitials = (name) => {
-    const names = name.split(' ');
-    if (names.length === 1) {
-      return names[0].charAt(0).toUpperCase();
-    } else {
-      const firstInitial = names[0].charAt(0).toUpperCase();
-      const lastInitial = names[names.length - 1].charAt(0).toUpperCase();
-      return `${firstInitial}${lastInitial}`;
-    }
-  };
   const modifyWebsiteUrl = (url) => {
     if (!url) return '#';
     return url.startsWith('http://') || url.startsWith('https://') ? url : `http://${url}`;
-  };
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', options);
   };
 
   const [expandedReviews, setExpandedReviews] = useState({});
@@ -263,6 +252,12 @@ export default function BusinessDetails() {
       [reviewId]: !prevState[reviewId],
     }));
   };
+
+  if (!showContent) {
+    return (
+      <div className='min-h-screen flex justify-center items-center bg-white'></div>
+    );
+  }
 
   return (
     <>
@@ -393,6 +388,7 @@ export default function BusinessDetails() {
                   <SwiperSlide key={index} className="swiper-slide">
                     {console.log("data in reveiw = " + JSON.stringify(review))}
                     <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
+                      <p className="font-semibold pl-1 text-xl">{review.rating_title}</p>
                       <div
                         className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
                           }`}
@@ -462,7 +458,7 @@ export default function BusinessDetails() {
       <div className="" id="showReview">
         <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
           {currentReviews
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sorting in descending order
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((review) => {
               const isExpanded = expandedReviews[review.id];
               const truncatedDescription = review.description.substring(0, 180);
@@ -490,6 +486,7 @@ export default function BusinessDetails() {
                   </div>
 
                   <div className="ml-1 my-2 text-sm md:text-lg text-[#888686] xsm:text-start">
+                    <p className="font-semibold text-black text-2xl">{review.rating_title}</p>
                     <p>
                       {isExpanded ? review.description : truncatedDescription}
                       {review.description.length > 100 && (

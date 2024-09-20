@@ -37,6 +37,7 @@ const StarRating = ({ rating, setRating }) => {
 const AddReview = ({ brandId }) => {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState("");
+    const [title, setTitle] = useState("");
     const [loadingReview, setLoadingReview] = useState(false);
     const [base64Image, setBase64Image] = useState("");
     const [allReview, setAllReview] = useState([]);
@@ -72,7 +73,8 @@ const AddReview = ({ brandId }) => {
         const payload = {
             description: review,
             proof_of_order: base64Image,
-            brand_profile: brandProfileId, // Ensure this is a valid number
+            brand_profile: brandProfileId,
+            rating_title: title,
             rating: rating,
             user: userId,
         };
@@ -91,12 +93,12 @@ const AddReview = ({ brandId }) => {
 
             setRating(0);
             setReview("");
+            setTitle("");
             setFile(null);
             setBase64Image("");
             setTimeout(() => {
                 setSubmitSuccess(false);
             }, 3000);
-            // getReviews(); // Reload reviews without full page reload
         } catch (error) {
             setSubmitError(true);
 
@@ -156,9 +158,6 @@ const AddReview = ({ brandId }) => {
         >
             <input {...getInputProps()} />
             <div className="w-full flex flex-col items-center justify-center">
-                {/* <div className="w-[36px] h-[36px]">
-                    <img src="/icons/Upload icon.svg" alt="Uploaded-Image" />
-                </div> */}
                 <div className="text-[16px] leading-[18px] text-[#0F0F0F]">
                     Drag & Drop File or <span className="text-primary">Browse</span>
                 </div>
@@ -190,15 +189,29 @@ const AddReview = ({ brandId }) => {
                 )}
                 <div className="lg:mb-6 mb-10">
                     <label htmlFor="message" className="mt-2 block capital text-[#000] text-[20px] mb-2">
+                        Title
+                    </label>
+                    <input
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        name="title"
+                        className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-[#87cdff] min-h-20 resize-none"
+                        placeholder="Enter the title of review"
+                    />
+                </div>
+                <div className="lg:mb-6 mb-10">
+                    <label htmlFor="title" className="mt-2 block capital text-[#000] text-[20px] mb-2">
                         Review
                     </label>
                     <textarea
+                        required
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                         id="message"
                         rows="7"
                         className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-[#87cdff] min-h-20 resize-none"
-                        placeholder="Write your Review"
+                        placeholder="Write your review"
                     ></textarea>
                 </div>
                 {loadingReview ? (

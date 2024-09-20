@@ -32,4 +32,16 @@ const getAllCategories = async () => {
   return await HTTP_CLIENT.get("/api/category");
 };
 
-export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile };
+const getUserReviews = async () => {
+  return await HTTP_CLIENT.get(`/api/rating/my_ratings/`);
+};
+
+const deleteUserReview = async (reviewId) => {
+  return await HTTP_CLIENT.delete(`/api/rating/${reviewId}/`);
+};
+
+const editReview = async (id, updatedData) => {
+  return await HTTP_CLIENT.put(`/api/rating/${id}/`, updatedData);
+};
+
+export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile, getUserReviews, deleteUserReview, editReview };

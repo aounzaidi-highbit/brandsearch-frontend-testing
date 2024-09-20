@@ -26,7 +26,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="px-4 lg:px-10 mx-auto xsm:py-2 text-center bg-[#f4fbff] sm:pt-6 sm:pb-60 xsm:mt-20">
+        <div className="px-4 lg:px-10 mx-auto xsm:py-2 text-center min-h-screen bg-[#f4fbff] sm:pt-6 sm:pb-60 xsm:mt-20 2xl:pt-20">
             <p className="text-3xl font-[900] mx-auto xsm:mb-4 mb-10 xsm:text-xl">
                 Find Reviews, Share Yours, and Discover Companies.
             </p>

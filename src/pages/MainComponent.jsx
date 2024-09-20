@@ -49,7 +49,7 @@ export default function MainComponent() {
         <Route path="signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
         <Route path="forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPassword />} />
         <Route path="update-password/:u_id/:token" element={isAuthenticated ? <Navigate to="/" /> : <UpdatePassword />} />
-        <Route path="user-reviews" element={isAuthenticated && <UserReviews />} />
+        <Route path="user-reviews" element={<UserReviews />} />
         <Route path="review/:name" element={<BusinessDetails />} />
         <Route path="business-list" element={<BusinessList />} />
         <Route path="/*" element={<ErrorPage />} />

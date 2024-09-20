@@ -10,6 +10,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,6 +22,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoadingSubmit(true);
     console.log("Data sent to server:", formValues);
 
     try {
@@ -47,6 +49,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       } else {
         console.error("Token not provided in response.");
         setErrorMessage("Unexpected error, please try again.");
+        setLoadingSubmit(false);
       }
     } catch (error) {
       if (error.response) {
@@ -54,13 +57,19 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
         if (error.response.status === 400) {
           const errorMsg = error.response.data.detail || "Invalid email or password.";
           setErrorMessage(errorMsg);
+          setLoadingSubmit(false);
         } else {
           setErrorMessage("Something went wrong, please try again.");
+          setLoadingSubmit(false);
         }
       } else {
         console.error("Login error:", error.message);
         setErrorMessage("Network error, please try again later.");
+        setLoadingSubmit(false);
       }
+    } finally {
+      setLoadingSubmit(false);
+      console.log("Signin process completed Successfully.");
     }
   };
 
@@ -170,8 +179,8 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
               className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
               type="submit"
             >
-              Sign In
-            </button>
+              {loadingSubmit ? "Loading ..." : "Signin"}
+              </button>
           </form>
           <h4 className="text-[#686868] font-xl m-3">
             Don't Have An Account?

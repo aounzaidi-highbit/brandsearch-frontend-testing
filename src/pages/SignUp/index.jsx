@@ -9,6 +9,7 @@ import axios from 'axios';
 import { HTTP_CLIENT } from "../../utils/axiosClient";
 
 export default function Signup() {
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoadingSubmit(true);
     if (formData.password1 !== formData.password2) {
       setFormErrors({
         ...formErrors,
@@ -99,11 +101,16 @@ export default function Signup() {
           }
         } else {
           console.error("Login failed: Token not provided in response.");
+          setLoadingSubmit(false);
         }
       }
     } catch (error) {
       console.error("Error during signup:", error.response?.data || error.message);
       setFormErrors(error.response?.data || {});
+      setLoadingSubmit(false);
+    } finally {
+      setLoadingSubmit(false);
+      console.log("Signup process completed Successfully.");
     }
   };
 
@@ -131,14 +138,6 @@ export default function Signup() {
 
             <div className="p-2">
               <div className="sm:flex gap-1 mb-3">
-                {/* <input
-                  type="text"
-                  name="first_name"
-                  placeholder="Enter First Name"
-                  className="border rounded-xl ml-1 xsm:mb-2 p-4 w-full focus:outline-[#87cdff]"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                /> */}
                 <div class="relative w-full">
                   <input
                     type="text"
@@ -155,14 +154,6 @@ export default function Signup() {
                     Enter First Name
                   </label>
                 </div>
-                {/* <input
-                  type="text"
-                  name="last_name"
-                  placeholder="Enter Last Name"
-                  className="border rounded-xl ml-1 p-4 w-full focus:outline-[#87cdff]"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                /> */}
                 <div class="relative w-full">
                   <input
                     type="text"
@@ -181,14 +172,6 @@ export default function Signup() {
               </div>
               {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
               <div className="flex flex-col w-full gap-3">
-                {/* <input
-                  type="text"
-                  name="username"
-                  placeholder="Enter Username"
-                  className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                  value={formData.username}
-                  onChange={handleChange}
-                /> */}
                 <div class="relative">
                   <input
                     type="text"
@@ -206,14 +189,6 @@ export default function Signup() {
                   </label>
                 </div>
                 {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
-                {/* <input
-                  type="text"
-                  name="email"
-                  placeholder="Enter Email"
-                  className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                  value={formData.email}
-                  onChange={handleChange}
-                /> */}
                 <div class="relative">
                   <input
                     type="email"
@@ -232,20 +207,6 @@ export default function Signup() {
                 </div>
                 {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
                 <div className="relative">
-                  {/* <input
-                    type={showPassword1 ? "text" : "password"}
-                    name="password1"
-                    placeholder="Enter Password"
-                    className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                    value={formData.password1}
-                    onChange={handleChange}
-                  />
-                  <img
-                    src={showPassword1 ? hidePassword : showPassword}
-                    alt="toggle-password1"
-                    className="w-6 absolute top-4 right-4 cursor-pointer"
-                    onClick={() => setShowPassword1(!showPassword1)}
-                  /> */}
                   <div className="relative">
                     <div class="relative">
                       <input type={showPassword1 ? "text" : "password"} name="password1" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password1} onChange={handleChange} />
@@ -261,20 +222,6 @@ export default function Signup() {
                   {formErrors.password1 && <p className="text-red-500">{formErrors.password1}</p>}
                 </div>
                 <div className="relative">
-                  {/* <input
-                    type={showPassword2 ? "text" : "password"}
-                    name="password2"
-                    placeholder="Confirm Password"
-                    className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                    value={formData.password2}
-                    onChange={handleChange}
-                  />
-                  <img
-                    src={showPassword2 ? hidePassword : showPassword}
-                    alt="toggle-password2"
-                    className="w-6 absolute top-4 right-4 cursor-pointer"
-                    onClick={() => setShowPassword2(!showPassword2)}
-                  /> */}
                   <div className="relative">
                     <div class="relative">
                       <input type={showPassword2 ? "text" : "password"} name="password2" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password2} onChange={handleChange} />
@@ -289,14 +236,6 @@ export default function Signup() {
                   </div>
                   {formErrors.password2 && <p className="text-red-500">{formErrors.password2}</p>}
                 </div>
-                {/* <input
-                  type="text"
-                  name="phone"
-                  placeholder="Enter Phone"
-                  className="border rounded-xl p-4 m-1 w-full focus:outline-[#87cdff]"
-                  value={formData.phone}
-                  onChange={handleChange}
-                /> */}
                 <div class="relative">
                   <input
                     type="text"
@@ -316,11 +255,8 @@ export default function Signup() {
                 {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
               </div>
             </div>
-            <button
-              className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
-              type="submit"
-            >
-              Signup
+            <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              {loadingSubmit ? "Loading ..." : "Signup"}
             </button>
           </form>
           <h4 className="text-[#686868] font-xl m-3">

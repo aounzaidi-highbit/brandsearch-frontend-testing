@@ -2,6 +2,23 @@ import fullStar from "../assets/images/full-star.png";
 import halfStarImage from "../assets/images/half-star.png";
 import blankStar from "../assets/images/blank-star.png";
 
+const getInitials = (name) => {
+    const names = name.split(' ');
+    if (names.length === 1) {
+        return names[0].charAt(0).toUpperCase();
+    } else {
+        const firstInitial = names[0].charAt(0).toUpperCase();
+        const lastInitial = names[names.length - 1].charAt(0).toUpperCase();
+        return `${firstInitial}${lastInitial}`;
+    }
+};
+
+const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', options);
+};
+
 const capitalizeWords = (str) => {
     if (!str) return '';
     return str
@@ -35,4 +52,4 @@ const renderStars = (rating) => {
     return [...fullStars, halfStar, ...emptyStars];
 };
 
-export { capitalizeWords, slugify, ensureProtocol, renderStars };
+export { capitalizeWords, slugify, ensureProtocol, renderStars, getInitials, formatDate };

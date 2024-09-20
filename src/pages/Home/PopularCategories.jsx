@@ -91,7 +91,7 @@ const PopularCategories = () => {
                     onClick={() => window.scrollTo(0, 0)}
                     className="rounded-md shadow-box-shadow hover:animate-grow "
                   >
-                    {console.log("data in category: " + JSON.stringify(category))}
+                    {/* {console.log("data in category: " + JSON.stringify(category))} */}
                     <div
                       className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col w-44"
                     >
