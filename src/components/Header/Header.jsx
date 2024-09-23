@@ -154,7 +154,7 @@ export default function Header() {
                     type="button"
                     className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg lg:text-[18px] px-4 py-2 text-center"
                   >
-                    <Link to="user-reviews">My Reviews</Link>
+                    <Link to="/user-reviews">My Reviews</Link>
                   </button>
                   <button
                     onClick={() => handleLogout()}

@@ -6,6 +6,7 @@ import { renderStars, capitalizeWords, getInitials, formatDate } from '../../uti
 import { getUserReviews, deleteUserReview, editReview } from '../../services/business';
 import ConfirmDeleteModal from '../../components/Modals/DeleteModal'; // Import the modal component
 import EditModal from '../../components/Modals/EditModal'; // Import the EditModal component
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const UserReviews = () => {
@@ -17,6 +18,20 @@ const UserReviews = () => {
     const [reviewToDelete, setReviewToDelete] = useState(null);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        if (token) {
+            setIsAuthenticated(!!token);
+            navigate('/user-reviews');
+        }
+        else {
+            navigate('/signin');
+
+        }
+    }, []);
 
     const handleEdit = (review) => {
         setSelectedReview(review);

@@ -5,8 +5,8 @@ import { getAllCategories } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
-import { Link } from "react-router-dom";
-import { capitalizeWords } from "../../utils/helper";
+import { Link, useNavigate } from "react-router-dom";
+import { capitalizeWords, slugify } from "../../utils/helper";
 
 const PopularCategories = () => {
   const [category, setCategory] = useState([]);
@@ -39,6 +39,11 @@ const PopularCategories = () => {
       sliderRef.current.scrollBy({ left: 200, behavior: 'smooth' });
     }
   };
+  // const navigate = useNavigate();
+  // const handleBrandClick = (item) => {
+  //   navigate(`/business-list?category=${slugify(item?.name)}`, { state: { id: item.id } });
+  //   window.scrollTo(0, 0)
+  // };
 
   return (
     <div className="h-[40vh] relative mb-60 ">
@@ -88,6 +93,8 @@ const PopularCategories = () => {
                   <Link
                     key={item?.id}
                     to={`/business-list?category=${item?.name}`}
+                    // onClick={() => handleBrandClick(item)}
+
                     onClick={() => window.scrollTo(0, 0)}
                     className="rounded-md shadow-box-shadow hover:animate-grow "
                   >

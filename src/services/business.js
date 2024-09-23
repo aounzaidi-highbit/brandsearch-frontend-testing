@@ -41,7 +41,7 @@ const deleteUserReview = async (reviewId) => {
 };
 
 const editReview = async (id, updatedData) => {
-  return await HTTP_CLIENT.put(`/api/rating/${id}/`, updatedData);
+  return await HTTP_CLIENT.patch(`/api/rating/${id}/`, updatedData);
 };
 
 export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile, getUserReviews, deleteUserReview, editReview };

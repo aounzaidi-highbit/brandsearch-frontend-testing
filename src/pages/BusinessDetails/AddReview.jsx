@@ -1,38 +1,38 @@
-// addReview.jsx
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import tickIcon from "../../assets/images/tick.png";
 import { addReview, getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
+import { StarRating } from "../../utils/helper";
 
-const StarRating = ({ rating, setRating }) => {
-    const handleRating = (value) => {
-        setRating(value);
-    };
-    return (
-        <div className="flex space-x-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <svg
-                    key={star}
-                    onClick={() => handleRating(star)}
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill={star <= rating ? "#ffc107" : "none"}
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="w-8 h-8 cursor-pointer"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                    />
-                </svg>
-            ))}
-        </div>
-    );
-};
+// const StarRating = ({ rating, setRating }) => {
+//     const handleRating = (value) => {
+//         setRating(value);
+//     };
+//     return (
+//         <div className="flex space-x-1">
+//             {[1, 2, 3, 4, 5].map((star) => (
+//                 <svg
+//                     key={star}
+//                     onClick={() => handleRating(star)}
+//                     xmlns="http://www.w3.org/2000/svg"
+//                     fill={star <= rating ? "#ffc107" : "none"}
+//                     stroke="currentColor"
+//                     strokeWidth="2"
+//                     className="w-8 h-8 cursor-pointer"
+//                     viewBox="0 0 24 24"
+//                 >
+//                     <path
+//                         strokeLinecap="round"
+//                         strokeLinejoin="round"
+//                         d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+//                     />
+//                 </svg>
+//             ))}
+//         </div>
+//     );
+// };
 
 const AddReview = ({ brandId }) => {
     const [rating, setRating] = useState(0);

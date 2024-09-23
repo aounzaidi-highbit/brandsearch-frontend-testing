@@ -46,7 +46,7 @@ export default function MainComponent() {
         <Route path="faqs" element={<Faqs />} />
         <Route path="about" element={<About />} />
         <Route path="signup" element={<SignUp />} />
-        <Route path="signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
+        <Route path="signin" element={<SignIn />} />
         <Route path="forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPassword />} />
         <Route path="update-password/:u_id/:token" element={isAuthenticated ? <Navigate to="/" /> : <UpdatePassword />} />
         <Route path="user-reviews" element={<UserReviews />} />
