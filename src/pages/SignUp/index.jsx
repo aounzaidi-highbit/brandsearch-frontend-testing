@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import google from "../../assets/images/google.png";
 import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
@@ -15,11 +15,10 @@ export default function Signup() {
   const navigate = useNavigate();
   const location = useLocation();
   const { brandId } = location.state || {};
-  const [otpSent, setOtpSent] = useState(false);
   const [otpError, setOtpError] = useState('');
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
 
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [showOtpInput, setShowOtpInput] = useState(false);
 
 
@@ -61,7 +60,7 @@ export default function Signup() {
       ...formErrors,
       [e.target.name]: "",
     });
-    setErrorMessage("");
+    // setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -78,15 +77,12 @@ export default function Signup() {
 
     try {
       const response = await HTTP_CLIENT.post('/api/auth/registration', formData);
-      console.log("Signup successful, server response:", response);
-      localStorage.setItem("userIsLoggedIn", true);
+      console.log("Signup data send successfull, server response:", response);
 
-      if (response.data.success) {
-        setShowOtpInput(true); // Show OTP input
-        setOtpSent(true); // OTP has been sent
-        setErrorMessage(''); // Clear error if any
+      if (response) {
+        setShowOtpInput(true);
       } else {
-        setErrorMessage('Signup failed');
+        setShowOtpInput(false);
       }
 
       const token = response.data.key;
@@ -94,7 +90,6 @@ export default function Signup() {
       const user_id = user.pk;
 
       if (!user.is_verified) {
-        setErrorMessage("Verification OTP is send to your Mail. Please Verify you identity.");
         setLoadingSubmit(false);
         return;
       }
@@ -102,6 +97,7 @@ export default function Signup() {
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
+        localStorage.setItem("userIsLoggedIn", true);
         console.log("Token stored in localStorage:", token);
         console.log("User ID stored:", user_id);
         navigate(`/review/#DropReview`);
@@ -131,6 +127,7 @@ export default function Signup() {
       console.error("Error during signup:", error.response?.data || error.message);
       setFormErrors(error.response?.data || {});
       setLoadingSubmit(false);
+      setShowOtpInput(false);
     } finally {
       setLoadingSubmit(false);
       console.log("Signup process completed Successfully.");
@@ -139,26 +136,76 @@ export default function Signup() {
 
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
+    const otpString = otp.join('');
     try {
-      const response = await axios.post('/api/auth/otp-verify/', { email: formData.email, otp });
-      if (response.data.success) {
-        // navigate('/');
-        console.log("response.data.success" + response.data.success)
+      const response = await HTTP_CLIENT.post('/api/auth/otp-verify/', { email: formData.email, otp: otpString });
+      if (response) {
+        console.log("OTP send successfylly = " + JSON.stringify(response.data))
+        console.log("Data in otp = " + "email: " + formData.email + " and otp: " + otpString)
+        setOtpError('');
+        setShowOtpInput(false);
+        navigate("/");
+
       } else {
-        setOtpError('Invalid OTP');
+        setOtpError('Error in otp');
+        console.log("OTP send failed" + response.data)
+        console.log("Data in otp else errored = " + formData.email + otpString)
       }
     } catch (error) {
-      setOtpError('Error verifying OTP, please try again');
+      setOtpError('Error verifying OTP = ' + error.response);
+      console.log("Data in errored catch otp = " + formData.email + otpString)
     }
   };
 
   return (
-    <div className="px-4 lg:px-10 mx-auto xsm:py-2 bg-[#f4fbff] xsm:bg-white text-center h-full xsm:mb-6 sm:pt-6 sm:pb-28 xsm:mt-20">
+    <div className="px-4 lg:px-10 mx-auto xsm:py-2 bg-[#f4fbff] xsm:bg-white min-h-screen text-center h-full xsm:mb-6 sm:pt-6 sm:pb-28 xsm:mt-20">
       <p className="text-3xl font-[900] mx-auto xsm:mb-4 mb-10 xsm:text-xl">
         Find Reviews, Share Yours, and Discover Companies.
       </p>
-      <div className="shadow-box-shadow pt-4 max-w-3xl mx-auto rounded-[10px] h-full bg-white">
+      <div className="shadow-box-shadow max-w-3xl mx-auto rounded-[10px] h-full bg-white">
         {showOtpInput ? (
+          <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto py-20">
+            <h2 className="mb-6">
+              <span className="text-2xl font-semibold">
+                <span className="gradient xsm:text-xl text-2xl font-semibold">Please Verify OTP</span>
+              </span>
+            </h2>
+            <form className="w-full flex flex-col" onSubmit={handleOtpSubmit} autoComplete='off'>
+              <div className="mb-3">
+                <p className="text-lg my-2 mx-auto w-[80%]">We have sent you an email verification OTP to your email. Please enter it below to verify your account.</p>
+                <div className="flex justify-between mb-4">
+                  {otp.map((digit, index) => (
+                    <input
+                      key={index}
+                      type="text"
+                      maxLength="1"
+                      required
+                      className="p-3 w-20 border-2 text-xl rounded-xl text-center outline-none focus:border-[#87cdff] transition-all duration-300"
+                      value={digit}
+                      onChange={(e) => {
+                        const newOtp = [...otp];
+                        newOtp[index] = e.target.value;
+                        setOtp(newOtp);
+                        if (e.target.value && index < 5) {
+                          document.getElementById(`otp-input-${index + 1}`).focus();
+                        }
+                        if (!e.target.value && index > 0) {
+                          document.getElementById(`otp-input-${index - 1}`).focus();
+                        }
+                      }}
+                      id={`otp-input-${index}`}
+                    />
+                  ))}
+                </div>
+                {otpError && <p style={{ color: 'red' }}>{otpError}</p>}
+              </div>
+              <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+                Verify
+              </button>
+            </form>
+          </div>
+
+        ) : (
           <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto">
             <h2 className="pt-5 mb-6">
               <span className="text-2xl font-semibold">
@@ -305,12 +352,7 @@ export default function Signup() {
               </span>
             </h4>
           </div>
-        ) : (<form onSubmit={handleOtpSubmit}>
-          <p>Email sent, please enter OTP:</p>
-          <input type="text" value={otp} onChange={(e) => setOtp(e.target.value)} required />
-          {otpError && <p style={{ color: 'red' }}>{otpError}</p>}
-          <button type="submit">Submit OTP</button>
-        </form>)}
+        )}
       </div>
     </div>
   );

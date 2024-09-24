@@ -4,7 +4,7 @@ import search from "../../assets/images/search-list.png";
 import OurListed from "../Home/OurListed";
 import { getAllProfiles, getRatingDetails, getSearchProfile } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useHistory } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
@@ -14,13 +14,13 @@ import star from "../../assets/images/star.png";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
 import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
-
 const BusinessList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const name = queryParams.get("name");
   const category = queryParams.get("category");
+  const rating = queryParams.get("rating");
   const [text, setText] = useState(name || "");
   const [value] = useDebounce(text, 300);
   const [loading, setLoading] = useState(true);
@@ -28,8 +28,7 @@ const BusinessList = () => {
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [ratings, setRatings] = useState({});
-  const [sortOrder, setSortOrder] = useState(null);
-  const [ratingFilter, setRatingFilter] = useState(null);
+  const itemsPerPage = 10;
 
   const handleBrandClick = (item) => {
     navigate(`/review/${slugify(item.name)}`, { state: { id: item.id } });
@@ -42,7 +41,7 @@ const BusinessList = () => {
     setLoading(true);
   };
 
-  const getProfile = async (page = 1) => {
+  const getProfile = async (page = 1, categoryFilter = null, ratingFilter = null) => {
     setupAxios();
     try {
       let profileResults = [];
@@ -51,10 +50,12 @@ const BusinessList = () => {
         profileResults = res?.data?.results || [];
         setTotal(res?.data?.count || 0);
       } else {
-        const res = await getAllProfiles(category, page, 10);
+        const res = await getAllProfiles(categoryFilter, page, itemsPerPage, "", ratingFilter);
         profileResults = res?.data?.results || [];
         setTotal(res?.data?.count || 0);
       }
+
+      setProfile(profileResults);
 
       const ratingsData = await Promise.all(
         profileResults.map(async (item) => {
@@ -71,21 +72,6 @@ const BusinessList = () => {
         };
       });
       setRatings(ratingsMap);
-
-      if (ratingFilter) {
-        profileResults = profileResults.filter((item) => {
-          const avgRating = ratingsMap[item.id]?.averageRating || 0;
-          return avgRating >= parseFloat(ratingFilter);
-        });
-      }
-
-      if (sortOrder === "highest") {
-        profileResults.sort((a, b) => (ratingsMap[b.id]?.totalReviews || 0) - (ratingsMap[a.id]?.totalReviews || 0));
-      } else if (sortOrder === "lowest") {
-        profileResults.sort((a, b) => (ratingsMap[a.id]?.totalReviews || 0) - (ratingsMap[b.id]?.totalReviews || 0));
-      }
-
-      setProfile(profileResults);
     } catch (error) {
       console.error("Error fetching profiles or ratings:", error);
     } finally {
@@ -93,17 +79,27 @@ const BusinessList = () => {
     }
   };
 
-
   useEffect(() => {
-    getProfile(currentPage + 1);
-  }, [category, value, currentPage, sortOrder, ratingFilter]);
+    getProfile(currentPage + 1, category, rating);
+  }, [category, value, rating, currentPage]);
 
-  const resetFilters = () => {
-    setSortOrder(null);
-    setRatingFilter(null);
-    setText("");
-    setCurrentPage(0);
-    getProfile(1);
+  const handleRatingClick = (rating) => {
+    const currentPage = 1;
+    const queryParams = new URLSearchParams(location.search);
+
+    if (category && category !== 'null') {
+      queryParams.set('category', category);
+    }
+
+    if (rating) {
+      queryParams.set('rating', rating);
+    } else {
+      queryParams.delete('rating');
+    }
+
+    const queryString = queryParams.toString();
+    navigate(`/business-list?${queryString}`);
+    getProfile(currentPage, category !== 'null' ? category : undefined, rating);
   };
 
   return (
@@ -134,17 +130,17 @@ const BusinessList = () => {
           </div>
         </div>
         <div className="flex xl:container lg:px-10 px-0">
-          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white max-h-[53vh]">
+          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white max-h-[45vh]">
             <div className="flex justify-between items-center my-5">
               <p className="text-[20px]">Filter By</p>
-              <p className="text-[15px] underline cursor-pointer hover:text-blue-500" onClick={resetFilters}>Reset All</p>
+              <p className="text-[15px] underline cursor-pointer hover:text-blue-500">Reset All</p>
             </div>
             <p className="text-[15px]">Rating</p>
             <div className="flex gap-1 my-5">
-              <button className="border w-full justify-center items-center p-2 rounded-lg" onClick={() => setRatingFilter(null)}>All</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => setRatingFilter("3.0")}><img src={star} alt="star-image" className="w-6" />3.0+</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => setRatingFilter("4.0")}><img src={star} alt="star-image" className="w-6" />4.0+</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => setRatingFilter("4.5")}><img src={star} alt="star-image" className="w-6" />4.5+</button>
+              <button className="border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick("")}>All</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(3.0)}><img src={star} alt="star-image" className="w-6" />3.0+</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(4.0)}><img src={star} alt="star-image" className="w-6" />4.0+</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(4.5)}><img src={star} alt="star-image" className="w-6" />4.5+</button>
             </div>
             <p className="text-[15px]">Location</p>
             <div className="flex gap-1 my-2">
@@ -156,16 +152,11 @@ const BusinessList = () => {
             <div className="gap-1 my-5">
               <p className="text-[15px]">Number of Reviews</p>
               <div className="flex gap-1 my-2">
-                <button className="border w-full justify-center items-center p-2 rounded-lg" onClick={() => setSortOrder("highest")}>Highest reviews</button>
-                <button className="border w-full justify-center items-center p-2 rounded-lg" onClick={() => setSortOrder("lowest")}>Lowest reviews</button>
+                <button className="border w-full justify-center items-center p-2 rounded-lg">Highest reviews</button>
+                <button className="border w-full justify-center items-center p-2 rounded-lg">Lowest reviews</button>
               </div>
             </div>
-            <div className="gap-1">
-              <p className="text-[15px]">Recent Reviws</p>
-              <div className="my-2">
-                <button className="border w-full justify-center items-center p-2 rounded-lg">Most recent reviews</button>
-              </div>
-            </div>
+
           </div>
           <div className="w-full min-h-[90vh]">
             {loading ? (
