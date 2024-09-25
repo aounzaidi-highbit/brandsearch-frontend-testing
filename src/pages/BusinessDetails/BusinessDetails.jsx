@@ -39,6 +39,7 @@ export default function BusinessDetails() {
   const [averageRating, setAverageRating] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const { id } = location.state;
+  const { brandName } = useParams(); // Extract the brand name from the URL
 
   const stars = [
     { rating: 5, starsFilled: 5 },
@@ -89,6 +90,18 @@ export default function BusinessDetails() {
 
     fetchProfile();
   }, [location.state]);
+
+  useEffect(() => {
+    // Scroll to the review when the page loads
+    if (location.hash) {
+      const reviewId = location.hash.replace('#review-', ''); // Extract review ID from hash
+      const reviewElement = document.getElementById(`review-${reviewId}`);
+      if (reviewElement) {
+        reviewElement.scrollIntoView({ behavior: 'smooth' });
+      }
+      alert("hashed id = " + reviewId)
+    }
+  }, [location.hash]);
 
   useEffect(() => {
     const fetchProfileByName = async () => {
@@ -486,7 +499,7 @@ export default function BusinessDetails() {
                   </div>
 
                   <div className="ml-1 my-2 text-sm md:text-lg text-[#888686] xsm:text-start">
-                    <p className="font-semibold text-black text-2xl">{review.rating_title}</p>
+                    <p className="font-semibold text-black text-xl">{review.rating_title}</p>
                     <p>
                       {isExpanded ? review.description : truncatedDescription}
                       {review.description.length > 100 && (

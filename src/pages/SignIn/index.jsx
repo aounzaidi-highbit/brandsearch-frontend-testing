@@ -12,9 +12,9 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [verificationError, setVerificationError] = useState(false)
-  const [successMessage, setSuccessMessage] = useState('')
-  const [errorData, setErrorData] = useState('')
+  const [verificationError, setVerificationError] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorData, setErrorData] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [otpError, setOtpError] = useState('');
@@ -27,16 +27,15 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
     try {
       const response = await HTTP_CLIENT.post('/api/auth/otp-verify/', { email: formValues.email, otp: otpString });
 
-      console.log("Full OTP response:", response);
+      console.log("OTP verification successful");
       if (response && response.data) {
-        console.log("OTP verification successful");
         setSuccessMessage(response.data.message || 'OTP verified successfully');
+        await handleSubmit();
       } else {
         setOtpError('Error in OTP verification, invalid response.');
       }
     } catch (error) {
       console.error("OTP verification error:", error);
-
       if (error.response && error.response.data) {
         setOtpError(error.response.data.detail || "Invalid OTP.");
       } else {
@@ -53,9 +52,8 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setLoadingSubmit(true);
-    console.log("Data sent to server:", formValues);
 
     try {
       const response = await axios.post("http://192.168.100.163:8000/api/auth/login/", formValues);
@@ -73,11 +71,11 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
           localStorage.setItem("access_token", access);
           localStorage.setItem("refresh_token", refresh);
           localStorage.setItem("user_id", user_id);
+          localStorage.setItem("first_name", user.first_name);
+          localStorage.setItem("last_name", user.last_name);
 
-          console.log("Tokens stored in localStorage");
-          console.log("User ID stored: ", user_id);
-          console.log("User ID in localStorage: ", localStorage.getItem("user_id"));
 
+          console.log("Tokens and user ID stored in localStorage");
           navigate("/");
         } else {
           setErrorMessage("Unexpected error, please try again.");
@@ -93,12 +91,11 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
             setErrorMessage(errorData.email[0] || "Invalid email address.");
           } else if (errorData.password) {
             setErrorMessage(errorData.password[0] || "Incorrect password.");
-          }
-          else if (errorData.non_field_errors && errorData.non_field_errors[0].includes("Your account has not been verified")) {
+          } else if (errorData.non_field_errors && errorData.non_field_errors[0].includes("Your account has not been verified")) {
             setErrorMessage("Your account has not been verified. We have sent you an account verification OTP to your email address.");
-            setVerificationError(true)
+            setVerificationError(true);
           } else {
-            setVerificationError(true)
+            setVerificationError(true);
             setErrorMessage("Invalid email or password.");
           }
         } else {
@@ -110,7 +107,6 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       }
     } finally {
       setLoadingSubmit(false);
-      console.log("Signin process completed.");
     }
   };
 
@@ -139,7 +135,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
           access_token: response.access_token,
         });
         console.log(res.data);
-        navigate('/dashboard');
+        navigate('/');
       } catch (error) {
         console.error('Login failed:', error);
       }
@@ -251,10 +247,8 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                     <div className="cursor-pointer absolute right-0 mt-2"><Link to="/forgot-password" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link></div>
                   </div>
                 </div>
-                {errorMessage ? (
+                {errorMessage && (
                   <p className="text-red-500">{errorMessage}</p>
-                ) : (
-                  <p className="text-green-600">{successMessage}</p>
                 )}
               </div>
               {verificationError ?

@@ -5,8 +5,8 @@ import { getAllCategories } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
-import { Link, useNavigate } from "react-router-dom";
-import { capitalizeWords, slugify } from "../../utils/helper";
+import { Link } from "react-router-dom";
+import { capitalizeWords } from "../../utils/helper";
 
 const PopularCategories = () => {
   const [category, setCategory] = useState([]);
@@ -39,18 +39,11 @@ const PopularCategories = () => {
       sliderRef.current.scrollBy({ left: 200, behavior: 'smooth' });
     }
   };
-  // const navigate = useNavigate();
-  // const handleBrandClick = (item) => {
-  //   navigate(`/business-list?category=${slugify(item?.name)}`, { state: { id: item.id } });
-  //   window.scrollTo(0, 0)
-  // };
 
   return (
     <div className="h-[40vh] relative mb-60 ">
       {category?.length === 0 ? (
-        setTimeout(() => {
-          <NoData />;
-        }, 3000)
+        <NoData />
       ) : (
         <div className="flex flex-col items-center ">
           <div className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#3d88be] shadow-box-shadow"></div>

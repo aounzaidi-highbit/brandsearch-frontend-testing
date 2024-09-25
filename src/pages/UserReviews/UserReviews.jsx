@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import deleteIcon from "../../assets/images/delete.png";
 import editIcon from "../../assets/images/edit.png";
+import linkIcon from "../../assets/images/link-icon.png";
 import calander from "../../assets/images/calander.png";
-import { renderStars, capitalizeWords, getInitials, formatDate } from '../../utils/helper';
+import { renderStars, capitalizeWords, getInitials, formatDate, slugify } from '../../utils/helper';
 import { getUserReviews, deleteUserReview, editReview } from '../../services/business';
-import ConfirmDeleteModal from '../../components/Modals/DeleteModal'; // Import the modal component
-import EditModal from '../../components/Modals/EditModal'; // Import the EditModal component
-import { Navigate, useNavigate } from 'react-router-dom';
+import ConfirmDeleteModal from '../../components/Modals/DeleteModal';
+import EditModal from '../../components/Modals/EditModal';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const UserReviews = () => {
@@ -21,6 +22,8 @@ const UserReviews = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
+    const first_name = localStorage.getItem("first_name");
+    const last_name = localStorage.getItem("last_name");
     useEffect(() => {
         const token = localStorage.getItem("access_token");
         if (token) {
@@ -40,25 +43,16 @@ const UserReviews = () => {
 
     const handleSaveEdit = async (updatedReview) => {
         try {
-            // Prepare the data to update with all required fields
             const dataToUpdate = {
                 rating_title: updatedReview.rating_title,
                 description: updatedReview.description,
-                proof_of_order: updatedReview.proof_of_order || "", // Optional or existing value
-                brand_profile_id: updatedReview.brand_profile_id, // Ensure this is passed
-                rating: updatedReview.rating, // Ensure this is passed
+                proof_of_order: updatedReview.proof_of_order || "",
+                brand_profile_id: updatedReview.brand_profile_id,
+                rating: updatedReview.rating,
             };
-
-            // Log the data before sending
             console.log("Data to be sent for update:", dataToUpdate);
-
-            // Send the updated review data to the API
             await editReview(updatedReview.id, dataToUpdate);
-
-            // Log success message after sending
             console.log('Review updated successfully:', updatedReview.id);
-
-            // Update the local state with the new review data
             setUserReviews((prevReviews) =>
                 prevReviews.map((rev) => (rev.id === updatedReview.id ? { ...rev, ...dataToUpdate } : rev))
             );
@@ -79,7 +73,8 @@ const UserReviews = () => {
                 if (response.data && response.data.ratings) {
                     setUserReviews(response.data.ratings);
                     setRatingCount(response.data.rating_count);
-                    setUser(response.data.ratings[0].user);
+                    setUser(response.data.ratings[0]);
+                    // console.log("response.data.ratings[0].user = " + JSON.stringify(response));
                 }
             } catch (error) {
                 console.error('Error fetching user reviews:', error);
@@ -126,6 +121,10 @@ const UserReviews = () => {
             <div className='min-h-screen flex justify-center items-center bg-white'></div>
         );
     }
+    const handleBrandClick = (brandName, brandId) => {
+        navigate(`/review/${slugify(brandName)}`, { state: { id: brandId } });
+        window.scrollTo(0, 0);
+    };
 
     return (
         <div className='min-h-screen bg-[#f4fbff] pb-20'>
@@ -147,11 +146,11 @@ const UserReviews = () => {
                 <div className='w-[60%] mx-auto flex h-full justify-between items-center'>
                     <div className="flex gap-2">
                         <div className='rounded-full border-2 text-3xl w-16 h-16 flex justify-center items-center'>
-                            {getInitials(user.first_name + " " + user.last_name)}
+                            {getInitials(first_name + " " + last_name)}
                         </div>
                         <div className='flex justify-center flex-col'>
                             <p className='text-xl'>
-                                {capitalizeWords(user.first_name + " " + user.last_name)}
+                                {capitalizeWords(first_name + " " + last_name)}
                             </p>
                             <p className='text-sm'>Pakistan</p>
                         </div>
@@ -191,13 +190,19 @@ const UserReviews = () => {
                                             <p className='font-semibold text-lg'>{review.rating_title}</p>
                                             <p>{capitalizeWords(review.description)}</p>
                                         </div>
-                                        <div className='flex justify-between'>
-                                            <p className='flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleDeleteClick(review.id)}>
-                                                <img src={deleteIcon} alt="delete-icon" className='w-5 h-5' />Delete
-                                            </p>
-                                            <p className='flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleEdit(review)}>
-                                                <img src={editIcon} alt="edit-icon" className='w-5 h-5' />Edit
-                                            </p>
+                                        <div className='flex justify-between items-center'>
+                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, review.id)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer'>
+                                                <img src={linkIcon} alt="link-icon" className='w-5 h-5' />
+                                                View this review on <span className='font-semibold flex items-center'>{brandName}</span>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleDeleteClick(review.id)}>
+                                                    <img src={deleteIcon} alt="delete-icon" className='w-5 h-5' />Delete
+                                                </button>
+                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleEdit(review)}>
+                                                    <img src={editIcon} alt="edit-icon" className='w-5 h-5' />Edit
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

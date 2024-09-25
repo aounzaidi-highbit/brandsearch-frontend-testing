@@ -1,10 +1,11 @@
 import { HTTP_CLIENT } from "../utils/axiosClient";
 
-const getAllProfiles = async (category, page, itemsPerPage, name, rating) => {
+const getAllProfiles = async (category, page, itemsPerPage, name, rating, ordering) => {
   return await HTTP_CLIENT.get(
-    `/api/profile/?category=${category || ""}&page=${page || ""}&page_size=${itemsPerPage || ""}&name=${name || ""}&rating=${rating || ""}`
+    `/api/profile/?category=${category || ""}&page=${page || ""}&page_size=${itemsPerPage || ""}&name=${name || ""}&rating=${rating || ""}&ordering=${ordering || ""}`
   );
 };
+
 
 const getSearchProfile = async (name) => {
   return await HTTP_CLIENT.get(

@@ -12,7 +12,6 @@ import Signup from "./pages/SignUp/index";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuth from "./middlewares/useAuth";
 import { SignIn } from "./pages/SignIn";
-import UserReviews from "./pages/UserReviews/UserReviews";
 
 function App() {
   useEffect(() => {

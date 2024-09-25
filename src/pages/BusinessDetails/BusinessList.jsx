@@ -30,6 +30,9 @@ const BusinessList = () => {
   const [ratings, setRatings] = useState({});
   const itemsPerPage = 10;
 
+  const [ordering, setOrdering] = useState("");
+
+
   const handleBrandClick = (item) => {
     navigate(`/review/${slugify(item.name)}`, { state: { id: item.id } });
     window.scrollTo(0, 0);
@@ -50,7 +53,7 @@ const BusinessList = () => {
         profileResults = res?.data?.results || [];
         setTotal(res?.data?.count || 0);
       } else {
-        const res = await getAllProfiles(categoryFilter, page, itemsPerPage, "", ratingFilter);
+        const res = await getAllProfiles(categoryFilter, page, itemsPerPage, "", ratingFilter, ordering);
         profileResults = res?.data?.results || [];
         setTotal(res?.data?.count || 0);
       }
@@ -81,7 +84,7 @@ const BusinessList = () => {
 
   useEffect(() => {
     getProfile(currentPage + 1, category, rating);
-  }, [category, value, rating, currentPage]);
+  }, [category, value, rating, currentPage, ordering]);
 
   const handleRatingClick = (rating) => {
     const currentPage = 1;
@@ -130,17 +133,22 @@ const BusinessList = () => {
           </div>
         </div>
         <div className="flex xl:container lg:px-10 px-0">
-          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white max-h-[45vh]">
+          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white max-h-[55vh]">
             <div className="flex justify-between items-center my-5">
               <p className="text-[20px]">Filter By</p>
-              <p className="text-[15px] underline cursor-pointer hover:text-blue-500">Reset All</p>
+              <p className="text-[15px] underline cursor-pointer hover:text-blue-500"
+                onClick={() => {
+                  handleRatingClick("")
+                  setOrdering("")
+                }}
+              >Reset All</p>
             </div>
             <p className="text-[15px]">Rating</p>
             <div className="flex gap-1 my-5">
-              <button className="border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick("")}>All</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(3.0)}><img src={star} alt="star-image" className="w-6" />3.0+</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(4.0)}><img src={star} alt="star-image" className="w-6" />4.0+</button>
-              <button className="flex border w-full justify-center items-center p-2 rounded-lg" onClick={() => handleRatingClick(4.5)}><img src={star} alt="star-image" className="w-6" />4.5+</button>
+              <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick("")}>All</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(3.0)}><img src={star} alt="star-image" className="w-6" />3.0+</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(4.0)}><img src={star} alt="star-image" className="w-6" />4.0+</button>
+              <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(4.5)}><img src={star} alt="star-image" className="w-6" />4.5+</button>
             </div>
             <p className="text-[15px]">Location</p>
             <div className="flex gap-1 my-2">
@@ -150,10 +158,17 @@ const BusinessList = () => {
             </div>
             <p className="text-[20px] mt-5">Sort By</p>
             <div className="gap-1 my-5">
+              <p className="text-[15px]">Rating</p>
+              <div className="flex gap-1 my-2">
+                <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("high-to-low")}>Highest to lowest</button>
+                <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("low-to-high")}>Lowest to highest</button>
+              </div>
+            </div>
+            <div className="gap-1 my-5">
               <p className="text-[15px]">Number of Reviews</p>
               <div className="flex gap-1 my-2">
-                <button className="border w-full justify-center items-center p-2 rounded-lg">Highest reviews</button>
-                <button className="border w-full justify-center items-center p-2 rounded-lg">Lowest reviews</button>
+                <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("most-reviews")}>Highest reviews</button>
+                <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("least-reviews")}>Lowest reviews</button>
               </div>
             </div>
 
@@ -246,7 +261,7 @@ const BusinessList = () => {
           )}
         </div>
         <OurListed />
-      </div>
+      </div >
     </>
   );
 };

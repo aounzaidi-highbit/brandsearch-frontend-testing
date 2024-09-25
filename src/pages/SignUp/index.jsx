@@ -16,11 +16,9 @@ export default function Signup() {
   const location = useLocation();
   const { brandId } = location.state || {};
   const [otpError, setOtpError] = useState('');
-  // const [errorMessage, setErrorMessage] = useState("");
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [showOtpInput, setShowOtpInput] = useState(false);
-
 
   const [formData, setFormData] = useState({
     username: "",
@@ -60,7 +58,6 @@ export default function Signup() {
       ...formErrors,
       [e.target.name]: "",
     });
-    // setErrorMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -71,18 +68,16 @@ export default function Signup() {
         ...formErrors,
         password2: "Passwords do not match",
       });
+      setLoadingSubmit(false);
       return;
     }
-    console.log("Sending signup data:", formData);
 
     try {
       const response = await HTTP_CLIENT.post('/api/auth/registration', formData);
-      console.log("Signup data send successfull, server response:", response);
+      console.log("Signup data sent successfully, server response:", response);
 
       if (response) {
         setShowOtpInput(true);
-      } else {
-        setShowOtpInput(false);
       }
 
       const token = response.data.key;
@@ -98,30 +93,11 @@ export default function Signup() {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("userIsLoggedIn", true);
+        localStorage.setItem("first_name", user.first_name);
+        localStorage.setItem("last_name", user.last_name);
         console.log("Token stored in localStorage:", token);
         console.log("User ID stored:", user_id);
         navigate(`/review/#DropReview`);
-      }
-      else {
-        const loginResponse = await HTTP_CLIENT.post('/api/auth/login', {
-          email: formData.email,
-          password: formData.password1,
-        });
-
-        const { access, refresh, user } = loginResponse.data;
-        if (access && refresh) {
-          localStorage.setItem('access_token', access);
-          localStorage.setItem('refresh_token', refresh);
-          localStorage.setItem('user_id', user.pk);
-          if (brandId) {
-            navigate(`/review/${brandId}#dropReview`);
-          } else {
-            navigate('/');
-          }
-        } else {
-          console.error("Login failed: Token not provided in response.");
-          setLoadingSubmit(false);
-        }
       }
     } catch (error) {
       console.error("Error during signup:", error.response?.data || error.message);
@@ -140,20 +116,38 @@ export default function Signup() {
     try {
       const response = await HTTP_CLIENT.post('/api/auth/otp-verify/', { email: formData.email, otp: otpString });
       if (response) {
-        console.log("OTP send successfylly = " + JSON.stringify(response.data))
-        console.log("Data in otp = " + "email: " + formData.email + " and otp: " + otpString)
+        console.log("OTP verified successfully:", response.data);
         setOtpError('');
         setShowOtpInput(false);
-        navigate("/");
 
+        const loginResponse = await HTTP_CLIENT.post('/api/auth/login', {
+          email: formData.email,
+          password: formData.password1,
+        });
+
+        const { access, refresh, user } = loginResponse.data;
+        if (access && refresh) {
+          localStorage.setItem('access_token', access);
+          localStorage.setItem('refresh_token', refresh);
+          localStorage.setItem('user_id', user.pk);
+          localStorage.setItem("userIsLoggedIn", true);
+          localStorage.setItem("first_name", user.first_name);
+          localStorage.setItem("last_name", user.last_name);
+          if (brandId) {
+            navigate(`/review/${brandId}#dropReview`);
+          } else {
+            navigate('/');
+          }
+        } else {
+          console.error("Login failed: Token not provided in response.");
+        }
       } else {
-        setOtpError('Error in otp');
-        console.log("OTP send failed" + response.data)
-        console.log("Data in otp else errored = " + formData.email + otpString)
+        setOtpError('Error in OTP verification');
+        console.log("OTP verification failed:", response.data);
       }
     } catch (error) {
-      setOtpError('Error verifying OTP = ' + error.response);
-      console.log("Data in errored catch otp = " + formData.email + otpString)
+      setOtpError('Error verifying OTP: ' + error.response?.data || error.message);
+      console.log("Error verifying OTP:", error);
     }
   };
 
