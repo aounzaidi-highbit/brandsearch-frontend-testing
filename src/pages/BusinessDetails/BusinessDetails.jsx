@@ -39,7 +39,6 @@ export default function BusinessDetails() {
   const [averageRating, setAverageRating] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const { id } = location.state;
-  const { brandName } = useParams(); // Extract the brand name from the URL
 
   const stars = [
     { rating: 5, starsFilled: 5 },
@@ -90,18 +89,6 @@ export default function BusinessDetails() {
 
     fetchProfile();
   }, [location.state]);
-
-  useEffect(() => {
-    // Scroll to the review when the page loads
-    if (location.hash) {
-      const reviewId = location.hash.replace('#review-', ''); // Extract review ID from hash
-      const reviewElement = document.getElementById(`review-${reviewId}`);
-      if (reviewElement) {
-        reviewElement.scrollIntoView({ behavior: 'smooth' });
-      }
-      alert("hashed id = " + reviewId)
-    }
-  }, [location.hash]);
 
   useEffect(() => {
     const fetchProfileByName = async () => {
@@ -352,8 +339,7 @@ export default function BusinessDetails() {
 
           <div className="flex justify-center gap-4 w-full">
             <button className=" flex items-center justify-center border bg-[#287BB7] w-[50%] lg:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px]"
-              onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}
-            >
+              onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}>
               <span className="flex gap-1 md:gap-4 w-[100%] items-center">
                 <img src={reviewIcon} alt="review-icon" className="w-12 filter invert" />
                 <span className="text-white lg:font-bold text-sm lg:text-[18px]">
@@ -375,16 +361,13 @@ export default function BusinessDetails() {
       </div>
 
       {currentReviews.length > 2 ?
-
         (<div className="container mb-72 xsm:mb-40">
-
           <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
             <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
               <span className="font-bold "> Recommended </span><br /> Reviews
             </h2>
-
-            <div className="xsm:w-full xsm:h-[60vh] w-[50%] 2xl:h-[55vh] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
-            <div className="mt-8 xsm:mt-20 2xl:mt-20 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
+            <div className="xsm:w-full xsm:h-[60vh] w-[50%] 2xl:h-[65vh] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
+            <div className="mt-8 xsm:mt-20 2xl:mt-12 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={50}
@@ -504,7 +487,7 @@ export default function BusinessDetails() {
                       {isExpanded ? review.description : truncatedDescription}
                       {review.description.length > 100 && (
                         <button onClick={() => toggleReadMore(review.id)} className="text-blue-500">
-                          {isExpanded ? " Read Less" : "... Read More"}
+                          {isExpanded ? " Read Less" : " ... Read More"}
                         </button>
                       )}
                     </p>

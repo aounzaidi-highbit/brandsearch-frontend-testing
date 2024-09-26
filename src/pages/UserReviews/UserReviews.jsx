@@ -3,12 +3,11 @@ import deleteIcon from "../../assets/images/delete.png";
 import editIcon from "../../assets/images/edit.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import calander from "../../assets/images/calander.png";
-import { renderStars, capitalizeWords, getInitials, formatDate, slugify } from '../../utils/helper';
+import { renderStars, capitalizeWords, getInitials, formatDate, handleBrandClick } from '../../utils/helper';
 import { getUserReviews, deleteUserReview, editReview } from '../../services/business';
 import ConfirmDeleteModal from '../../components/Modals/DeleteModal';
 import EditModal from '../../components/Modals/EditModal';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const UserReviews = () => {
     const [userReviews, setUserReviews] = useState([]);
@@ -62,9 +61,6 @@ const UserReviews = () => {
         }
     };
 
-
-
-
     useEffect(() => {
         const fetchUserReviews = async () => {
             const userId = localStorage.getItem('user_id');
@@ -74,7 +70,6 @@ const UserReviews = () => {
                     setUserReviews(response.data.ratings);
                     setRatingCount(response.data.rating_count);
                     setUser(response.data.ratings[0]);
-                    // console.log("response.data.ratings[0].user = " + JSON.stringify(response));
                 }
             } catch (error) {
                 console.error('Error fetching user reviews:', error);
@@ -121,10 +116,6 @@ const UserReviews = () => {
             <div className='min-h-screen flex justify-center items-center bg-white'></div>
         );
     }
-    const handleBrandClick = (brandName, brandId) => {
-        navigate(`/review/${slugify(brandName)}`, { state: { id: brandId } });
-        window.scrollTo(0, 0);
-    };
 
     return (
         <div className='min-h-screen bg-[#f4fbff] pb-20'>
@@ -163,7 +154,7 @@ const UserReviews = () => {
             </div>
 
             <div className='w-[50%] mx-auto'>
-                <p className='text-3xl my-10 border-b-2'>All Reviews</p>
+                <p className='text-4xl my-10 border-b-2'>All Reviews</p>
                 {Object.keys(groupedReviews).length > 0 ? (
                     Object.keys(groupedReviews).map((brandName) => (
                         <div key={brandName}>
@@ -191,7 +182,7 @@ const UserReviews = () => {
                                             <p>{capitalizeWords(review.description)}</p>
                                         </div>
                                         <div className='flex justify-between items-center'>
-                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, review.id)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer'>
+                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, navigate)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer'>
                                                 <img src={linkIcon} alt="link-icon" className='w-5 h-5' />
                                                 View this review on <span className='font-semibold flex items-center'>{brandName}</span>
                                             </div>

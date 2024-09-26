@@ -4,7 +4,7 @@ import search from "../../assets/images/search-list.png";
 import OurListed from "../Home/OurListed";
 import { getAllProfiles, getRatingDetails, getSearchProfile } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
-import { useLocation, useNavigate, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ import linkIcon from "../../assets/images/link-icon.png";
 import star from "../../assets/images/star.png";
 import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
-import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
+import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
 const BusinessList = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,12 +31,6 @@ const BusinessList = () => {
   const itemsPerPage = 10;
 
   const [ordering, setOrdering] = useState("");
-
-
-  const handleBrandClick = (item) => {
-    navigate(`/review/${slugify(item.name)}`, { state: { id: item.id } });
-    window.scrollTo(0, 0);
-  };
 
   const handlePageClick = (event) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -108,7 +102,7 @@ const BusinessList = () => {
   return (
     <>
       <div className="bg-white">
-        <div className="container">
+        <div className="container xl:px-32 xl:pl-40">
           <div className="flex justify-center items-center py-10 lg:py-16">
             <h2 className="text-[#000000] text-center">
               <span className="text-xl lg:text-2xl block font-bold mb-1">All Brands</span>
@@ -119,7 +113,7 @@ const BusinessList = () => {
             </h2>
           </div>
 
-          <div className="relative mb-10">
+          <div className="relative mb-10 ">
             <div className="absolute top-3 left-5">
               <img src={search} alt="search" className="cursor-pointer" />
             </div>
@@ -132,16 +126,15 @@ const BusinessList = () => {
             />
           </div>
         </div>
-        <div className="flex xl:container lg:px-10 px-0">
-          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white max-h-[55vh]">
+        <div className="flex xl:container xl:px-32 px-0">
+          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white h-3/5">
             <div className="flex justify-between items-center my-5">
               <p className="text-[20px]">Filter By</p>
               <p className="text-[15px] underline cursor-pointer hover:text-blue-500"
                 onClick={() => {
                   handleRatingClick("")
                   setOrdering("")
-                }}
-              >Reset All</p>
+                }}>Reset All</p>
             </div>
             <p className="text-[15px]">Rating</p>
             <div className="flex gap-1 my-5">
@@ -181,7 +174,7 @@ const BusinessList = () => {
             ) : (profile.map((item) => {
               const websiteURL = ensureProtocol(item.website);
               return (
-                <div key={item.id} className="xsm:text-sm flex flex-col md:flex-row justify-between items-center py-2 rounded-xl mb-6 px-4 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px] bg-white">
+                <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px] bg-white">
                   <div className="flex items-center xsm:flex-col w-full">
                     <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
                       <img
@@ -191,9 +184,9 @@ const BusinessList = () => {
                         onError={(e) => { e.target.src = defaultImg; }}
                       />
                     </div>
-                    <div className="px-2 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
+                    <div className="px-5 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
                       <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                        <a onClick={() => handleBrandClick(item)} className="cursor-pointer font-bold hover:text-[#3e7eab]">
+                        <a onClick={() => handleBrandClick(item.name, item.id, navigate)} className="cursor-pointer font-bold hover:text-[#3e7eab]">
                           {capitalizeWords(item?.name)}
                         </a>
                       </h2>
@@ -215,10 +208,10 @@ const BusinessList = () => {
                         </div>
                       </div>
                       <p className="">
-                        {item.description?.length > 170 ? (
+                        {item.description?.length > 100 ? (
                           <div className="">
-                            {item.description.substring(0, 170)}
-                            <Link onClick={() => handleBrandClick(item)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</Link>
+                            {item.description.substring(0, 100)}
+                            <button onClick={() => handleBrandClick(item.name, item.id, navigate)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</button>
                           </div>
                         ) : (
                           item.description
@@ -227,8 +220,8 @@ const BusinessList = () => {
                     </div>
                   </div>
                   <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
-                    <button onClick={() => handleBrandClick(item)}
-                      className="text-white bg-[#287BB7] text-lg px-10 rounded-lg py-3 hover:bg-[#4ea0db] flex items-center justify-center w-full md:w-[150px] my-2 ">
+                    <button onClick={() => handleBrandClick(item.name, item.id, navigate)}
+                      className="text-white bg-[#287BB7] text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
                       View
                     </button>
                   </div>

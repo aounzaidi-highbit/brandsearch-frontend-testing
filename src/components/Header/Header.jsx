@@ -1,5 +1,6 @@
 import brandLogo from "../../assets/images/brand-logo.svg";
 import forwardImg from "../../assets/images/forward.png";
+import menu from "../../assets/images/menu.png";
 import arrow from "../../assets/images/arrow.png";
 import { capitalizeWords, getInitials } from "../../utils/helper";
 import { Link, useLocation } from "react-router-dom";
@@ -13,17 +14,14 @@ export default function Header() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   let location = useLocation();
   const [category, setCategory] = useState([]);
-  const [loading, setLoading] = useState(true);
   const userName = localStorage.getItem("first_name")
 
   const getCategories = async () => {
     setupAxios();
     try {
-      setLoading(false);
       const res = await getAllCategories();
       setCategory(res?.data?.results);
     } catch (error) {
-      setLoading(false);
     }
   };
 
@@ -35,24 +33,6 @@ export default function Header() {
   const handleLogout = () => {
     localStorage.clear();
     window.location.reload();
-  };
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const handleMouseEnterCat = () => {
-    setIsCatOpen(true);
-  };
-
-  const handleMouseLeaveCat = () => {
-    setIsCatOpen(false);
-  };
-  const handleMouseEnterProfile = () => {
-    setIsProfileOpen(true);
-  };
-
-  const handleMouseLeaveProfile = () => {
-    setIsProfileOpen(false);
   };
 
   return (
@@ -91,36 +71,32 @@ export default function Header() {
                   <Link to="/blogs" className="block py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7]"> Blogs</Link>
                 </li>
               )}
-
               <li>
                 <div className="relative">
                   <button
                     className=" flex gap-2 items-center py-2 px-3 md:p-0 text-[#464F54] font-medium text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7]"
-                    onMouseEnter={handleMouseEnterCat}
-                    onMouseLeave={handleMouseLeaveCat}
-                  >
+                    onMouseEnter={() => setIsCatOpen(true)}
+                    onMouseLeave={() => setIsCatOpen(false)}>
                     Categories
                     <img src={arrow} alt="arrow-icon" className={`w-3 ${isCatOpen ? "rotate-180" : "rotate-0"}`} />
                   </button>
-
                   {isCatOpen && (
                     <div
-                      className="absolute left-0 w-56 bg-white rounded-md shadow-box-shadow"
-                      onMouseEnter={handleMouseEnterCat}
-                      onMouseLeave={handleMouseLeaveCat}>
-                      {(
-                        category?.map((item) => {
+                    >
+                      <div
+                        className="absolute left-0 w-56 bg-white rounded-md shadow-box-shadow"
+                        onMouseEnter={() => setIsCatOpen(true)}
+                        onMouseLeave={() => setIsCatOpen(false)}>
+                        {(category?.map((item) => {
                           return (
                             <Link className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer md:hover:text-[#287BB7]"
                               key={item?.id}
                               to={`/business-list?category=${item?.name}`}
-                              onClick={() => window.scrollTo(0, 0)}
-                            >
-                              {capitalizeWords(item?.name)} <br />
-                            </Link>
+                              onClick={() => window.scrollTo(0, 0)}>{capitalizeWords(item?.name)}<br /></Link>
                           );
                         })
-                      )}
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -134,8 +110,8 @@ export default function Header() {
                   <button
                     className="text-black flex items-center gap-2 focus:outline-none rounded-lg lg:text-[18px] font-semibold cursor-default"
                     type="button"
-                    onMouseEnter={handleMouseEnterProfile}
-                    onMouseLeave={handleMouseLeaveProfile}>
+                    onMouseEnter={() => setIsProfileOpen(true)}
+                    onMouseLeave={() => setIsProfileOpen(false)}>
                     <div className="border border-[#287BB7] w-10 h-10 flex items-center justify-center rounded-full text-2xl">{getInitials(userName)}</div>{userName}
                     <img src={arrow} alt="arrow-icon" className={`w-3 ${isProfileOpen ? "rotate-180" : "rotate-0"}`} />
                   </button>
@@ -143,9 +119,8 @@ export default function Header() {
                   {isProfileOpen && (
                     <div
                       className="absolute left-0 mt-0 w-52 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                      onMouseEnter={handleMouseEnterProfile}
-                      onMouseLeave={handleMouseLeaveProfile}
-                    >
+                      onMouseEnter={() => setIsProfileOpen(true)}
+                      onMouseLeave={() => setIsProfileOpen(false)}>
                       {location?.pathname === "/user-reviews" ? (
                         <Link to="/user-reviews">
                           <button
@@ -193,29 +168,14 @@ export default function Header() {
               </button>
             </div>
             <button
-              onClick={toggleMobileMenu}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               data-collapse-toggle="navbar-cta"
               type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm border rounded-lg md:hidden  focus:outline-none focus:ring-2 focus:ring-gray-200"
               aria-controls="navbar-cta"
               aria-expanded="false"
             >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
+              <img src={menu} alt="menu-icon" />
             </button>
           </div>
           {/* mobile view */}

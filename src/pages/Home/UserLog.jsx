@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const UserLog = () => {
   return (
-    <div className="container flex justify-center xsm:w-full w-[80vw] xsm:mt-20 items-center h-80 lg:h-[450px] rounded-3xl bg-[#e7f1f7] text-[black] mb-32 shadow-box-shadow">
+    <div className="container flex justify-center xsm:w-full w-[80vw] xsm:mt-20 items-center h-80 lg:h-[450px] rounded-3xl bg-[#e7f1f7] text-[black] mb-32">
       <div className="flex flex-col justify-center">
         <div className="text-center">
           <h1 className="text-xl lg:text-3xl xl:text-[40px] font-bold">Help Others Make the Best Choice</h1>

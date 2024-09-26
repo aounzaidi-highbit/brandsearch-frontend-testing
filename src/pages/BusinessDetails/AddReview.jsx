@@ -1,38 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-// import { useParams } from "react-router-dom";
 import tickIcon from "../../assets/images/tick.png";
 import { addReview, getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { StarRating } from "../../utils/helper";
-
-// const StarRating = ({ rating, setRating }) => {
-//     const handleRating = (value) => {
-//         setRating(value);
-//     };
-//     return (
-//         <div className="flex space-x-1">
-//             {[1, 2, 3, 4, 5].map((star) => (
-//                 <svg
-//                     key={star}
-//                     onClick={() => handleRating(star)}
-//                     xmlns="http://www.w3.org/2000/svg"
-//                     fill={star <= rating ? "#ffc107" : "none"}
-//                     stroke="currentColor"
-//                     strokeWidth="2"
-//                     className="w-8 h-8 cursor-pointer"
-//                     viewBox="0 0 24 24"
-//                 >
-//                     <path
-//                         strokeLinecap="round"
-//                         strokeLinejoin="round"
-//                         d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-//                     />
-//                 </svg>
-//             ))}
-//         </div>
-//     );
-// };
 
 const AddReview = ({ brandId }) => {
     const [rating, setRating] = useState(0);
@@ -40,13 +11,13 @@ const AddReview = ({ brandId }) => {
     const [title, setTitle] = useState("");
     const [loadingReview, setLoadingReview] = useState(false);
     const [base64Image, setBase64Image] = useState("");
-    const [allReview, setAllReview] = useState([]);
+    // const [allReview, setAllReview] = useState([]);
     const [file, setFile] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [profile, setProfile] = useState([]);
+    // const [loading, setLoading] = useState(true);
+    // const [profile, setProfile] = useState([]);
 
     const [submitSuccess, setSubmitSuccess] = useState(false);
-    const [submitError, setSubmitError] = useState(false);
+    // const [submitError, setSubmitError] = useState(false);
     // console.log("id form got = " + brandId);
 
     const bussiness = brandId;
@@ -62,7 +33,7 @@ const AddReview = ({ brandId }) => {
         setLoadingReview(true);
         setupAxios();
         setSubmitSuccess(false);
-        setSubmitError(false);
+        // setSubmitError(false);
         const userId = localStorage.getItem("user_id");
         console.log("Retrieved User ID:", userId);
 
@@ -87,7 +58,7 @@ const AddReview = ({ brandId }) => {
             const resp = await reviewGet(brandProfileId);
             console.log("Updated reviews fetched:", resp.data);
 
-            setAllReview(resp?.data);
+            // setAllReview(resp?.data);
 
             setSubmitSuccess(true);
 
@@ -100,7 +71,7 @@ const AddReview = ({ brandId }) => {
                 setSubmitSuccess(false);
             }, 3000);
         } catch (error) {
-            setSubmitError(true);
+            // setSubmitError(true);
 
             if (error.response) {
                 console.error("Error Response:", error.response.data);
@@ -118,11 +89,9 @@ const AddReview = ({ brandId }) => {
         setupAxios();
         try {
             const res = await getSingleProfiles(bussiness);
-            setProfile(res?.data);
+            // setProfile(res?.data);
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -131,7 +100,7 @@ const AddReview = ({ brandId }) => {
         setupAxios();
         try {
             const res = await reviewGet(Number(bussiness));
-            setAllReview(res?.data);
+            // setAllReview(res?.data);
         } catch (error) {
             console.error(error);
         } finally {
@@ -219,7 +188,7 @@ const AddReview = ({ brandId }) => {
                         type="button"
                         className="gradient2 text-xl flex items-center justify-center px-[31.5px] py-2 rounded-md text-white min-w-[16%]"
                     >
-                        Loading ...
+                        Submiting .....
                     </button>
                 ) : submitSuccess ? (
                     <button
@@ -227,7 +196,7 @@ const AddReview = ({ brandId }) => {
                         className="gradient2 text-xl py-2 px-3 flex gap-2.5 justify-center items-center rounded-md text-white min-w-[16%]"
                         disabled
                     >
-                        <img src={tickIcon} className="w-8" alt="submit-icon" />
+                        <img src={tickIcon} className="w-7" alt="submit-icon" />
                         Submitted
                     </button>
                 ) : (

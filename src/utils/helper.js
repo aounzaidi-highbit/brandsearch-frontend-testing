@@ -2,7 +2,13 @@ import fullStar from "../assets/images/full-star.png";
 import halfStarImage from "../assets/images/half-star.png";
 import blankStar from "../assets/images/blank-star.png";
 
+const handleBrandClick = (brandName, brandId, navigate) => {
+    navigate(`/review/${slugify(brandName)}`, { state: { id: brandId } });
+    window.scrollTo(0, 0);
+};
+
 const StarRating = ({ rating, setRating }) => {
+
     const handleRating = (value) => {
         setRating(value);
     };
@@ -29,6 +35,7 @@ const StarRating = ({ rating, setRating }) => {
         </div>
     );
 };
+
 
 const getInitials = (name) => {
     const names = name.split(' ');
@@ -80,4 +87,4 @@ const renderStars = (rating) => {
     return [...fullStars, halfStar, ...emptyStars];
 };
 
-export { capitalizeWords, slugify, ensureProtocol, renderStars, getInitials, formatDate, StarRating, };
+export { capitalizeWords, slugify, ensureProtocol, renderStars, getInitials, formatDate, StarRating, handleBrandClick };

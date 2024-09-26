@@ -7,19 +7,19 @@ import { useLocation } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { HTTP_CLIENT } from "../../utils/axiosClient";
+import { signIn, verifyOtp } from "../../services/business";
 
 export default function Signup() {
+  const { brandId } = location.state || {};
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  const { brandId } = location.state || {};
-  const [otpError, setOtpError] = useState('');
-
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [showOtpInput, setShowOtpInput] = useState(false);
-
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -29,8 +29,6 @@ export default function Signup() {
     last_name: "",
     phone: "",
   });
-
-  const [formErrors, setFormErrors] = useState({});
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (response) => {
@@ -71,15 +69,13 @@ export default function Signup() {
       setLoadingSubmit(false);
       return;
     }
-
     try {
       const response = await HTTP_CLIENT.post('/api/auth/registration', formData);
-      console.log("Signup data sent successfully, server response:", response);
+      console.log("Signup successfull: ", response);
 
       if (response) {
         setShowOtpInput(true);
       }
-
       const token = response.data.key;
       const user = response.data;
       const user_id = user.pk;
@@ -88,25 +84,24 @@ export default function Signup() {
         setLoadingSubmit(false);
         return;
       }
-
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("userIsLoggedIn", true);
         localStorage.setItem("first_name", user.first_name);
         localStorage.setItem("last_name", user.last_name);
-        console.log("Token stored in localStorage:", token);
-        console.log("User ID stored:", user_id);
         navigate(`/review/#DropReview`);
       }
     } catch (error) {
-      console.error("Error during signup:", error.response?.data || error.message);
-      setFormErrors(error.response?.data || {});
+      if (error.response.data.last_name) {
+        setFormErrors("Please Enter Last Name");
+      }
+      console.error("Signup failed: ", error.response.data);
+      setFormErrors(error.response.data);
       setLoadingSubmit(false);
       setShowOtpInput(false);
     } finally {
       setLoadingSubmit(false);
-      console.log("Signup process completed Successfully.");
     }
   };
 
@@ -114,18 +109,12 @@ export default function Signup() {
     e.preventDefault();
     const otpString = otp.join('');
     try {
-      const response = await HTTP_CLIENT.post('/api/auth/otp-verify/', { email: formData.email, otp: otpString });
+      const response = await verifyOtp(formData.email, otpString);
       if (response) {
-        console.log("OTP verified successfully:", response.data);
         setOtpError('');
         setShowOtpInput(false);
-
-        const loginResponse = await HTTP_CLIENT.post('/api/auth/login', {
-          email: formData.email,
-          password: formData.password1,
-        });
-
-        const { access, refresh, user } = loginResponse.data;
+        const response = await signIn(formData.email, formData.password);
+        const { access, refresh, user } = response.data;
         if (access && refresh) {
           localStorage.setItem('access_token', access);
           localStorage.setItem('refresh_token', refresh);
@@ -161,12 +150,12 @@ export default function Signup() {
           <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto py-20">
             <h2 className="mb-6">
               <span className="text-2xl font-semibold">
-                <span className="gradient xsm:text-xl text-2xl font-semibold">Please Verify OTP</span>
+                <span className="gradient xsm:text-xl text-2xl font-semibold">Verify Your Account</span>
               </span>
             </h2>
             <form className="w-full flex flex-col" onSubmit={handleOtpSubmit} autoComplete='off'>
               <div className="mb-3">
-                <p className="text-lg my-2 mx-auto w-[80%]">We have sent you an email verification OTP to your email. Please enter it below to verify your account.</p>
+                <p className="text-lg my-2 mx-auto w-[80%]">We have sent an email verification OTP to your email. Please enter it below to verify your account and signin.</p>
                 <div className="flex justify-between mb-4">
                   {otp.map((digit, index) => (
                     <input
@@ -250,7 +239,6 @@ export default function Signup() {
                     </label>
                   </div>
                 </div>
-                {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
                 <div className="flex flex-col w-full gap-3">
                   <div class="relative">
                     <input
@@ -268,7 +256,6 @@ export default function Signup() {
                       Enter Username
                     </label>
                   </div>
-                  {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
                   <div class="relative">
                     <input
                       type="email"
@@ -281,11 +268,10 @@ export default function Signup() {
                     <label
                       for="email"
                       class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
-                    ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                    ${formData.email && '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1'} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
                       Enter Email
                     </label>
                   </div>
-                  {formErrors.email && <p className="text-red-500">{formErrors.email}</p>}
                   <div className="relative">
                     <div className="relative">
                       <div class="relative">
@@ -299,7 +285,6 @@ export default function Signup() {
                         onClick={() => setShowPassword1(!showPassword1)}
                       />
                     </div>
-                    {formErrors.password1 && <p className="text-red-500">{formErrors.password1}</p>}
                   </div>
                   <div className="relative">
                     <div className="relative">
@@ -314,7 +299,6 @@ export default function Signup() {
                         onClick={() => setShowPassword2(!showPassword2)}
                       />
                     </div>
-                    {formErrors.password2 && <p className="text-red-500">{formErrors.password2}</p>}
                   </div>
                   <div class="relative">
                     <input
@@ -328,12 +312,18 @@ export default function Signup() {
                     <label
                       for="phone"
                       class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
-                    ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                        ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
                       Enter Phone
                     </label>
                   </div>
-                  {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
                 </div>
+                {formErrors.first_name && <p className="text-red-500">{formErrors.first_name}</p>}
+                {formErrors.username && <p className="text-red-500">{formErrors.username}</p>}
+                {formErrors.password1 && <p className="text-red-500">{formErrors.password1}</p>}
+                {formErrors.password2 && <p className="text-red-500">{formErrors.password2}</p>}
+                {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
+                {formErrors.email && <p className="text-red-500 mt-2">{formErrors.email}</p>}
+                {formErrors.verified && <p className="text-red-500 mt-2">User is not verified</p>}
               </div>
               <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 {loadingSubmit ? "Loading ..." : "Signup"}

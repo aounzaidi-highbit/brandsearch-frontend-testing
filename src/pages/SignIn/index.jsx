@@ -5,16 +5,14 @@ import hidePassword from "../../assets/images/hidePassword.png";
 import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from "react-router-dom";
-import { HTTP_CLIENT } from "../../utils/axiosClient";
+import { signIn, verifyOtp } from "../../services/business";
 
 export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [showPassword1, setShowPassword1] = useState(false);
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [verificationError, setVerificationError] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorData, setErrorData] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [otpError, setOtpError] = useState('');
@@ -23,13 +21,9 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join('');
-
     try {
-      const response = await HTTP_CLIENT.post('/api/auth/otp-verify/', { email: formValues.email, otp: otpString });
-
-      console.log("OTP verification successful");
-      if (response && response.data) {
-        setSuccessMessage(response.data.message || 'OTP verified successfully');
+      const response = await verifyOtp(formData.email, otpString);
+      if (response) {
         await handleSubmit();
       } else {
         setOtpError('Error in OTP verification, invalid response.');
@@ -45,8 +39,8 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   };
 
   const handleChange = (e) => {
-    setFormValues({
-      ...formValues,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
@@ -54,14 +48,12 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     setLoadingSubmit(true);
-
     try {
-      const response = await axios.post("http://192.168.100.163:8000/api/auth/login/", formValues);
+      const response = await signIn(formData.email, formData.password);
       console.log("Response from server:", response.data);
 
-      if (response.data.non_field_errors && response.data.non_field_errors[0].includes("Your account has not been verified")) {
-        setVerificationError(true);
-        setErrorMessage("Your account has not been verified, please verify");
+      if (response.data.non_field_errors) {
+        setErrorMessage(response.data);
       } else {
         localStorage.setItem("userIsLoggedIn", true);
         const { access, refresh, user } = response.data;
@@ -73,38 +65,19 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
           localStorage.setItem("user_id", user_id);
           localStorage.setItem("first_name", user.first_name);
           localStorage.setItem("last_name", user.last_name);
-
-
-          console.log("Tokens and user ID stored in localStorage");
           navigate("/");
         } else {
-          setErrorMessage("Unexpected error, please try again.");
+          setErrorMessage(response.data.non_field_errors);
         }
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Login failed:", error.response.data);
-        setErrorData(error.response.data);
-
-        if (error.response.status === 400) {
-          if (errorData.email) {
-            setErrorMessage(errorData.email[0] || "Invalid email address.");
-          } else if (errorData.password) {
-            setErrorMessage(errorData.password[0] || "Incorrect password.");
-          } else if (errorData.non_field_errors && errorData.non_field_errors[0].includes("Your account has not been verified")) {
-            setErrorMessage("Your account has not been verified. We have sent you an account verification OTP to your email address.");
-            setVerificationError(true);
-          } else {
-            setVerificationError(true);
-            setErrorMessage("Invalid email or password.");
-          }
-        } else {
-          setErrorMessage("Something went wrong, please try again.");
-        }
-      } else {
-        console.error("Login error:", error.message);
-        setErrorMessage("Network error, please try again later.");
+      if (error.response.data.non_field_errors && error.response.data.non_field_errors[0].includes("Your account has not been verified")) {
+        setErrorMessage(error.response.data.non_field_errors[0] + " Please click below to verify first and try again to signin.");
+        setVerificationError(true);
       }
+      else
+        setErrorMessage(error.response.data.non_field_errors[0]);
+      console.error("Login failed:", error.response.data.non_field_errors[0]);
     } finally {
       setLoadingSubmit(false);
     }
@@ -161,12 +134,12 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
           <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto py-20">
             <h2 className="mb-6">
               <span className="text-2xl font-semibold">
-                <span className="gradient xsm:text-xl text-2xl font-semibold">Please Verify OTP</span>
+                <span className="gradient xsm:text-xl text-2xl font-semibold">Verify Your Account</span>
               </span>
             </h2>
             <form className="w-full flex flex-col" onSubmit={handleOtpSubmit} autoComplete='off'>
               <div className="mb-3">
-                <p className="text-lg my-2 mx-auto w-[80%]">We have sent you an email verification OTP to your email. Please enter it below to verify</p>
+                <p className="text-lg my-2 mx-auto w-[80%]">We have sent an email verification OTP to your email. Please enter it below to verify your account and signin.</p>
                 <div className="flex justify-between mb-4">
                   {otp.map((digit, index) => (
                     <input
@@ -191,7 +164,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                     />
                   ))}
                 </div>
-                {otpError ? <p style={{ color: 'red' }}>{"error in otperror " + otpError}</p> : <p style={{ color: 'green' }}>{successMessage}</p>}
+                {otpError && <p className="text-red-500">{otpError}</p>}
               </div>
               <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 Verify
@@ -222,20 +195,20 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                       name="email"
                       required
                       class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
-                      value={formValues.email}
+                      value={formData.email}
                       onChange={handleChange}
                     />
                     <label
                       for="email"
                       class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
-                    ${formValues.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                    ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
                       Enter Email
                     </label>
                   </div>
 
                   <div className="relative">
                     <div class="relative">
-                      <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formValues.password} onChange={handleChange} />
+                      <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password} onChange={handleChange} />
                       <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
                     </div>
                     <img
@@ -248,7 +221,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                   </div>
                 </div>
                 {errorMessage && (
-                  <p className="text-red-500">{errorMessage}</p>
+                  <p className="text-red-500 px-10">{errorMessage}</p>
                 )}
               </div>
               {verificationError ?

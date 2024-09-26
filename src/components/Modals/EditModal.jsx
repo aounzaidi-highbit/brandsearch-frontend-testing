@@ -77,7 +77,6 @@ const EditModal = ({ isOpen, onClose, review, onSave }) => {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className="border rounded w-full p-2 resize-none"
-                            rows="5"
                             required
                         />
                     </div>
