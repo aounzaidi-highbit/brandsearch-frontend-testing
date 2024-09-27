@@ -1,8 +1,7 @@
 import axios from "axios";
-import defaultConfig from "./config";
 
 export const HTTP_CLIENT = axios.create({
-  baseURL: defaultConfig.Base_URL,
+  baseURL: "http://192.168.100.163:8000/",
 });
 
 export const setupAxios = () => {

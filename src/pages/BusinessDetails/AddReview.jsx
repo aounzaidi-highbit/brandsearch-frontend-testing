@@ -138,7 +138,7 @@ const AddReview = ({ brandId }) => {
     );
 
     return (
-        <div className="container shadow-box-shadow rounded-3xl p-4 lg:p-10 mb-10 lg:mb-20">
+        <div className="shadow-box-shadow rounded-3xl p-4 lg:p-10 mb-10 lg:mb-20">
             <form onSubmit={AddReviews}>
                 <div className="grid lg:grid-cols-1 gap-6 lg:mb-4 mb-4">
                     <div className="w-full ">

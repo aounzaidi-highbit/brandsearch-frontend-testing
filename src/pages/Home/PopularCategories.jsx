@@ -42,9 +42,7 @@ const PopularCategories = () => {
 
   return (
     <div className="h-[40vh] relative mb-60 ">
-      {category?.length === 0 ? (
-        <NoData />
-      ) : (
+      {(
         <div className="flex flex-col items-center ">
           <div className="w-full xl:h-[70vh] h-[60vh] 2xl:h-[60vh] bg-[#3d88be] shadow-box-shadow"></div>
 
@@ -79,9 +77,7 @@ const PopularCategories = () => {
               ref={sliderRef}
               className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-start"
             >
-              {loading ? (
-                <Loader />
-              ) : (
+              {(
                 category.map((item) => (
                   <Link
                     key={item?.id}

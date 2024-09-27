@@ -18,6 +18,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [otpError, setOtpError] = useState('');
   const navigate = useNavigate();
 
+
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join('');
@@ -120,7 +121,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
 
   return (
     <div
-      className="px-4 lg:px-10 mx-auto xsm:py-2 text-center sm:pt-6 sm:pb-60 xsm:mt-20"
+      className="px-4 lg:px-10 mx-auto xsm:py-2 text-center sm:pt-6 sm:pb-60 xsm:mt-2"
       style={{
         backgroundColor: customStyles.backgroundColor || bgColor,
         height: customStyles.height || 'h-full',
@@ -129,7 +130,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       <p className="text-3xl font-[900] mx-auto xsm:mb-4 mb-10 xsm:text-xl">
         Find Reviews, Share Yours, and Discover Companies.
       </p>
-      <div className="shadow-box-shadow flex justify-center items-center max-w-3xl mx-auto rounded-[10px] h-[65vh] xsm:h-auto bg-white">
+      <div className="shadow-box-shadow flex justify-center items-center max-w-3xl mx-auto rounded-[10px] h-[65vh] xsm:h-auto py-64 bg-white">
         {showOtpInput ? (
           <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto py-20">
             <h2 className="mb-6">

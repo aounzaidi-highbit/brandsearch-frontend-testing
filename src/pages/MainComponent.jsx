@@ -16,14 +16,15 @@ import About from "./About/About";
 import BlogsSection from "./Home/BlogsSection";
 import UserLog from "./Home/UserLog";
 import DynamicTitle from "./DynamicTitle";
-import useAuth from '../middlewares/useAuth';
+import useAuth from "../middlewares/useAuth";
 import UpdatePassword from "./UpdatePassword/UpdatePassword";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import UserReviews from "./UserReviews/UserReviews";
-
+import UserVerification from "../components/UserVerification/UserVerification";
 
 export default function MainComponent() {
   const isAuthenticated = useAuth();
+
   return (
     <>
       <DynamicTitle />
@@ -45,14 +46,15 @@ export default function MainComponent() {
         <Route path="policy" element={<Policy />} />
         <Route path="faqs" element={<Faqs />} />
         <Route path="about" element={<About />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="signin" element={<SignIn />} />
+        <Route path="signup" element={isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
+        <Route path="signin" element={isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
         <Route path="forgot-password" element={isAuthenticated ? <Navigate to="/" /> : <ForgotPassword />} />
         <Route path="update-password/:u_id/:token" element={isAuthenticated ? <Navigate to="/" /> : <UpdatePassword />} />
+        <Route path="user-verify" element={isAuthenticated ? <Navigate to="/" /> : <UserVerification />} />
         <Route path="user-reviews" element={<UserReviews />} />
         <Route path="review/:name" element={<BusinessDetails />} />
         <Route path="business-list" element={<BusinessList />} />
-        <Route path="/*" element={<ErrorPage />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
   );

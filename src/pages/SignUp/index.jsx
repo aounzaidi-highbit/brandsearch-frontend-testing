@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import google from "../../assets/images/google.png";
 import showPassword from "../../assets/images/showPassword.png";
 import hidePassword from "../../assets/images/hidePassword.png";
@@ -6,10 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
-import { HTTP_CLIENT } from "../../utils/axiosClient";
-import { signIn, verifyOtp } from "../../services/business";
+import { signIn, signUp, verifyOtp } from "../../services/business";
 
 export default function Signup() {
+  document.title = "Sign Up - Brand Search Engine"; 
+  const navigate = useNavigate();
+  const location = useLocation();
   const { brandId } = location.state || {};
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
@@ -17,8 +19,6 @@ export default function Signup() {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [otpError, setOtpError] = useState('');
   const [formErrors, setFormErrors] = useState({});
-  const navigate = useNavigate();
-  const location = useLocation();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [formData, setFormData] = useState({
     username: "",
@@ -69,10 +69,10 @@ export default function Signup() {
       setLoadingSubmit(false);
       return;
     }
-    try {
-      const response = await HTTP_CLIENT.post('/api/auth/registration', formData);
-      console.log("Signup successfull: ", response);
 
+    try {
+      const response = await signUp(formData);
+      console.log("Signup successfull: ", response);
       if (response) {
         setShowOtpInput(true);
       }
@@ -84,17 +84,22 @@ export default function Signup() {
         setLoadingSubmit(false);
         return;
       }
+
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
         localStorage.setItem("userIsLoggedIn", true);
         localStorage.setItem("first_name", user.first_name);
         localStorage.setItem("last_name", user.last_name);
-        navigate(`/review/#DropReview`);
+        if (brandId) {
+          navigate(`/review/${brandId}#dropReview`);
+        } else {
+          navigate('/');
+        }
       }
     } catch (error) {
       if (error.response.data.last_name) {
-        setFormErrors("Please Enter Last Name");
+        setFormErrors({ ...formErrors, last_name: "Please Enter Last Name" });
       }
       console.error("Signup failed: ", error.response.data);
       setFormErrors(error.response.data);
@@ -129,6 +134,7 @@ export default function Signup() {
           }
         } else {
           console.error("Login failed: Token not provided in response.");
+          setOtpError('Error in OTP verification');
         }
       } else {
         setOtpError('Error in OTP verification');
@@ -323,7 +329,7 @@ export default function Signup() {
                 {formErrors.password2 && <p className="text-red-500">{formErrors.password2}</p>}
                 {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
                 {formErrors.email && <p className="text-red-500 mt-2">{formErrors.email}</p>}
-                {formErrors.verified && <p className="text-red-500 mt-2">User is not verified</p>}
+                {formErrors.verified && <p className="text-red-500 mt-2">User is not verified, please verify to login</p>}
               </div>
               <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 {loadingSubmit ? "Loading ..." : "Signup"}

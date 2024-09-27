@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import postIMG from "../../assets/images/contact.png";
 import { HTTP_CLIENT } from "../../utils/axiosClient";
+import { contact } from "../../services/business";
 
 export default function Contact() {
   const [name, setName] = useState('');
@@ -25,10 +26,10 @@ export default function Contact() {
     try {
       setLoading(true);
       setStatus('');
+      const response = await contact(data);
+      console.log("Message Response: " + response.data);
 
-      const response = await HTTP_CLIENT.post("/api/contact_us/", data);
-
-      if (response.status === 200) {
+      if (response) {
         setStatus("Message sent successfully!");
         setName('');
         setEmail('');
@@ -56,7 +57,7 @@ export default function Contact() {
                 </span>
               </h2>
               <p className="text-[#464F54] lg:text-xl">
-              Got questions or feedback? We're here to help! Contact us anytime and we'll get back to you quickly</p>
+                Got questions or feedback? We're here to help! Contact us anytime and we'll get back to you quickly</p>
             </div>
             <div className="pt-10">
               <img src={postIMG} alt="post Image" className="lg:h-[433px]" />
@@ -68,85 +69,96 @@ export default function Contact() {
         <div className="shadow-box-shadow p-4 lg:p-10 my-20 rounded-lg">
           <form className="" onSubmit={handleSubmit}>
             <div className="grid lg:grid-cols-2 gap-6 lg:mb-0 mb-4">
-              <div className="w-full">
-                <label className="block capital text-[#000] text-[15px] mb-2" htmlFor="your-name">
-                  Your Name
-                </label>
+              <div class="relative">
                 <input
-                  className="rounded-lg appearance-none shadow-box-shadow block w-full bg-transparent text-[#000] border p-4 leading-tight focus:border-black focus:outline-[#87cdff]"
-                  id="your-name"
-                  placeholder="Enter Your Name Here"
                   type="text"
+                  name="name"
+                  required
+                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
                 />
-              </div>
-              <div className="w-full">
-                <label className="block capital text-[#000] text-[15px] mb-2" htmlFor="your-email">
-                  Your Email
+                <label
+                  for="name"
+                  class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${name ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                  Enter Your Name
                 </label>
+              </div>
+              <div class="relative">
                 <input
-                  className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
-                  id="your-email"
-                  placeholder="Enter Your Email Here"
                   type="email"
+                  name="email"
+                  required
+                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
-              </div>
-              <div className="w-full mb-6">
-                <label className="block capital text-[#000] text-[15px] mb-2" htmlFor="your-phone">
-                  Mobile
+                <label
+                  for="email"
+                  class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                  Enter Your Email
                 </label>
+              </div>
+              <div class="relative">
                 <input
-                  className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-[#87cdff]"
-                  id="your-phone"
-                  placeholder="Enter Your Mobile Number Here"
-                  type="number"
+                  type="text"
+                  name="phone"
+                  required
+                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  required
                 />
-              </div>
-              <div className="w-full mb-6">
-                <label className="block capital text-[#000] text-[15px] mb-2" htmlFor="your-subject">
-                  Subject
+                <label
+                  for="phone"
+                  class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${phone ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                  Enter Your Phone
                 </label>
+              </div>
+              <div class="relative">
                 <input
-                  className="rounded-lg appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
-                  id="your-subject"
-                  placeholder="Enter Subject of Contact Here"
                   type="text"
+                  name="subject"
+                  required
+                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  required
                 />
+                <label
+                  for="subject"
+                  class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${subject ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                  Enter Subject
+                </label>
               </div>
             </div>
-            <div className="lg:mb-6 mb-10">
-              <label htmlFor="message" className="block capital text-[#000] text-[15px] mb-2">
-                Message
-              </label>
+            <div class="relative my-7">
               <textarea
-                id="message"
-                rows="7"
-                placeholder="Enter Your Message Here"
-                className="rounded-lg resize-none appearance-none block w-full bg-transparent text-black shadow-box-shadow border p-4 leading-tight focus:outline-none focus:bg-white focus:outline-[#87cdff]"
+                type="text"
+                name="message"
+                required
+                rows="10"
+                class="w-full resize-none p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                required
-              ></textarea>
+              />
+              <label
+                for="message"
+                class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                    ${message ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
+                Enter Your Message Here
+              </label>
             </div>
             <button
               type="submit"
-              className="gradient2 shadow-box-shadow text-xl lg:text-2xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
+              className="gradient2 shadow-box-shadow text-xl lg:text-xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Message"}
             </button>
-            {status && <p className="mt-4 text-red-500">{status}</p>}
+            {status && <p className="mt-4">{status}</p>}
           </form>
         </div>
       </div>

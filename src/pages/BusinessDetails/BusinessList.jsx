@@ -11,9 +11,10 @@ import { Link } from "react-router-dom";
 import defaultImg from "../../assets/images/default-brand.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import star from "../../assets/images/star.png";
-import Loader from "../../components/Loader/loader";
 import NoData from "../../components/noData/noData";
 import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
+import Loader from "../../components/Loader/loader";
+
 const BusinessList = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,7 +52,6 @@ const BusinessList = () => {
         profileResults = res?.data?.results || [];
         setTotal(res?.data?.count || 0);
       }
-
       setProfile(profileResults);
 
       const ratingsData = await Promise.all(
@@ -171,63 +171,64 @@ const BusinessList = () => {
               <Loader />
             ) : profile.length === 0 ? (
               <NoData />
-            ) : (profile.map((item) => {
-              const websiteURL = ensureProtocol(item.website);
-              return (
-                <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px] bg-white">
-                  <div className="flex items-center xsm:flex-col w-full">
-                    <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
-                      <img
-                        src={item?.logo || defaultImg}
-                        className="rounded-full w-[108px] h-[108px] flex items-center border"
-                        loading="lazy"
-                        onError={(e) => { e.target.src = defaultImg; }}
-                      />
-                    </div>
-                    <div className="px-5 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
-                      <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
-                        <a onClick={() => handleBrandClick(item.name, item.id, navigate)} className="cursor-pointer font-bold hover:text-[#3e7eab]">
-                          {capitalizeWords(item?.name)}
-                        </a>
-                      </h2>
-                      <div className="my-2">
-                        <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
-                          <div className="flex mb-1">{renderStars(ratings[item.id]?.averageRating || 0)}</div>
-                          <h6 className="font-normal text-[#8D8D8D] xsm:flex">
-                            <span className="font-bold text-black">
-                              {ratings[item.id]?.averageRating ? parseFloat(ratings[item.id]?.averageRating).toFixed(1) : "0.0"}
-                            </span>{" "}
-                            ({`${ratings[item.id]?.totalReviews || "0"} Reviews`})
-                          </h6>
-                        </div>
-                        <div>
-                          <a href={websiteURL} className="flex items-center" target="_blank" rel="noopener noreferrer">
-                            <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                            <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{item.website}</span>
-                          </a>
-                        </div>
+            ) : (
+              profile.map((item) => {
+                const websiteURL = ensureProtocol(item.website);
+                return (
+                  <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px] bg-white">
+                    <div className="flex items-center xsm:flex-col w-full">
+                      <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
+                        <img
+                          src={item?.logo || defaultImg}
+                          className="rounded-full w-[108px] h-[108px] flex items-center border"
+                          loading="lazy"
+                          onError={(e) => { e.target.src = defaultImg; }}
+                        />
                       </div>
-                      <p className="">
-                        {item.description?.length > 100 ? (
-                          <div className="">
-                            {item.description.substring(0, 100)}
-                            <button onClick={() => handleBrandClick(item.name, item.id, navigate)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</button>
+                      <div className="px-5 xsm:px-0 w-[85%] mx-auto xsm:flex xsm:flex-col">
+                        <h2 className="xsm:text-[18px] xsm:text-center md:text-xl font-normal xsm:mt-2">
+                          <a onClick={() => handleBrandClick(item.name, item.id, navigate)} className="cursor-pointer font-bold hover:text-[#3e7eab]">
+                            {capitalizeWords(item?.name)}
+                          </a>
+                        </h2>
+                        <div className="my-2">
+                          <div className="flex xsm:flex-col xsm:items-start items-center gap-1">
+                            <div className="flex mb-1">{renderStars(ratings[item.id]?.averageRating || 0)}</div>
+                            <h6 className="font-normal text-[#8D8D8D] xsm:flex">
+                              <span className="font-bold text-black">
+                                {ratings[item.id]?.averageRating ? parseFloat(ratings[item.id]?.averageRating).toFixed(1) : "0.0"}
+                              </span>{" "}
+                              ({`${ratings[item.id]?.totalReviews || "0"} Reviews`})
+                            </h6>
                           </div>
-                        ) : (
-                          item.description
-                        )}
-                      </p>
+                          <div>
+                            <a href={websiteURL} className="flex items-center" target="_blank" rel="noopener noreferrer">
+                              <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
+                              <span className="text-md mx-1 text-[#287BB7] hover:text-[#4ea0db]">{item.website}</span>
+                            </a>
+                          </div>
+                        </div>
+                        <p className="">
+                          {item.description?.length > 100 ? (
+                            <div className="">
+                              {item.description.substring(0, 100)}
+                              <button onClick={() => handleBrandClick(item.name, item.id, navigate)} className="text-[#287BB7] hover:text-[#4ea0db]">...read more</button>
+                            </div>
+                          ) : (
+                            item.description
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
+                      <button onClick={() => handleBrandClick(item.name, item.id, navigate)}
+                        className="text-white bg-[#287BB7] text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
+                        View
+                      </button>
                     </div>
                   </div>
-                  <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
-                    <button onClick={() => handleBrandClick(item.name, item.id, navigate)}
-                      className="text-white bg-[#287BB7] text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
-                      View
-                    </button>
-                  </div>
-                </div>
-              );
-            })
+                );
+              })
             )}
           </div>
         </div>

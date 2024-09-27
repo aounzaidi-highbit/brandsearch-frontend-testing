@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { renderStars, StarRating } from '../../utils/helper';
+import { StarRating } from '../../utils/helper';
 import { useDropzone } from 'react-dropzone';
 
 const EditModal = ({ isOpen, onClose, review, onSave }) => {
@@ -76,7 +76,7 @@ const EditModal = ({ isOpen, onClose, review, onSave }) => {
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            className="border rounded w-full p-2 resize-none"
+                            className="border rounded w-full p-2 resize-none h-36"
                             required
                         />
                     </div>

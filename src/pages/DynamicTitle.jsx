@@ -5,6 +5,15 @@ const DynamicTitle = () => {
     const location = useLocation();
 
     const getPageName = (pathname) => {
+
+        const formatTitle = (slug) => {
+            return slug.split("-").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+        };
+        if (pathname.startsWith("/review/")) {
+            const slug = pathname.split("/review/")[1];
+            return `${formatTitle(slug)}`;
+        }
+
         switch (pathname) {
             case "/":
                 return "Home";
@@ -22,11 +31,14 @@ const DynamicTitle = () => {
                 return "Sign Up";
             case "/business-list":
                 return "Business List";
+            case "/user-reviews":
+                return "My Reviews";
+            case "/forgot-password":
+                return "Forgot Password";
+            case "/update-password/:u_id/:token":
+                return "Update Password";
             default:
-                if (pathname.includes("review")) {
-                    return "Review Brand";
-                }
-                return "Error Page";
+                return "Error";
         }
     };
 

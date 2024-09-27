@@ -12,7 +12,7 @@ export default function HeroSection() {
       navigate(`/business-list?name=${name}`);
     }
   };
-  
+
 
   return (
     <div className="bg-hero-background bg-no-repeat" data-aos="zoom-in" data-aos-delay="300">

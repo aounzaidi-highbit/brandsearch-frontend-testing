@@ -47,8 +47,16 @@ const verifyOtp = async (email, otp) => {
   return await HTTP_CLIENT.post(`/api/auth/otp-verify/`, { email, otp });
 };
 
+const contact = async (data) => {
+  return await HTTP_CLIENT.post("/api/contact_us/", data);
+};
+
 const signIn = async (email, password) => {
   return await HTTP_CLIENT.post("/api/auth/login/", { email, password });
 };
 
-export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile, getUserReviews, deleteUserReview, editReview, verifyOtp ,signIn };
+const signUp = async (formData) => {
+  return await HTTP_CLIENT.post("/api/auth/login/", formData);
+};
+
+export { getAllProfiles, getSingleProfiles, addReview, reviewGet, getRatingDetails, getAllCategories, getSearchProfile, getUserReviews, deleteUserReview, editReview, verifyOtp, signIn, signUp, contact };

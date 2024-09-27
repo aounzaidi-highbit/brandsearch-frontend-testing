@@ -39,6 +39,7 @@ export default function BusinessDetails() {
   const [averageRating, setAverageRating] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const { id } = location.state;
+  const currentUserId = Number(localStorage.getItem("user_id"))
 
   const stars = [
     { rating: 5, starsFilled: 5 },
@@ -163,32 +164,32 @@ export default function BusinessDetails() {
 
   const [totalReviews, setTotalReviews] = useState(0);
 
-  useEffect(() => {
-    if (reviews.length > 0) {
-      const totalReviews = reviews.length;
+  // useEffect(() => {
+  //   if (reviews.length > 0) {
+  //     const totalReviews = reviews.length;
 
-      const ratingCounts = reviews.reduce((acc, review) => {
-        if (review.rating) {
-          acc[review.rating] = (acc[review.rating] || 0) + 1;
-        } else {
-          console.warn("Review without rating found:", review);
-        }
-        return acc;
-      }, {});
+  //     const ratingCounts = reviews.reduce((acc, review) => {
+  //       if (review.rating) {
+  //         acc[review.rating] = (acc[review.rating] || 0) + 1;
+  //       } else {
+  //         console.warn("Review without rating found:", review);
+  //       }
+  //       return acc;
+  //     }, {});
 
-      const ratingPercentages = {
-        5: ((ratingCounts[5] || 0) / totalReviews) * 100,
-        4: ((ratingCounts[4] || 0) / totalReviews) * 100,
-        3: ((ratingCounts[3] || 0) / totalReviews) * 100,
-        2: ((ratingCounts[2] || 0) / totalReviews) * 100,
-        1: ((ratingCounts[1] || 0) / totalReviews) * 100,
-      };
+  //     const ratingPercentages = {
+  //       5: ((ratingCounts[5] || 0) / totalReviews) * 100,
+  //       4: ((ratingCounts[4] || 0) / totalReviews) * 100,
+  //       3: ((ratingCounts[3] || 0) / totalReviews) * 100,
+  //       2: ((ratingCounts[2] || 0) / totalReviews) * 100,
+  //       1: ((ratingCounts[1] || 0) / totalReviews) * 100,
+  //     };
 
-      setRatingPercentages(ratingPercentages);
-    } else {
-      console.log("No reviews found.");
-    }
-  }, [reviews]);
+  //     setRatingPercentages(ratingPercentages);
+  //   } else {
+  //     console.log("No reviews found.");
+  //   }
+  // }, [reviews]);
 
   const fetchRatings = async () => {
     try {
@@ -262,7 +263,7 @@ export default function BusinessDetails() {
   return (
     <>
       <div className="mt-28">
-        < div className="mx-auto flex flex-col justify-between items-center gap-4 my-10 lg:mb-10 lg:mt-20 p-4 lg:py-8 rounded-[10px] xsm:w-[100%] w-[70%] bg-[#e7f1f7]" >
+        < div className="px-32 flex flex-col justify-between items-center gap-4 my-10 lg:mb-10 lg:mt-20 p-4 lg:py-8 rounded-[10px] xsm:w-[100%] bg-[#e7f1f7]" >
           <div className="-mt-28">
             <img src={profile.logo || defaultImg} onError={(e) => { e.target.src = defaultImg }} alt="image" className="bg-white w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-[#287BB7]" />
           </div>
@@ -359,101 +360,14 @@ export default function BusinessDetails() {
           </div>
         </div >
       </div>
-
-      {currentReviews.length > 2 ?
-        (<div className="container mb-72 xsm:mb-40">
-          <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
-            <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
-              <span className="font-bold "> Recommended </span><br /> Reviews
-            </h2>
-            <div className="xsm:w-full xsm:h-[60vh] w-[50%] 2xl:h-[65vh] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
-            <div className="mt-8 xsm:mt-20 2xl:mt-12 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
-              <Swiper
-                modules={[Navigation]}
-                spaceBetween={50}
-                slidesPerView={slidesPerView}
-                onInit={(swiper) => {
-                  swiper.params.navigation.prevEl = prevRef.current;
-                  swiper.params.navigation.nextEl = nextRef.current;
-                  swiper.navigation.init();
-                  swiper.navigation.update();
-                }}
-                className="multiple-slide-carousel swiper-container relative"
-              >
-                {currentReviews.slice(0, 5).map((review, index) => (
-                  <SwiperSlide key={index} className="swiper-slide">
-                    {console.log("data in reveiw = " + JSON.stringify(review))}
-                    <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
-                      <p className="font-semibold pl-1 text-xl">{review.rating_title}</p>
-                      <div
-                        className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
-                          }`}
-                      >
-                        {review.description}
-                      </div>
-                      <div className="flex items-center gap-2 pt-2">
-                        <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
-                          {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
-                        </div>
-                        <div className="flex flex-col lg:text-lg font-bold">
-                          <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
-                          <div className="flex">{renderStars(review.rating)}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
-          </div>
-        </div>) : (<></>)}
-
-      <div className="bg-[#f3f8fb] rounded-lg pt-32">
-        <div className="p-4">
-          <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-center items-center">
-            <div className=" text-center lg:text-left justify-center items-center lg:w-[45%] px-4">
-              <div className="">
-                <h2 className="xsm:text-2xl text-4xl font-normal">
-                  <span className="font-bold gradient"> Over All </span> Rating
-                </h2>
-                <div className="flex justify-center lg:justify-start items-center gap-2">
-                  <span className="text-[#737072] text-2xl font-bold">
-                    {averageRating.toFixed(1)}
-                  </span>
-                  <div className="flex">
-                    {renderStars(averageRating)}
-                  </div>
-                </div>
-              </div>
-              <h6 className="text-[#737072] font-normal text-xl lg:text-2xl mb-3">
-                {`(${totalReviews} Reviews)`}
-              </h6>
-              <p className="text-[#BBBBBB] xsm:text-lg text-xl">
-                Here are reviews from customers of this brand. Explore them to gain insights into their experiences and feedback.
-              </p>
-            </div>
-            <div>
-              {stars.map(({ rating, starsFilled }) => (
-                <div key={rating} className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
-                  {rating} Stars
-                  <div className="flex justify-center items-center xsm:gap-2 gap-4">
-                    {[...Array(starsFilled)].map((_, i) => (
-                      <img key={i} src={fullStar} alt="full-star" className="xsm:w-6" />
-                    ))}
-                    {[...Array(5 - starsFilled)].map((_, i) => (
-                      <img key={i} src={blankStar} alt="blank-star" className="xsm:w-6" />
-                    ))}
-                  </div>
-                  ({isNaN(ratingPercentages[rating]) ? '0' : ratingPercentages[rating].toFixed(0)}%)
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="" id="showReview">
-        <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
+      {currentReviews.filter(review => review.user.id === currentUserId).length > 0 &&
+        <div className="px-32">
+          <h3 className="text-xl lg:text-3xl mt-28 mb-8">
+            <span className="font-bold"> Your Reviews on </span>
+            <span className="font-black gradient" >{profile.name}</span>
+          </h3>
           {currentReviews
+            .filter(review => review.user.id === currentUserId)
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((review) => {
               const isExpanded = expandedReviews[review.id];
@@ -507,9 +421,157 @@ export default function BusinessDetails() {
               </button>
             )))}
           </div>
+        </div>}
+
+      {currentReviews.length > 2 ?
+        (<div className="mb-72 xsm:mb-40 px-32">
+          <div className=" flex w-full h-[50vh] my-20 md:my-40 ">
+            <h2 className="text-xl md:text-2xl xl:text-3xl font-normal xsm:text-center xsm:ml-[25%] absolute text-white mt-3 xl:mt-52 ml-10">
+              <span className="font-bold "> Recommended </span><br /> Reviews
+            </h2>
+            <div className="xsm:w-full xsm:h-[60vh] w-[50%] 2xl:h-[65vh] h-[65vh] lg:w-[35%] rounded-3xl bg-[#287BB7]"></div>
+            <div className="mt-8 xsm:mt-20 2xl:mt-12 ml-20 lg:ml-52 xsm:ml-10 xl:ml-80 w-[70%] lg:w-[70%] xl:w-[65%] absolute bg-transparent">
+              <Swiper
+                modules={[Navigation]}
+                spaceBetween={50}
+                slidesPerView={slidesPerView}
+                onInit={(swiper) => {
+                  swiper.params.navigation.prevEl = prevRef.current;
+                  swiper.params.navigation.nextEl = nextRef.current;
+                  swiper.navigation.init();
+                  swiper.navigation.update();
+                }}
+                className="multiple-slide-carousel swiper-container relative"
+              >
+                {currentReviews.slice(0, 5).map((review, index) => (
+                  <SwiperSlide key={index} className="swiper-slide">
+                    {/* {console.log("data in reveiw = " + JSON.stringify(review))} */}
+                    <div className="bg-white shadow-box-shadow border-4 rounded-3xl h-auto flex flex-col p-5 xsm:p-3 w-[110%] md:w-full">
+                      <p className="font-semibold pl-1 text-xl">{review.rating_title}</p>
+                      <div
+                        className={`p-1 xsm:text-sm text-[#747474] h-60 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"
+                          }`}
+                      >
+                        {review.description}
+                      </div>
+                      <div className="flex items-center gap-2 pt-2">
+                        <div className="border-2 rounded-full w-14 h-14 flex justify-center items-center text-xl border-[#287BB7]">
+                          {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
+                        </div>
+                        <div className="flex flex-col lg:text-lg font-bold">
+                          <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
+                          <div className="flex">{renderStars(review.rating)}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        </div>) : (<></>)}
+
+      <div className="bg-[#f3f8fb] rounded-lg pt-32 px-32">
+        <div className="">
+          <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-between items-center">
+            <div className=" text-center lg:text-left justify-center items-center lg:w-[40%] px-4">
+              <div className="">
+                <h2 className="xsm:text-2xl text-4xl font-normal">
+                  <span className="font-bold gradient"> Over All </span> Rating
+                </h2>
+                <div className="flex justify-center lg:justify-start items-center gap-2">
+                  <span className="text-[#737072] text-2xl font-bold">
+                    {averageRating.toFixed(1)}
+                  </span>
+                  <div className="flex">
+                    {renderStars(averageRating)}
+                  </div>
+                </div>
+              </div>
+              <h6 className="text-[#737072] font-normal text-xl lg:text-2xl mb-3">
+                {`(${totalReviews} Reviews)`}
+              </h6>
+              <p className="text-[#BBBBBB] xsm:text-lg text-xl">
+                Here are reviews from customers of this brand. Explore them to gain insights into their experiences and feedback.
+              </p>
+            </div>
+            <div>
+              {stars.map(({ rating, starsFilled }) => (
+                <div key={rating} className="xsm:text-[16px] flex xsm:gap-2 gap-8 items-center mb-8 text-2xl font-bold text-[#737072]">
+                  {rating} Stars
+                  <div className="flex justify-center items-center xsm:gap-2 gap-4">
+                    {[...Array(starsFilled)].map((_, i) => (
+                      <img key={i} src={fullStar} alt="full-star" className="xsm:w-6" />
+                    ))}
+                    {[...Array(5 - starsFilled)].map((_, i) => (
+                      <img key={i} src={blankStar} alt="blank-star" className="xsm:w-6" />
+                    ))}
+                  </div>
+                  ({isNaN(ratingPercentages[rating]) ? '0' : ratingPercentages[rating].toFixed(0)}%)
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="" id="showReview">
+        <div className="py-20 flex-col  mx-auto px-2 rounded-2xl text-justify  bg-[#f3f8fb]">
+          {currentReviews
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .map((review) => {
+              const isExpanded = expandedReviews[review.id];
+              const truncatedDescription = review.description.substring(0, 180);
+              return (
+                <div key={review.id} className="flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl w-[90%] md:w-[60%] mx-auto">
+                  <div className="flex justify-between">
+                    <div className="flex gap-2">
+                      <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
+                        {getInitials(review.user.first_name + " " + review.user.last_name || "A")}
+                      </div>
+                      <div className="">
+                        <label className="ml-1 font-bold text-[16px] md:text-xl">
+                          {capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}
+                        </label>
+                        <div className="flex xsm:w-3 md:gap-1 ml-1 mt-1">
+                          {renderStars(review.rating)}
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-[#888686] flex justify-center text-[15px] xsm:text-[12px]">
+                      <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" />
+                      {formatDate(review.created_at)}
+                    </p>
+                  </div>
+
+                  <div className="ml-1 my-2 text-sm md:text-lg text-[#888686] xsm:text-start">
+                    <p className="font-semibold text-black text-xl">{review.rating_title}</p>
+                    <p>
+                      {isExpanded ? review.description : truncatedDescription}
+                      {review.description.length > 100 && (
+                        <button onClick={() => toggleReadMore(review.id)} className="text-blue-500">
+                          {isExpanded ? " Read Less" : " ... Read More"}
+                        </button>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+
+          <div className="pagination-controls flex justify-center mt-4">
+            {currentReviews.length >= 9 && (Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-[#287BB7] text-white' : 'bg-gray-200 text-gray-600'}`}
+              >
+                {index + 1}
+              </button>
+            )))}
+          </div>
         </div >
 
-        <div className="dropReview container" id="dropReview">
+        <div className="dropReview px-32" id="dropReview">
           <h3 className="text-xl lg:text-3xl mt-28 mb-8">
             <span className="font-black gradient"> Drop </span>
             <span className=" font-bold" >Your Review</span>

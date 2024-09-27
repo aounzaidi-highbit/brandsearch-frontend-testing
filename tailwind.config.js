@@ -23,6 +23,7 @@ module.exports = {
         "blogs-image": "url('/src/assets/images/bg-blog.png')",
         "blogs-card-image": "url('/src/assets/images/blog-card.png')",
         "hero-background": "url('/src/assets/images/bg-hero.png')",
+        "shimmer": 'linear-gradient(90deg, #f3f3f3 25%, #ecebeb 50%, #f3f3f3 75%)',
       },
       boxShadow: {
         "box-shadow": "rgba(0, 0, 0, 0.07) 0px 0px 10px 3px",
@@ -33,30 +34,39 @@ module.exports = {
           '0%': { transform: 'scale(1)' },
           '100%': { transform: 'scale(1.05)' },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '-100% 0' },
+          '100%': { backgroundPosition: '100% 0' },
+        },
       },
       animation: {
         grow: 'grow 0.3s ease-in-out forwards',
+        shimmer: 'shimmer 1.5s infinite linear',
+      },
+      backgroundSize: {
+        'shimmer-size': '200% 100%', // Ensure the shimmer gradient covers the element properly
       },
       borderColor: {
         "background": "linear-gradient(111.08deg, #F4293E 0.67%, #FF8B49 100%)",
       },
+      // backgroundImage: {
+      //   shimmer: 'linear-gradient(90deg, #f3f3f3 25%, #ecebeb 50%, #f3f3f3 75%)',
+      // },
       borderGradient: {
         "border-gradient": "#287BB7",
       },
-      // Adding autofill background fix
       colors: {
-        autofill: 'white', // This will ensure white background for autofill fields
+        autofill: 'white',
       },
     },
   },
   variants: {
     extend: {
-      backgroundColor: ['autofill'], // Enabling autofill variant for background color
+      backgroundColor: ['autofill'],
     },
   },
   plugins: [
     require('tailwind-scrollbar-hide'),
-    // Custom autofill utility to fix browser autofill background color issue
     function ({ addVariant }) {
       addVariant('autofill', '&:-webkit-autofill');
     }
