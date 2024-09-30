@@ -14,7 +14,7 @@ import Marquee from "react-fast-marquee";
 
 export default function OurListed() {
   return (
-    <div className="my-32 xsm:my-0">
+    <div className="my-32">
       <div
         className="flex justify-center items-center"
         data-aos-delay="300"

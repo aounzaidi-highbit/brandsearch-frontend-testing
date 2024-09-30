@@ -23,7 +23,7 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
         key={profile.id}
         data-aos="fade-right"
         data-aos-delay="300"
-        className="bg-white xsm:mx-8 border border-[#EAF7FF] sm:w-[90%] mx-auto mb-3 xl:mb-0 lg:w-[90%] rounded-3xl flex flex-col px-5 shadow-box-shadow hover:animate-grow my-10"
+        className="bg-white border border-[#EAF7FF] rounded-3xl flex flex-col px-5 shadow-box-shadow hover:animate-grow"
       >
         <div>
           <div className="mt-3 flex items-center justify-center">
@@ -166,8 +166,8 @@ export default function FeaturedListings() {
   };
 
   return (
-    <div className="sm:p-6">
-      <div className="flex justify-center items-center mb-10">
+    <div className="mx-20 xl:mx-32 xsm:m-0">
+      <div className="flex justify-center items-center xsm:my-20 my-10">
         <h2 className="text-[#000000] text-center">
           <span className="text-xl lg:text-2xl block font-bold mb-1">
             Featured Listings
@@ -187,7 +187,7 @@ export default function FeaturedListings() {
       ) : profiles.length === 0 ? (
         <NoData />
       ) : (
-        <div className="lg:px-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3">
+        <div className="mx-8 sm:mx-0 gap-x-8 gap-y-6 xl:gap-x-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {profiles.slice(0, visibleProfiles).map((profile) => (
             <ProfileCard
               key={profile.id}

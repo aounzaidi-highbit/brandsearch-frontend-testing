@@ -15,9 +15,9 @@ export default function HeroSection() {
 
 
   return (
-    <div className="bg-hero-background bg-no-repeat" data-aos="zoom-in" data-aos-delay="300">
-      <div className="xl:ml-32 grid lg:grid-cols-2 place-items-center xsm:flex xsm:h-[78vh] xl:py-0 xsm:mx-10 xsm:gap-0 xsm:mb-10 gap-32">
-        <div className="2xl:my-52 my-32">
+    <div className="xsm:px-8 bg-hero-background bg-no-repeat h-full" data-aos="zoom-in" data-aos-delay="300">
+      <div className="flex justify-evenly items-center h-[80vh]">
+        <div className="sm:w-9/12 lg:w-2/5">
           <div className="flex">
             <h2 className="text-4xl xsm:text-4xl lg:text-5xl 2xl:text-7xl mb-8 lg:mb-0 lg:w-[90%]">
               <span className="font-normal block">Explore All </span>
@@ -64,13 +64,11 @@ export default function HeroSection() {
             {" "}Clothing Brands, Shoes Brands, Perfumes Brands ...
           </h4>
         </div>
-        <div className="">
-          <img
-            className=" items-center hidden lg:block xl:w-[75%]"
-            src={brandsIcon}
-            alt="brands icon"
-          />
-        </div>
+        <img
+          className="hidden lg:block w-2/6"
+          src={brandsIcon}
+          alt="brands-icon"
+        />
       </div>
     </div>
   );

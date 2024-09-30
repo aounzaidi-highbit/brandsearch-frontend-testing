@@ -13,6 +13,8 @@ import linkIcon from "../../assets/images/link-icon.png";
 import star from "../../assets/images/star.png";
 import NoData from "../../components/noData/noData";
 import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
+import filter from "../../assets/images/filter.png";
+import locationImg from "../../assets/images/location.png";
 import Loader from "../../components/Loader/loader";
 
 const BusinessList = () => {
@@ -29,6 +31,7 @@ const BusinessList = () => {
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [ratings, setRatings] = useState({});
+  const [isCatOpen, setIsCatOpen] = useState(false);
   const itemsPerPage = 10;
 
   const [ordering, setOrdering] = useState("");
@@ -101,9 +104,10 @@ const BusinessList = () => {
 
   return (
     <>
-      <div className="bg-white">
-        <div className="container xl:px-32 xl:pl-40">
-          <div className="flex justify-center items-center py-10 lg:py-16">
+      {/* <div className="w-11/12 xl:w-10/12 2xl:w-8/12 mx-auto sm:bg-green-600 md:bg-yellow-600 lg:bg-blue-600 xl:bg-cyan-600 2xl:bg-fuchsia-600"> */}
+      <div className="w-11/12 xl:w-10/12 2xl:w-8/12 mx-auto">
+        <div className=" mt-16">
+          <div className="flex justify-center items-center">
             <h2 className="text-[#000000] text-center">
               <span className="text-xl lg:text-2xl block font-bold mb-1">All Brands</span>
               <span className="text-2xl lg:text-4xl font-light relative">
@@ -112,22 +116,68 @@ const BusinessList = () => {
               </span>
             </h2>
           </div>
-
-          <div className="relative mb-10 ">
-            <div className="absolute top-3 left-5">
+          <div className="relative mt-10">
+            <div className="absolute top-4 left-5">
               <img src={search} alt="search" className="cursor-pointer" />
             </div>
             <input
               value={text}
               onChange={(e) => setText(e.target.value)}
               type="text"
-              className=" py-4 pl-28 pr-6 shadow-box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-full px-4 bg-white w-full border"
+              className=" py-4 pl-20 text-lg shadow-box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-full px-4 bg-white w-full border"
               placeholder="Cloths Brands"
             />
           </div>
+          <div className="border p-2 rounded-lg my-10 lg:hidden">
+            <div className="flex justify-around">
+              <img src={filter} alt="filter-image" className="w-8 rounded-lg" />
+              <div className="flex items-center gap-1">
+                <span className="font-semibold">Filter By:</span> Rating
+                <img src={star} alt="star-image" className="w-7" />
+                <select
+                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
+                  onChange={(e) => handleRatingClick(e.target.value)}>
+                  <option value="">All</option>
+                  <option value={3.0}>3.0+</option>
+                  <option value={4.0}>4.0+</option>
+                  <option value={4.5}>4.5+</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-1">
+                Average Rating
+                <img src={star} alt="star-image" className="w-7" />
+                <select
+                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
+                  onChange={(e) => setOrdering(e.target.value)}>
+                  <option>Choose to Sort</option>
+                  <option value={"high-to-low"}>Highest to lowest</option>
+                  <option value={"low-to-high"}>Lowest to highest</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-1">
+                Number of Reviews
+                <img src={star} alt="star-image" className="w-7" />
+                <select
+                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
+                  onChange={(e) => setOrdering(e.target.value)}>
+                  <option>Choose to Sort</option>
+                  <option value={"most-reviews"}>Highest Reviews</option>
+                  <option value={"least-reviews"}>Lowest Reviews</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-1">
+                Location
+                <img src={locationImg} alt="star-image" className="w-8" />
+                <select
+                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400">
+                  <option>Pakistan</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex xl:container xl:px-32 px-0">
-          <div className="rounded-lg w-1/3 mx-10 px-3 shadow-box-shadow bg-white h-3/5">
+        <div className="flex justify-center gap-8 mt-10">
+          <div className="rounded-lg px-3 shadow-box-shadow bg-white h-3/5 w-2/6 hidden lg:block">
             <div className="flex justify-between items-center my-5">
               <p className="text-[20px]">Filter By</p>
               <p className="text-[15px] underline cursor-pointer hover:text-blue-500"
@@ -166,7 +216,7 @@ const BusinessList = () => {
             </div>
 
           </div>
-          <div className="w-full min-h-[90vh]">
+          <div className="min-h-[90vh] w-5/6">
             {loading ? (
               <Loader />
             ) : profile.length === 0 ? (
@@ -230,29 +280,29 @@ const BusinessList = () => {
                 );
               })
             )}
+            <div className="">
+              {total >= 9 && (
+                <ReactPaginate
+                  className="flex m-auto justify-center"
+                  activeClassName="bg-[#287BB7] !text-white"
+                  breakClassName="item-black border cursor-default"
+                  breakLabel={<span className="pointer-events-none">{" _ " + " _ " + " _ "}</span>}
+                  containerClassName="pagination bg-gray-100"
+                  marginPagesDisplayed={1}
+                  nextClassName="item next larger-text"
+                  nextLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Next</span>}
+                  previousClassName="item previous"
+                  previousLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Previous</span>}
+                  forcePage={currentPage}
+                  onPageChange={handlePageClick}
+                  pageCount={Math.ceil(total / 10)}
+                  pageLinkClassName="w-full h-full flex items-center justify-center"
+                  pageClassName="item pagination-page border text-gray-900"
+                  pageRangeDisplayed={3}
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="my-5 xsm:my-20">
-          {total >= 9 && (
-            <ReactPaginate
-              className="flex m-auto justify-center"
-              activeClassName="bg-[#287BB7] !text-white"
-              breakClassName="item-black border cursor-default"
-              breakLabel={<span className="pointer-events-none">{" _ " + " _ " + " _ "}</span>}
-              containerClassName="pagination bg-gray-100"
-              marginPagesDisplayed={1}
-              nextClassName="item next larger-text"
-              nextLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Next</span>}
-              previousClassName="item previous"
-              previousLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Previous</span>}
-              forcePage={currentPage}
-              onPageChange={handlePageClick}
-              pageCount={Math.ceil(total / 10)}
-              pageLinkClassName="w-full h-full flex items-center justify-center"
-              pageClassName="item pagination-page border text-gray-900"
-              pageRangeDisplayed={3}
-            />
-          )}
         </div>
         <OurListed />
       </div >

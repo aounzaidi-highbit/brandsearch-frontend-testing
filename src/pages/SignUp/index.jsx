@@ -9,7 +9,7 @@ import axios from 'axios';
 import { signIn, signUp, verifyOtp } from "../../services/business";
 
 export default function Signup() {
-  document.title = "Sign Up - Brand Search Engine"; 
+  document.title = "Sign Up - Brand Search Engine";
   const navigate = useNavigate();
   const location = useLocation();
   const { brandId } = location.state || {};
