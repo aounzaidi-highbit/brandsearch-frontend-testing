@@ -22,7 +22,7 @@ const StarRating = ({ rating, setRating }) => {
                     fill={star <= rating ? "#ffc107" : "none"}
                     stroke="currentColor"
                     strokeWidth="2"
-                    className="w-8 h-8 cursor-pointer"
+                    className="w-6 h-6 lg:w-8 lg:h-8 cursor-pointer"
                     viewBox="0 0 24 24"
                 >
                     <path

@@ -138,17 +138,17 @@ const AddReview = ({ brandId }) => {
     );
 
     return (
-        <div className="shadow-box-shadow rounded-3xl p-4 lg:p-10 mb-10 lg:mb-20">
+        <div className="shadow-box-shadow rounded-3xl p-4 lg:p-10">
             <form onSubmit={AddReviews}>
                 <div className="grid lg:grid-cols-1 gap-6 lg:mb-4 mb-4">
                     <div className="w-full ">
-                        <label className="block capital text-[#000] text-[20px] mb-2">
+                        <label className="block capital text-[#000] text-lg lg:text-xl mb-2">
                             Choose Rate
                         </label>
                         <StarRating rating={rating} setRating={setRating} />
                     </div>
                 </div>
-                <span className="text-[20px]">Proof of Order</span>
+                <span className="text-lg lg:text-xl">Proof of Order</span>
                 {stack2}
                 {file && (
                     <div className="mt-4">
@@ -157,7 +157,7 @@ const AddReview = ({ brandId }) => {
                     </div>
                 )}
                 <div className="lg:mb-6 mb-10">
-                    <label htmlFor="message" className="mt-2 block capital text-[#000] text-[20px] mb-2">
+                    <label htmlFor="message" className="mt-2 block capital text-[#000] text-lg lg:text-xl mb-2">
                         Title
                     </label>
                     <input
@@ -170,7 +170,7 @@ const AddReview = ({ brandId }) => {
                     />
                 </div>
                 <div className="lg:mb-6 mb-10">
-                    <label htmlFor="title" className="mt-2 block capital text-[#000] text-[20px] mb-2">
+                    <label htmlFor="title" className="mt-2 block capital text-[#000] text-lg lg:text-xl mb-2">
                         Review
                     </label>
                     <textarea
@@ -202,7 +202,7 @@ const AddReview = ({ brandId }) => {
                 ) : (
                     <button
                         type="submit"
-                        className="gradient2 min-w-[16%] text-xl py-2 px-3 rounded-md text-white"
+                        className="gradient2 min-w-[16%] text-lg lg:text-xl py-2 px-3 rounded-md text-white"
                     >
                         Submit Review
                     </button>

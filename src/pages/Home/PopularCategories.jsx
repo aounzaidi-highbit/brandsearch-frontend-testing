@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Vector from "../../assets/images/vector-category.png";
 import cloths from "../../assets/images/cloths.png";
 import { getAllCategories } from "../../services/business";
+import NoData from "../../components/noData/noData";
 import { setupAxios } from "../../utils/axiosClient";
 import { Link } from "react-router-dom";
 import { capitalizeWords } from "../../utils/helper";
@@ -73,7 +74,7 @@ const PopularCategories = () => {
             ref={sliderRef}
             className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-start"
           >
-            {(
+            {
               category.map((item) => (
                 <Link
                   key={item?.id}
@@ -101,7 +102,8 @@ const PopularCategories = () => {
                   </div>
                 </Link>
               ))
-            )}
+
+            }
           </div>
           <button
             onClick={scrollRight}

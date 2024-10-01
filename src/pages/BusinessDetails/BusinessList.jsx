@@ -11,11 +11,13 @@ import { Link } from "react-router-dom";
 import defaultImg from "../../assets/images/default-brand.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import star from "../../assets/images/star.png";
+import sort from "../../assets/images/sort.png";
 import NoData from "../../components/noData/noData";
 import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
 import filter from "../../assets/images/filter.png";
+import cross from "../../assets/images/cross.png";
 import locationImg from "../../assets/images/location.png";
-import Loader from "../../components/Loader/loader";
+import { ListLoader } from "../../components/Loaders/loader";
 
 const BusinessList = () => {
   const navigate = useNavigate();
@@ -32,6 +34,8 @@ const BusinessList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [ratings, setRatings] = useState({});
   const [isCatOpen, setIsCatOpen] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showSorting, setShowSorting] = useState(false);
   const itemsPerPage = 10;
 
   const [ordering, setOrdering] = useState("");
@@ -101,10 +105,45 @@ const BusinessList = () => {
     navigate(`/business-list?${queryString}`);
     getProfile(currentPage, category !== 'null' ? category : undefined, rating);
   };
-
   return (
     <>
-      {/* <div className="w-11/12 xl:w-10/12 2xl:w-8/12 mx-auto sm:bg-green-600 md:bg-yellow-600 lg:bg-blue-600 xl:bg-cyan-600 2xl:bg-fuchsia-600"> */}
+      {showFilters && <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 lg:hidden">
+        <div className="bg-white py-5 px-8 rounded shadow-lg w-3/4">
+          <p className="text-[20px] flex justify-between items-center">Filter By<img src={cross} alt="cross-image" onClick={() => setShowFilters(!showFilters)} className="w-4 h-4 cursor-pointer" /></p>
+          <p className="text-[15px] mt-5">Rating </p>
+          <div className="flex gap-1 my-5">
+            <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick("")}>All</button>
+            <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(3.0)}><img src={star} alt="star-image" className="w-6" />3.0+</button>
+            <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(4.0)}><img src={star} alt="star-image" className="w-6" />4.0+</button>
+            <button className="flex border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => handleRatingClick(4.5)}><img src={star} alt="star-image" className="w-6" />4.5+</button>
+          </div>
+          <p className="text-[15px]">Location</p>
+          <div className="flex gap-1 my-2">
+            <select name="" id="" className="w-full border p-2 rounded-lg bg-white">
+              <option value="PK" className="border">Pakistan</option>
+            </select>
+          </div>
+        </div>
+      </div>}
+      {showSorting && <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 lg:hidden">
+        <div className="bg-white p-5 rounded shadow-lg w-3/4">
+          <p className="text-[20px] flex justify-between items-center">Sort By<img src={cross} alt="cross-image" onClick={() => setShowSorting(!showSorting)} className="w-4 h-4 cursor-pointer" /></p>
+          <div className="gap-1 my-5">
+            <p className="text-[15px]">Rating</p>
+            <div className="flex gap-1 my-2">
+              <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("high-to-low")}>Highest to lowest</button>
+              <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("low-to-high")}>Lowest to highest</button>
+            </div>
+          </div>
+          <div className="gap-1">
+            <p className="text-[15px]">Number of Reviews</p>
+            <div className="flex gap-1 my-2">
+              <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("most-reviews")}>Highest reviews</button>
+              <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("least-reviews")}>Lowest reviews</button>
+            </div>
+          </div>
+        </div>
+      </div>}
       <div className="w-11/12 xl:w-10/12 2xl:w-8/12 mx-auto">
         <div className=" mt-16">
           <div className="flex justify-center items-center">
@@ -128,53 +167,14 @@ const BusinessList = () => {
               placeholder="Cloths Brands"
             />
           </div>
-          <div className="border p-2 rounded-lg my-10 lg:hidden">
-            <div className="flex justify-around">
-              <img src={filter} alt="filter-image" className="w-8 rounded-lg" />
-              <div className="flex items-center gap-1">
-                <span className="font-semibold">Filter By:</span> Rating
-                <img src={star} alt="star-image" className="w-7" />
-                <select
-                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
-                  onChange={(e) => handleRatingClick(e.target.value)}>
-                  <option value="">All</option>
-                  <option value={3.0}>3.0+</option>
-                  <option value={4.0}>4.0+</option>
-                  <option value={4.5}>4.5+</option>
-                </select>
-              </div>
-              <div className="flex items-center gap-1">
-                Average Rating
-                <img src={star} alt="star-image" className="w-7" />
-                <select
-                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
-                  onChange={(e) => setOrdering(e.target.value)}>
-                  <option>Choose to Sort</option>
-                  <option value={"high-to-low"}>Highest to lowest</option>
-                  <option value={"low-to-high"}>Lowest to highest</option>
-                </select>
-              </div>
-              <div className="flex items-center gap-1">
-                Number of Reviews
-                <img src={star} alt="star-image" className="w-7" />
-                <select
-                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400"
-                  onChange={(e) => setOrdering(e.target.value)}>
-                  <option>Choose to Sort</option>
-                  <option value={"most-reviews"}>Highest Reviews</option>
-                  <option value={"least-reviews"}>Lowest Reviews</option>
-                </select>
-              </div>
-              <div className="flex items-center gap-1">
-                Location
-                <img src={locationImg} alt="star-image" className="w-8" />
-                <select
-                  className="cursor-pointer rounded-lg p-1 outline-0 border focus:ring-0 focus:border-gray-400">
-                  <option>Pakistan</option>
-                </select>
-              </div>
-            </div>
+          <div className="mt-5 flex lg:hidden">
+            <button className="border py-2 px-3 w-full flex justify-between items-center rounded-l-lg" onClick={() => setShowFilters(!showFilters)}>Filter By<img src={filter} className="w-4" /></button>
+            <button className="border py-2 px-3 w-full flex justify-between items-center rounded-r-lg" onClick={() => setShowSorting(!showSorting)}>Sort By<img src={sort} className="w-4" /></button>
           </div>
+          <p className="text-right mt-2 underline hover:text-blue-500 cursor-pointer lg:hidden" onClick={() => {
+            handleRatingClick("")
+            setOrdering("")
+          }}>Reset All</p>
         </div>
         <div className="flex justify-center gap-8 mt-10">
           <div className="rounded-lg px-3 shadow-box-shadow bg-white h-3/5 w-2/6 hidden lg:block">
@@ -214,18 +214,17 @@ const BusinessList = () => {
                 <button className="border w-full justify-center items-center p-2 rounded-lg focus:shadow-box-shadow" onClick={() => setOrdering("least-reviews")}>Lowest reviews</button>
               </div>
             </div>
-
           </div>
           <div className="min-h-[90vh] w-5/6">
             {loading ? (
-              <Loader />
+              <ListLoader />
             ) : profile.length === 0 ? (
               <NoData />
             ) : (
               profile.map((item) => {
                 const websiteURL = ensureProtocol(item.website);
                 return (
-                  <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px] bg-white">
+                  <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 xsm:px-0 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
                     <div className="flex items-center xsm:flex-col w-full">
                       <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
                         <img
@@ -270,9 +269,9 @@ const BusinessList = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center mx-auto justify-center h-full  md:w-[150px]">
+                    <div className="flex items-center mx-auto justify-center h-full w-full md:w-1/6 xsm:px-5">
                       <button onClick={() => handleBrandClick(item.name, item.id, navigate)}
-                        className="text-white bg-[#287BB7] text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
+                        className="text-white bg-[#287BB7] w-full text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
                         View
                       </button>
                     </div>

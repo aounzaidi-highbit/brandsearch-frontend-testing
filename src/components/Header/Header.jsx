@@ -185,7 +185,7 @@ export default function Header() {
           >
             <div className="items-center justify-between w-full md:flex md:w-auto"
               id="navbar-cta">
-              <ul className="md:hidden flex flex-col font-medium p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-[#464F54] dark:border-gray-700">
+              <ul className="md:hidden flex flex-col text-sm p-4 md:p-0 mt-4 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-[#464F54] dark:border-gray-700">
                 <li>
                   <Link to="/" className="block py-2 px-3 md:p-0 text-[#464F54] focus:bg-[#287BB7] focus:text-white rounded  md:text-[#287BB7] md:dark:text-blue-500 active:text-white"
                   > Home</Link>
@@ -194,17 +194,47 @@ export default function Header() {
                   <Link to="/business-list" className="block py-2 px-3 md:p-0 text-[#464F54] rounded  md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] focus:text-white md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > Bussiness List</Link>
                 </li>
-                <li>
+                {token && <li>
                   <Link to="/user-reviews" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > My Reviews</Link>
-                </li>
+                </li>}
                 <li>
                   <Link to="/contact" className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > Contact</Link>
                 </li>
-                <li>
+                {token && <li>
                   <Link className="block py-2 px-3 md:p-0 text-[#464F54] rounded focus:text-white md:hover:bg-transparent md:hover:text-[#287BB7] dark:text-white dark:hover:bg-gray-700 dark:hover:text-white focus:bg-[#287BB7] md:dark:hover:bg-transparent dark:border-gray-700 active:bg-[#287BB7] active:text-white"
                   > Logout</Link>
+                </li>}
+                <li>
+                  <div className="relative">
+                    <button
+                      className=" flex gap-2 items-center py-2 px-3 md:p-0 text-[#464F54] font-medium text-sm lg:text-[18px] rounded  md:hover:bg-transparent md:hover:text-[#287BB7]"
+                      // onMouseEnter={() => setIsCatOpen(!true)}
+                      onClick={() => setIsCatOpen(!isCatOpen)}>
+                      Categories
+                      <img src={arrow} alt="arrow-icon" className={`w-3 ${isCatOpen ? "rotate-180" : "rotate-0"}`} />
+                    </button>
+                    {isCatOpen && (
+                      <div
+                      >
+                        <div
+                          className="absolute left-0 w-56 bg-white rounded-md shadow-box-shadow"
+                          onMouseEnter={() => setIsCatOpen(true)}
+                          onMouseLeave={() => setIsCatOpen(false)}>
+                          {(category?.map((item) => {
+                            return (
+                              <Link className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:cursor-pointer md:hover:text-[#287BB7]"
+                                key={item?.id}
+                                to={`/business-list?category=${item?.name}`}
+                                onClick={() => window.scrollTo(0, 0)}>{capitalizeWords(item?.name)}<br /></Link>
+                            );
+                          })
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </li>
               </ul>
             </div>

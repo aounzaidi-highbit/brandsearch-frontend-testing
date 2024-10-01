@@ -5,7 +5,7 @@ import defaultImg from "../../assets/images/default-brand.png";
 import location from "../../assets/images/location.png";
 import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { getRatingDetails, reviewGet } from "../../services/business";
-import Loader from "../../components/Loader/loader";
+import { CardLoader } from "../../components/Loaders/loader";
 import NoData from "../../components/noData/noData";
 import AOS from "aos";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +23,7 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
         key={profile.id}
         data-aos="fade-right"
         data-aos-delay="300"
-        className="bg-white border border-[#EAF7FF] rounded-3xl flex flex-col px-5 shadow-box-shadow hover:animate-grow"
-      >
+        className="bg-white border border-[#EAF7FF] rounded-3xl flex flex-col px-5 shadow-box-shadow sm:hover:animate-grow">
         <div>
           <div className="mt-3 flex items-center justify-center">
             <div className="w-[90px] h-[90px]">
@@ -183,7 +182,7 @@ export default function FeaturedListings() {
         </h2>
       </div>
       {loading ? (
-        <Loader />
+        <CardLoader />
       ) : profiles.length === 0 ? (
         <NoData />
       ) : (
