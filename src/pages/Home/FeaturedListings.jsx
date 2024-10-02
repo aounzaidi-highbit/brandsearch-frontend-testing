@@ -6,7 +6,7 @@ import location from "../../assets/images/location.png";
 import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { getRatingDetails, reviewGet } from "../../services/business";
 import { CardLoader } from "../../components/Loaders/loader";
-import NoData from "../../components/noData/noData";
+import NoData from "../../components/NoData/NoData";
 import AOS from "aos";
 import { useNavigate } from "react-router-dom";
 import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
@@ -41,7 +41,7 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
           <div className="bg-[#eaf7ff] border-border2 pt-16 p-4 -mt-[50px] rounded-2xl">
             <div className="flex items-center justify-between gap-4">
               <div className="flex gap-2 items-center">
-                <p className="gradient2 p-2 text-xl rounded-xl text-white flex items-center justify-center">
+                <p className="bg-[#287BB7] p-2 text-xl rounded-xl text-white flex items-center justify-center">
                   {parseFloat(profile.averageRating).toFixed(1)}
                 </p>
                 <div>
@@ -166,7 +166,7 @@ export default function FeaturedListings() {
 
   return (
     <div className="mx-20 xl:mx-32 xsm:m-0">
-      <div className="flex justify-center items-center xsm:my-20 my-10">
+      <div className="flex justify-center items-center my-20">
         <h2 className="text-[#000000] text-center">
           <span className="text-xl lg:text-2xl block font-bold mb-1">
             Featured Listings

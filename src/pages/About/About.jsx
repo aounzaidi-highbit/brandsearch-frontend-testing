@@ -4,17 +4,16 @@ import workIcon from "../../assets/images/work.png"
 import calanderIcon from "../../assets/images/calander.png"
 import circleIcon from "../../assets/images/circle.png"
 import phone from "../../assets/images/phone.png"
-import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
     <div>
-      <div className="bg-contact-image bg-cover bg-no-repeat bg-center lg:h-[550px] ">
-        <div className="container mx-auto pt-20">
+      <div className="bg-contact-image bg-cover bg-no-repeat bg-center ">
+        <div className="mx-32 py-10">
           <div className="grid lg:grid-cols-2 gap-6 place-items-center">
             <div className="">
               <h2 className="text-5xl lg:text-6xl 2xl:text-7xl mb-6 lg:mb-8 lg:w-[100%]">
-                <span className="font-bold gradient inline-block relative pb-3">
+                <span className="font-bold inline-block relative pb-3">
                   Better Things
                   <br />
                 </span>{" "}And
@@ -24,7 +23,7 @@ const About = () => {
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
-              <button className="gradient2 text-xl lg:text-2xl font-bold p-3 rounded-md text-white mt-4">
+              <button className="bg-[#287BB7] text-xl lg:text-2xl font-bold p-3 rounded-md text-white mt-4">
                 Get Started
               </button>
             </div>
@@ -49,7 +48,7 @@ const About = () => {
         </h2>
       </div>
 
-      <div className="container w-full gap-20 m-auto flex justify-around lg:my-32 mb-26 ">
+      <div className="px-32 w-full gap-20 flex justify-around lg:my-32 mb-26 ">
         <div className="w-full h-[292.27px] rounded-md px-6 overflow-hidden shadow-box-shadow">
           <div className="flex justify-center items-center mt-[20px]">
             <img src={workIcon} alt="contact-icon" className=' absolute z-10 mt-24' width="40px" />
@@ -72,17 +71,15 @@ const About = () => {
           </div>
         </div>
 
-        <Link>
-          <div className="w-full h-[292.27px] rounded-md px-6 overflow-hidden shadow-box-shadow">
-            <div className="flex justify-center items-center mt-[20px] ">
-              <img src={calanderIcon} alt="contact-icon" className=' absolute z-10 mt-24 ' />
-            </div>
-            <div className="text mt-[7rem] text-center">
-              <p className='my-2 font-bold text-center gradient'>Make A Reservation</p>
-              <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia corporis nobis cumque! Lorem ipsum dolor sit, amet consectetur </p>
-            </div>
+        <div className="w-full h-[292.27px] rounded-md px-6 overflow-hidden shadow-box-shadow">
+          <div className="flex justify-center items-center mt-[20px] ">
+            <img src={calanderIcon} alt="contact-icon" className=' absolute z-10 mt-24 ' />
           </div>
-        </Link>
+          <div className="text mt-[7rem] text-center">
+            <p className='my-2 font-bold text-center gradient'>Make A Reservation</p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia corporis nobis cumque! Lorem ipsum dolor sit, amet consectetur </p>
+          </div>
+        </div>
         {/* shadow-box-shadow */}
         {/* border-2 border-black */}
       </div>

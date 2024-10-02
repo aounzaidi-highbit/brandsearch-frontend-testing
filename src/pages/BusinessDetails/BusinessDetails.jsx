@@ -18,7 +18,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import AddReview from "./AddReview";
-import { SignIn } from "../SignIn";
+import SignIn from "../SignIn/SignIn";
 import copyIcon from '../../assets/images/copy.png';
 import tickIcon from "../../assets/images/tick.png";
 import { capitalizeWords, formatDate, getInitials, renderStars } from "../../utils/helper";
@@ -29,11 +29,11 @@ export default function BusinessDetails() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [allReview, setAllReview] = useState([]);
   const [profile, setProfile] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ratings, setRatings] = useState({});
+  // const [ratings, setRatings] = useState({});
   const reviewsPerPage = 10;
-  const [reviews, setReviews] = useState([]);
+  // const [reviews, setReviews] = useState([]);
   const [icon, setIcon] = useState(copyIcon);
   const [buttonText, setButtonText] = useState("Share");
   const [averageRating, setAverageRating] = useState(0);
@@ -56,7 +56,7 @@ export default function BusinessDetails() {
       return;
     }
     const fetchProfile = async () => {
-      setLoading(true);
+      // setLoading(true);
       try {
         const profileResponse = await getSingleProfiles(id);
         setProfile(profileResponse.data);
@@ -83,7 +83,7 @@ export default function BusinessDetails() {
       } finally {
         setTimeout(() => {
           setShowContent(true);
-          setLoading(false)
+          // setLoading(false)
         }, 10);
       }
     };
@@ -98,12 +98,12 @@ export default function BusinessDetails() {
           const response = await getSingleProfiles(name);
           const brandProfile = response.data;
           setProfile(brandProfile);
-          setReviews(brandProfile.id);
+          // setReviews(brandProfile.id);
         }
       } catch (error) {
         console.error('Failed to fetch profile:', error);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
 
@@ -179,7 +179,7 @@ export default function BusinessDetails() {
         };
       });
 
-      setRatings(ratingsMap);
+      // setRatings(ratingsMap);
     } catch (error) {
       console.error("Error fetching ratings:", error);
     }
@@ -194,8 +194,10 @@ export default function BusinessDetails() {
 
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
-    if (width < 500) {
-      setSlidesPerView(1.5);
+    if (width < 450) {
+      setSlidesPerView(1.1);
+    } else if (width < 600) {
+      setSlidesPerView(1.25);
     } else if (width < 750) {
       setSlidesPerView(1.6);
     } else if (width < 850) {
@@ -240,7 +242,7 @@ export default function BusinessDetails() {
   }
   return (
     <>
-      <div className="mt-28">
+      <div className="mt-28 bg-white">
         < div className="lg:px-32 flex flex-col justify-between items-center gap-4 p-4 bg-[#e7f1f7]" >
           <div className="-mt-28">
             <img src={profile.logo || defaultImg} onError={(e) => { e.target.src = defaultImg }} alt="image" className="bg-white w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-[#287BB7]" />
@@ -339,10 +341,10 @@ export default function BusinessDetails() {
         </div >
       </div>
       {currentReviews.filter(review => review.user.id === currentUserId).length > 0 &&
-        <div className="px-32">
-          <h3 className="text-xl lg:text-3xl mt-28 mb-8">
-            <span className="font-bold"> Your Reviews on </span>
-            <span className="font-black gradient" >{profile.name}</span>
+        <div className="xsm:m-5 m-10 md:m-20 xl:m-32">
+          <h3 className="text-lg md:text-2xl xl:text-3xl my-10 md:my-20">
+            <span className=""> Your Reviews on </span>
+            <span className="font-semibold" >{profile.name}</span>
           </h3>
           {currentReviews
             .filter(review => review.user.id === currentUserId)
@@ -352,7 +354,7 @@ export default function BusinessDetails() {
               const truncatedDescription = review.description.substring(0, 180);
 
               return (
-                <div key={review.id} className="flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl w-[90%] md:w-[70%] mx-auto">
+                <div key={review.id} className="sm:w-[80%] xl:w-[70%] mx-auto flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl">
                   <div className="flex justify-between">
                     <div className="flex gap-2">
                       <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
@@ -400,17 +402,16 @@ export default function BusinessDetails() {
             )))}
           </div>
         </div>}
-
-      {currentReviews.length > 2 &&
-        <div className="flex m-20 xl:m-32 relative overflow-hidden py-16 xl:py-24 items-center">
-          <div className="bg-[#287BB7] w-6/12 md:w-5/12 -z-50 absolute h-full rounded-3xl">
+      {currentReviews.length > 2 && (
+        <div className="flex xsm:m-5 m-10 md:m-20 xl:m-32 relative overflow-hidden py-16 xl:py-24 items-center">
+          <div className="bg-[#287BB7] w-full md:w-5/12 -z-50 absolute h-full rounded-3xl">
             <h2 className="text-lg md:text-xl xl:text-3xl text-white ml-16 lg:ml-28 mt-3 xl:mt-5">
-              <span className="font-bold "> Recommended </span><br /> Reviews
+              <span className="font-bold"> Recommended </span>
+              <br /> Reviews
             </h2>
           </div>
-          <div className="w-full pl-10 lg:pl-20">
-            <Swiper
-              className="multiple-slide-carousel swiper-container relative"
+          <div className="w-full xsm:pl-5 sm:pl-10 lg:pl-20">
+            <Swiper className="multiple-slide-carousel swiper-container relative"
               modules={[Navigation]}
               slidesPerView={slidesPerView}
               onInit={(swiper) => {
@@ -419,30 +420,34 @@ export default function BusinessDetails() {
                 swiper.navigation.init();
                 swiper.navigation.update();
               }}>
-              {currentReviews.slice(0, 5).map((review, index) => (
-                <SwiperSlide key={index} className="swiper-slide">
-                  <div className="bg-white shadow-box-shadow rounded-3xl flex flex-col p-3 xl:p-5 border m-3">
-                    <p className="font-semibold pl-1 xl:text-lg 2xl:text-xl">{review.rating_title}</p>
-                    <div className={`p-1 xsm:text-sm text-[#747474] text-sm 2xl:text-[16px] h-52 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"}`}>
-                      {review.description}
-                    </div>
-                    <div className="flex items-center gap-2 pt-2">
-                      <div className="border-2 rounded-full p-[6px] xl:p-2 flex justify-center items-center text-lg xl:text-xl border-[#287BB7]">
-                        {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
+              {currentReviews
+                .sort((a, b) => b.rating - a.rating)
+                .slice(0, 5)
+                .map((review, index) => (
+                  <SwiperSlide key={index} className="swiper-slide">
+                    <div className="bg-white shadow-box-shadow rounded-3xl flex flex-col p-3 xl:p-5 border m-3">
+                      <p className="font-semibold pl-1 xl:text-lg 2xl:text-xl">{review.rating_title}</p>
+                      <div className={`p-1 xsm:text-sm text-[#747474] text-sm 2xl:text-[16px] h-52 ${review.description.length > 250 ? "overflow-y-scroll" : "overflow-y-auto"}`}>
+                        {review.description}
                       </div>
-                      <div className="flex flex-col xl:text-lg font-bold">
-                        <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
-                        <div className="flex w-3 xl:w-5">{renderStars(review.rating)}</div>
+                      <div className="flex items-center gap-2 pt-2">
+                        <div className="border-2 rounded-full p-[6px] xl:p-2 flex justify-center items-center text-lg xl:text-xl border-[#287BB7]">
+                          {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
+                        </div>
+                        <div className="flex flex-col xl:text-lg font-bold">
+                          <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name || "Anonymous")}</p>
+                          <div className="flex w-3 xl:w-5">{renderStars(review.rating)}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))}
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
-        </div>}
+        </div>
+      )}
 
-      <div className="bg-[#f3f8fb] p-10 md:p-20 xl:p-32">
+      <div className="bg-[#f3f8fb] p-10 md:p-20 xl:p-32 mt-32">
         <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-between items-center">
           <div className="text-center lg:text-left justify-center items-center lg:w-3/6 px-4">
             <div className="">
@@ -540,7 +545,7 @@ export default function BusinessDetails() {
           </div>
         </div >
 
-        <div className="dropReview m-20 lg:m-32" id="dropReview">
+        <div className="dropReview xsm:m-5 m-10 md:m-20 xl:m-32" id="dropReview">
           <h3 className="text-2xl lg:text-3xl my-10">
             <span className="font-black gradient"> Drop </span>
             <span className=" font-bold" >Your Review</span>

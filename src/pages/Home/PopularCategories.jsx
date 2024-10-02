@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import Vector from "../../assets/images/vector-category.png";
 import cloths from "../../assets/images/cloths.png";
 import { getAllCategories } from "../../services/business";
-import NoData from "../../components/noData/noData";
+import NoData from "../../components/NoData/NoData";
 import { setupAxios } from "../../utils/axiosClient";
 import { Link } from "react-router-dom";
 import { capitalizeWords } from "../../utils/helper";
@@ -74,36 +74,29 @@ const PopularCategories = () => {
             ref={sliderRef}
             className="flex overflow-x-scroll scrollbar-hide gap-6 p-6 max-w-full mx-4 justify-start"
           >
-            {
-              category.map((item) => (
-                <Link
-                  key={item?.id}
-                  to={`/business-list?category=${item?.name}`}
-                  // onClick={() => handleBrandClick(item)}
-
-                  onClick={() => window.scrollTo(0, 0)}
-                  className="rounded-md shadow-box-shadow hover:animate-grow "
+            {category.map((item) => (
+              <Link
+                key={item?.id}
+                to={`/business-list?category=${item?.name}`}
+                onClick={() => window.scrollTo(0, 0)}
+                className="rounded-md shadow-box-shadow hover:animate-grow ">
+                <div
+                  className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col w-44"
                 >
-                  {/* {console.log("data in category: " + JSON.stringify(category))} */}
-                  <div
-                    className="bg-white max-h-[200px] min-h-[200px] rounded-md flex items-center justify-center flex-col w-44"
-                  >
-                    <div className="flex justify-center items-center w-full h-full">
-                      <img src={cloths} alt="cloths" className="mb-4" />
-                    </div>
-                    <div className="">
-                      <h2 className="text-[16px] text-center font-bold mb-1 gradient w-full h-full flex justify-center items-center">
-                        {capitalizeWords(item?.name)}
-                      </h2>
-                      <p className="text-[#9B9B9B] mx-auto text-center text-[15px] font-medium">
-                        {item.brand_count}
-                      </p>
-                    </div>
+                  <div className="flex justify-center items-center w-full h-full">
+                    <img src={cloths} alt="cloths" className="mb-4" />
                   </div>
-                </Link>
-              ))
-
-            }
+                  <div className="">
+                    <h2 className="text-[16px] text-center font-bold mb-1 gradient w-full h-full flex justify-center items-center">
+                      {capitalizeWords(item?.name)}
+                    </h2>
+                    <p className="text-[#9B9B9B] mx-auto text-center text-[15px] font-medium">
+                      {item.brand_count}{item.brand_count === 1 ? ' Brand' : ' Brands'}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
           </div>
           <button
             onClick={scrollRight}

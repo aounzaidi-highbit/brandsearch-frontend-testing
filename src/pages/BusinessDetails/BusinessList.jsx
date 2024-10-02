@@ -7,16 +7,14 @@ import { setupAxios } from "../../utils/axiosClient";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
 import defaultImg from "../../assets/images/default-brand.png";
 import linkIcon from "../../assets/images/link-icon.png";
 import star from "../../assets/images/star.png";
 import sort from "../../assets/images/sort.png";
-import NoData from "../../components/noData/noData";
 import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
 import filter from "../../assets/images/filter.png";
 import cross from "../../assets/images/cross.png";
-import locationImg from "../../assets/images/location.png";
+import NoData from "../../components/NoData/NoData";
 import { ListLoader } from "../../components/Loaders/loader";
 
 const BusinessList = () => {
@@ -33,7 +31,6 @@ const BusinessList = () => {
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [ratings, setRatings] = useState({});
-  const [isCatOpen, setIsCatOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [showSorting, setShowSorting] = useState(false);
   const itemsPerPage = 10;
@@ -163,7 +160,7 @@ const BusinessList = () => {
               value={text}
               onChange={(e) => setText(e.target.value)}
               type="text"
-              className=" py-4 pl-20 text-lg shadow-box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-full px-4 bg-white w-full border"
+              className=" py-4 pl-20 text-lg shadow-box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-lg px-4 bg-white w-full"
               placeholder="Cloths Brands"
             />
           </div>
@@ -224,7 +221,7 @@ const BusinessList = () => {
               profile.map((item) => {
                 const websiteURL = ensureProtocol(item.website);
                 return (
-                  <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-xl mb-6 xsm:px-0 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
+                  <div key={item.id} className="xsm:text-sm py-5 flex flex-col md:flex-row justify-between items-center rounded-lg mb-6 xsm:px-0 px-5 shadow-box-shadow sm:min-h-[220px] md:min-h-[180px]">
                     <div className="flex items-center xsm:flex-col w-full">
                       <div className="flex-shrink-0 mx-auto w-[108px] h-[108px]">
                         <img
@@ -271,7 +268,7 @@ const BusinessList = () => {
                     </div>
                     <div className="flex items-center mx-auto justify-center h-full w-full md:w-1/6 xsm:px-5">
                       <button onClick={() => handleBrandClick(item.name, item.id, navigate)}
-                        className="text-white bg-[#287BB7] w-full text-lg rounded-3xl hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
+                        className="text-white bg-[#287BB7] w-full text-lg rounded-lg hover:bg-[#4ea0db] flex items-center justify-center px-8 py-3 my-2 ">
                         View
                       </button>
                     </div>
@@ -288,9 +285,9 @@ const BusinessList = () => {
                   breakLabel={<span className="pointer-events-none">{" _ " + " _ " + " _ "}</span>}
                   containerClassName="pagination bg-gray-100"
                   marginPagesDisplayed={1}
-                  nextClassName="item next larger-text"
+                  nextClassName="item next rounded"
                   nextLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Next</span>}
-                  previousClassName="item previous"
+                  previousClassName="item previous rounded"
                   previousLabel={<span style={{ backgroundColor: '#287BB7', color: 'white', padding: '10px 20px' }}>Previous</span>}
                   forcePage={currentPage}
                   onPageChange={handlePageClick}

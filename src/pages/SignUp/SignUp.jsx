@@ -8,7 +8,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { signIn, signUp, verifyOtp } from "../../services/business";
 
-export default function Signup() {
+const SignUp = () => {
   document.title = "Sign Up - Brand Search Engine";
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,7 +88,7 @@ export default function Signup() {
       if (token) {
         localStorage.setItem('access_token', token);
         localStorage.setItem("user_id", user_id);
-        localStorage.setItem("userIsLoggedIn", true);
+        // localStorage.setItem("userIsLoggedIn", true);
         localStorage.setItem("first_name", user.first_name);
         localStorage.setItem("last_name", user.last_name);
         if (brandId) {
@@ -124,7 +124,7 @@ export default function Signup() {
           localStorage.setItem('access_token', access);
           localStorage.setItem('refresh_token', refresh);
           localStorage.setItem('user_id', user.pk);
-          localStorage.setItem("userIsLoggedIn", true);
+          // localStorage.setItem("userIsLoggedIn", true);
           localStorage.setItem("first_name", user.first_name);
           localStorage.setItem("last_name", user.last_name);
           if (brandId) {
@@ -188,7 +188,7 @@ export default function Signup() {
                 </div>
                 {otpError && <p style={{ color: 'red' }}>{otpError}</p>}
               </div>
-              <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 Verify
               </button>
             </form>
@@ -331,15 +331,13 @@ export default function Signup() {
                 {formErrors.email && <p className="text-red-500 mt-2">{formErrors.email}</p>}
                 {formErrors.verified && <p className="text-red-500 mt-2">User is not verified, please verify to login</p>}
               </div>
-              <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 {loadingSubmit ? "Loading ..." : "Signup"}
               </button>
             </form>
             <h4 className="text-[#686868] font-xl m-3">
               Already Have An Account?
-              <span className="gradient">
-                <Link to="/signin" className="ml-1">Login</Link>
-              </span>
+              <Link to="/signin" className="ml-1 text-[#287BB7]">Login</Link>
             </h4>
           </div>
         )}
@@ -347,3 +345,4 @@ export default function Signup() {
     </div>
   );
 }
+export default SignUp;

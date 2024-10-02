@@ -14,11 +14,6 @@ const UpdatePassword = () => {
     const { u_id, token } = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log("u_id:", u_id);
-        console.log("token:", token);
-    }, [u_id, token]);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("u_id inside submit:", u_id);
@@ -76,7 +71,6 @@ const UpdatePassword = () => {
                                     onClick={() => setShowPassword1(!showPassword1)}
                                 />
                             </div>
-
                             <div className="relative my-4">
                                 <input
                                     type={showPassword2 ? "text" : "password"}
@@ -97,7 +91,7 @@ const UpdatePassword = () => {
                                 />
                             </div>
                             {error && <p className="text-red-600 my-2">{error}</p>}
-                            <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
+                            <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
                                 {(message) ? 'Password Updated Successfully' : 'Update Password'}
                             </button>
                         </form>

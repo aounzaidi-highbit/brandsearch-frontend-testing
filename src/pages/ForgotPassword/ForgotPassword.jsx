@@ -56,7 +56,7 @@ const ForgotPassword = () => {
                             </div>
 
                             {error && <p className="text-red-600 my-2">{error}</p>}
-                            <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
+                            <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
                                 {message ? 'Link Successfully Sent' : 'Send Email'}
                             </button>
                         </form>

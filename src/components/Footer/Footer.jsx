@@ -57,7 +57,7 @@ export default function Index() {
   };
 
   return (
-    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover xsm:mt-[120px]">
+    <div className="bg-footer-image bg-no-repeat w-[100%] bg-top bg-cover">
       <div
         className="container mx-auto relative md:h-80 lg:pt-28"
         data-aos="flip-right"

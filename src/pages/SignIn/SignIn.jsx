@@ -7,7 +7,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from "react-router-dom";
 import { signIn, verifyOtp } from "../../services/business";
 
-export const SignIn = ({ brandId, text, customStyles = {} }) => {
+const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [showPassword1, setShowPassword1] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
@@ -56,7 +56,6 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
       if (response.data.non_field_errors) {
         setErrorMessage(response.data);
       } else {
-        localStorage.setItem("userIsLoggedIn", true);
         const { access, refresh, user } = response.data;
         const user_id = user.pk;
 
@@ -218,7 +217,7 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
                       className="w-6 absolute top-5 right-4 cursor-pointer"
                       onClick={() => setShowPassword1(!showPassword1)}
                     />
-                    <div className="cursor-pointer absolute right-0 mt-2"><Link to="/forgot-password" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link></div>
+                    <Link to="/forgot-password" className="cursor-pointer absolute right-0 mt-2 text-[#287BB7]" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link>
                   </div>
                 </div>
                 {errorMessage && (
@@ -227,14 +226,14 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
               </div>
               {verificationError ?
                 (<button
-                  className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
+                  className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
                   onClick={() => setShowOtpInput(true)}
                 >
                   Verify Now
                 </button>)
                 :
                 (<button
-                  className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
+                  className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
                   type="submit"
                 >
                   {loadingSubmit ? "Signing in ..." : "Signin"}
@@ -242,12 +241,11 @@ export const SignIn = ({ brandId, text, customStyles = {} }) => {
             </form>
             <h4 className="text-[#686868] font-xl m-3">
               Don't Have An Account?
-              <span className="gradient">
-                <Link to="/signup" state={{ brandId }}> Sign Up </Link>
-              </span>
+              <Link to="/signup" className="text-[#287BB7]" state={{ brandId }}> Sign Up </Link>
             </h4>
           </div>)}
       </div>
     </div>
   );
 };
+export default SignIn;

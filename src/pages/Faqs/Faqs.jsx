@@ -3,7 +3,7 @@ import { useState } from "react";
 import faq from "../../assets/images/faq.png";
 import UpArrowIcon from "../../assets/images/upArrow.png";
 import DownArrowIcon from "../../assets/images/downArrow.png";
-import faqs from "../../pages/Faqs/faqsData.js"
+import faqs from "./faqsData.js"
 
 export default function Index() {
 
@@ -19,12 +19,12 @@ export default function Index() {
   return (
     <div>
       <div className="bg-contact-image bg-cover bg-no-repeat bg-center -mt-28 lg:-mt-16 lg:h-[513px] overflow-hidden">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-6 place-items-center pb-10 lg:pb-0">
+        <div className="mx-32">
+          <div className="flex justify-evenly items-center">
             <div className="mt-32 lg:mt-0">
               <h2 className="mb-4 lg:pt-0">
                 <span className="text-6xl lg:text-7xl font-normal ">
-                  <span className="gradient font-extrabold">FAQs </span>
+                  <span className="font-extrabold">FAQs </span>
                 </span>
               </h2>
               <p className="text-[#464F54] lg:text-xl">
@@ -38,7 +38,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="my-20 container">
+      <div className="m-32">
         <div id="accordionExample" className=" rounded-xl bg-white">
           {
             faqs.map((faq, index) => (

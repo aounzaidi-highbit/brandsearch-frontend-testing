@@ -133,65 +133,67 @@ const UserReviews = () => {
                 onConfirm={confirmDelete}
             />
 
-            <div className="bg-white h-32 border-b">
-                <div className='w-[60%] mx-auto flex h-full justify-between items-center'>
+            <div className="h-24 sm:h-32 border-b bg-white">
+                <div className='flex xsm:w-[90%] sm:w-[80%] xl:w-[60%] mx-auto h-full justify-between items-center'>
                     <div className="flex gap-2">
-                        <div className='rounded-full border-2 text-3xl w-16 h-16 flex justify-center items-center'>
+                        <div className='rounded-full border-2 xsm:text-2xl text-3xl p-2 flex justify-center items-center'>
                             {getInitials(first_name + " " + last_name)}
                         </div>
                         <div className='flex justify-center flex-col'>
-                            <p className='text-xl'>
+                            <p className='text-[16px] sm:text-xl font-semibold'>
                                 {capitalizeWords(first_name + " " + last_name)}
                             </p>
-                            <p className='text-sm'>Pakistan</p>
+                            <p className='xsm:text-[12px] text-sm'>Pakistan</p>
                         </div>
                     </div>
                     <div className="flex justify-center items-center flex-col">
-                        <p className='text-4xl'>{ratingCount}</p>
-                        <p className='text-sm'>Reviews</p>
+                        <p className='xsm:text-2xl sm:text-4xl'>{ratingCount}</p>
+                        <p className='xsm:text-[12px] text-sm'>Reviews</p>
                     </div>
                 </div>
             </div>
 
-            <div className='w-[50%] mx-auto'>
-                <p className='text-4xl my-10 border-b-2'>All Reviews</p>
+            <div className='xsm:w-[80%] sm:w-[60%] xl:w-[50%] mx-auto'>
+                <p className='xsm:text-2xl text-3xl lg:text-4xl my-10 border-b-2'>All Reviews</p>
                 {Object.keys(groupedReviews).length > 0 ? (
                     Object.keys(groupedReviews).map((brandName) => (
                         <div key={brandName}>
-                            <p className='mb-2 text-xl'>{groupedReviews[brandName].length}{groupedReviews[brandName].length > 1 ? " Reviews " : " Review "}from{" "} <span className='font-bold'>{brandName}</span></p>
+                            <p className='mb-2 xsm:text-sm text-xl'>{groupedReviews[brandName].length}{groupedReviews[brandName].length > 1 ? " Reviews " : " Review "}from{" "} <span className='font-bold xsm:text-[16px]'>{brandName}</span></p>
                             {groupedReviews[brandName].map((review) => (
                                 <div key={review.id}>
                                     <div className='p-4 bg-white shadow-box-shadow rounded-lg mb-10'>
                                         <div className='flex justify-between'>
-                                            <div className='flex justify-center items-center gap-2'>
-                                                <div className='border border-black rounded-full flex justify-center items-center text-2xl w-[56px] h-[56px]'>
+                                            <div className='flex justify-center items-center xsm:gap-1 gap-2'>
+                                                <div className='border border-black rounded-full flex items-center xsm:text-lg xsm:p-1 text-xl p-2'>
                                                     {getInitials(review.user.first_name + " " + review.user.last_name)}
                                                 </div>
-                                                <div>
+                                                <div className='font-semibold md:text-lg xsm:text-sm'>
                                                     <p>{capitalizeWords(review.user.first_name + " " + review.user.last_name)}</p>
-                                                    <p className='flex'>{renderStars(review.rating)}</p>
+                                                    <p className='flex xsm:w-3'>{renderStars(review.rating)}</p>
                                                 </div>
                                             </div>
-                                            <p className='flex justify-center gap-1'>
-                                                <img src={calander} alt="calendar-icon" className='w-5 h-5' />
+                                            <p className='flex items-center gap-1 xsm:text-xs xsm:-mt-3 text-sm'>
+                                                <img src={calander} alt="calendar-icon" className='w-4 h-4 xsm:hidden' />
                                                 {formatDate(review.created_at)}
                                             </p>
                                         </div>
-                                        <div className='border-b my-3 py-3 border-gray-300'>
-                                            <p className='font-semibold text-lg'>{review.rating_title}</p>
-                                            <p>{capitalizeWords(review.description)}</p>
+                                        <div className='border-b xsm:my-0 my-3 py-3'>
+                                            <p className='font-semibold xsm:text-[16px] text-lg'>{review.rating_title}</p>
+                                            <p className='text-sm md:text-[16px]'>{capitalizeWords(review.description)}</p>
                                         </div>
-                                        <div className='flex justify-between items-center'>
-                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, navigate)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer'>
-                                                <img src={linkIcon} alt="link-icon" className='w-5 h-5' />
-                                                View this review on <span className='font-semibold flex items-center'>{brandName}</span>
+                                        <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
+                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, navigate)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer items-center my-3 lg:my-0 xsm:text-xs'>
+                                                <img src={linkIcon} alt="link-icon" className='w-5 h-5 xsm:w-4 xsm:h-4' />
+                                                View this review on
+                                                <span className='font-semibold'>{brandName}</span>
                                             </div>
-                                            <div className='flex gap-2'>
-                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleDeleteClick(review.id)}>
-                                                    <img src={deleteIcon} alt="delete-icon" className='w-5 h-5' />Delete
+
+                                            <div className='flex gap-2 xsm:gap-1 xsm:text-sm'>
+                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer xsm:py-1' onClick={() => handleDeleteClick(review.id)}>
+                                                    <img src={deleteIcon} alt="delete-icon" className='w-5 h-5 xsm:w-4 xsm:h-4' />Delete
                                                 </button>
-                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer' onClick={() => handleEdit(review)}>
-                                                    <img src={editIcon} alt="edit-icon" className='w-5 h-5' />Edit
+                                                <button className='border min-w-24 py-2 rounded-lg flex justify-center items-center gap-1 cursor-pointer xsm:py-1' onClick={() => handleEdit(review)}>
+                                                    <img src={editIcon} alt="edit-icon" className='w-5 h-5 xsm:w-4 xsm:h-4' />Edit
                                                 </button>
                                             </div>
                                         </div>

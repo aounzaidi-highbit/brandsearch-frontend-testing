@@ -8,10 +8,10 @@ import MainComponent from "./pages/MainComponent";
 import { useEffect } from "react";
 import Aos from "aos";
 import "aos/dist/aos.css";
-import Signup from "./pages/SignUp/index";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuth from "./middlewares/useAuth";
-import { SignIn } from "./pages/SignIn";
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
 
 function App() {
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
             </>
           ) : (
             <>
-              <Route path="/signup" element={<Signup />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/signin" element={<SignIn />} />
             </>
           )}

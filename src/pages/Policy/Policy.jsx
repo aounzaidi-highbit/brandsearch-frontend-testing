@@ -7,8 +7,8 @@ export default function index() {
   return (
     <div>
       <div className="bg-contact-image bg-cover bg-no-repeat bg-center -mt-32 lg:-mt-24">
-        <div className="container mx-auto">
-          <div className="grid lg:grid-cols-2 gap-6 place-items-center py-20">
+        <div className="m-32">
+          <div className="flex justify-evenly items-center">
             <div className="">
               <h2 className="mb-4 pt-20 lg:pt-0">
                 <span className="text-6xl lg:text-7xl font-normal ">
@@ -27,7 +27,7 @@ export default function index() {
           </div>
         </div>
       </div>
-      <div className="my-10 lg:my-20 container">
+      <div className="my-10 lg:my-20">
         <div className="flex justify-center items-center">
           <h2 className="text-[#000000] text-center">
             <span className="text-xl lg:text-2xl block font-bold mb-1">
@@ -45,7 +45,7 @@ export default function index() {
           </h2>
         </div>
       </div>
-      <div className="container mb-10 lg:mb-20">
+      <div className="m-32">
         <p className="text-xl lg:text-2xl mb-6">
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever

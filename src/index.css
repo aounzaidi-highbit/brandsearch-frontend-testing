@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
-}
-
 .item {
     align-items: center;
     color: #fff;
@@ -31,22 +17,12 @@ code {
     color: #808e9b;
 }
 
-.active {
-    border-radius: 4px;
-    color: white !important;
-    background: #6cc2ff;
-}
-
-.break-me {}
-
-.next {
-    font-size: 4px;
+.next,
+.previous {
+    font-size: 14px;
     background: #287BB7;
-    /* height: 60px;
-  position: absolute;
-  right: 0; */
-    width: 70px;
-    border-radius: 4px;
+    text-align: center;
+    width: 100px;
 }
 
 .pagination {
@@ -66,9 +42,9 @@ code {
     color: #898989;
 }
 
-.previous {
+/* .previous {
     display: none;
-}
+} */
 
 /*scrollBar*/
 ::-webkit-scrollbar {
@@ -76,27 +52,12 @@ code {
     height: 7px;
 }
 
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
     background: rgb(206, 203, 203);
     border-radius: 10px;
-}
+} */
 
 ::-webkit-scrollbar-thumb {
     background: #287BB7;
     border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #287BB7;
-}
-
-@layer components {
-    .gradient-border {
-        @apply rounded-full p-[2px] w-[108px] h-[108px] flex items-center justify-center;
-        background: #287BB7;
-    }
-
-    .inner-circle {
-        @apply bg-white rounded-full flex items-center justify-center w-full h-full;
-    }
 }

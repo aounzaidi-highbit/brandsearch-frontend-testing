@@ -13,7 +13,7 @@ const UserLog = () => {
         <div className="flex justify-center items-center gap-6">
           <div className="border-r border-gray-500">
             <Link to={'/signin'} onClick={() => window.scrollTo(0, 0)}>
-              <button className="bg-[#cccccc] text-black font-semibold text-[14px] lg:text-md 2xl:text-xl rounded-full py-3 px-4 lg:py-3 lg:px-5 mr-5">Login Or Sign Up</button>
+              <button className="bg-[#cccccc] text-black font-semibold text-[14px] lg:text-md 2xl:text-xl rounded-lg py-3 px-4 lg:py-3 lg:px-5 mr-5">Login Or Sign Up</button>
             </Link>
           </div>
           <div className="flex gap-2 p-1 rounded-md border-[#d8d8d8] border">

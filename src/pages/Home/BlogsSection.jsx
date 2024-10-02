@@ -10,7 +10,7 @@ const BlogsSection = () => {
                     <p className="sm:w-5/12 md:w-6/12 lg:w-2/5 2xl:w-3/6 xsm:text-[15px] sm:text-[8px] md:text-[12px] lg:text-[14px] xl:text-[18px] my-3 sm:my-5">
                         Have questions, feedback, or need assistance? We're here to help! Reach out to us anytime, and we'll get back to you as soon as possible. Your thoughts and concerns are important to us, so don’t hesitate to drop us a message!</p>
                     <Link to="/contact" onClick={() => window.scrollTo(0, 0)}>
-                        <button type="button" className="bg-[#d8d8d8] py-2 px-3  sm:text-[10px] text-black font-semibold rounded-full text-center md:text-[15px] lg:text-[18px]">
+                        <button type="button" className="bg-[#d8d8d8] py-2 px-3  sm:text-[10px] text-black font-semibold rounded-lg text-center md:text-[15px] lg:text-[18px]">
                             Contact Us
                         </button>
                     </Link>
@@ -23,7 +23,7 @@ const BlogsSection = () => {
                 </h1>
                 <p className="sm:text-[10px] xsm:text-[15px] md:text-[12px] lg:text-[14px] xl:text-[18px] text-gray-700 my-3">
                     Dive into the latest trends, tips, and insights from the fashion world! Our blog features articles, reviews, and stories to keep you informed and inspired. Stay updated with fresh content and discover new perspectives on clothing and accessories.                    </p>
-                <button type="button" className="bg-[#d8d8d8] py-2 px-5 text-black font-semibold mx-auto xl:w-2/6 rounded-full md:py-2 md:px-3 lg:px-6 lg:py-3 text-center text-[15px] lg:text-[18px]">
+                <button type="button" className="bg-[#d8d8d8] py-2 px-5 text-black font-semibold mx-auto xl:w-2/6 rounded-lg md:py-2 md:px-3 lg:px-6 lg:py-3 text-center text-[15px] lg:text-[18px]">
                     Blogs
                 </button>
             </div>

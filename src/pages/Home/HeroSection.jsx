@@ -13,7 +13,6 @@ export default function HeroSection() {
     }
   };
 
-
   return (
     <div className="xsm:px-8 bg-hero-background bg-no-repeat h-full" data-aos="zoom-in" data-aos-delay="300">
       <div className="flex justify-evenly items-center h-[80vh]">
@@ -21,7 +20,7 @@ export default function HeroSection() {
           <div className="flex">
             <h2 className="text-4xl xsm:text-4xl lg:text-5xl 2xl:text-7xl mb-8 lg:mb-0 lg:w-[90%]">
               <span className="font-normal block">Explore All </span>
-              <span className="font-bold gradient inline-block relative">
+              <span className="font-bold inline-block relative">
                 Available
               </span>{" "}
               listings
@@ -39,14 +38,14 @@ export default function HeroSection() {
               onKeyDown={handleKeyDown}
               onChange={(e) => setName(e.target.value)}
               type="text"
-              className="box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-full px-4 py-4 bg-white w-full border"
+              className="box-shadow text-[15px] focus:outline-none font-medium text-[#464F54] rounded-lg px-4 py-4 bg-white w-full border"
               placeholder="Find Perfect Business"
             />
             <Link
               className="absolute right-0"
               to={`/business-list?name=${name}`}
             >
-              <button className="bg-[#287BB7] hover:bg-[#287BB7] text-2xl font-bold px-6 py-[14px] xsm:w-16 text-white rounded-r-full flex gap-2 items-center">
+              <button className="bg-[#287BB7] hover:bg-[#287BB7] text-2xl font-bold px-6 py-3 xsm:w-16 text-white rounded-r-lg flex gap-2 items-center">
                 <img
                   src={search}
                   className="h-[24px] w-[24px] xsm:w-[30px] xsm:h-[30px]"

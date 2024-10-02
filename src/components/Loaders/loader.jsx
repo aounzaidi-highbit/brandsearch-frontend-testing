@@ -50,8 +50,7 @@ const CardLoader = React.memo(() => {
   return (
     <div className="mx-8 sm:mx-0 gap-x-8 gap-y-6 xl:gap-x-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 h-[63vh]">
       {legnth.slice(0, visibleProfiles).map((i) => (
-        <div
-          className="bg-white rounded-3xl flex flex-col px-5 shadow-box-shadow h-auto">
+        <div key={i} className="bg-white rounded-3xl flex flex-col px-5 shadow-box-shadow h-auto">
           <div>
             <div className="mt-3 flex items-center border-none justify-center">
               <img

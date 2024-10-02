@@ -47,9 +47,9 @@ export default function Contact() {
 
   return (
     <div>
-      <div className="bg-contact-image bg-cover bg-no-repeat bg-center lg:h-[513px]">
-        <div className="container mx-auto pt-10">
-          <div className="grid lg:grid-cols-2 gap-6 place-items-center">
+      <div className="px-32 bg-contact-image bg-cover bg-no-repeat bg-center">
+        <div className="pt-10">
+          <div className="flex justify-between items-center">
             <div className="">
               <h2 className="mb-4 pt-20 lg:pt-0">
                 <span className="text-6xl lg:text-5xl font-normal">
@@ -60,14 +60,14 @@ export default function Contact() {
                 Got questions or feedback? We're here to help! Contact us anytime and we'll get back to you quickly</p>
             </div>
             <div className="pt-10">
-              <img src={postIMG} alt="post Image" className="lg:h-[433px]" />
+              <img src={postIMG} alt="post Image" className="" />
             </div>
           </div>
         </div>
       </div>
       <div className="container mx-auto">
         <div className="shadow-box-shadow p-4 lg:p-10 my-20 rounded-lg">
-          <form className="" onSubmit={handleSubmit}>
+          <form className="" onSubmit={handleSubmit} autoComplete="off">
             <div className="grid lg:grid-cols-2 gap-6 lg:mb-0 mb-4">
               <div class="relative">
                 <input
@@ -153,7 +153,7 @@ export default function Contact() {
             </div>
             <button
               type="submit"
-              className="gradient2 shadow-box-shadow text-xl lg:text-xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
+              className="bg-[#287BB7] shadow-box-shadow text-xl lg:text-xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Message"}
