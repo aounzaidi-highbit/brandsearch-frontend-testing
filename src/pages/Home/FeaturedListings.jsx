@@ -38,10 +38,10 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
               />
             </div>
           </div>
-          <div className="bg-[#eaf7ff] border-border2 pt-16 p-4 -mt-[50px] rounded-2xl">
+          <div className="bg-[#e7f1f7] border-border2 pt-16 p-4 -mt-[50px] rounded-2xl">
             <div className="flex items-center justify-between gap-4">
               <div className="flex gap-2 items-center">
-                <p className="bg-[#287BB7] p-2 text-xl rounded-xl text-white flex items-center justify-center">
+                <p className="bg-Primary p-2 text-xl rounded-xl text-white flex items-center justify-center">
                   {parseFloat(profile.averageRating).toFixed(1)}
                 </p>
                 <div>
@@ -58,7 +58,7 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
           </div>
           <div className="py-6 text-left">
             <h4 className="text-[16px] font-normal pt-0">
-              <span className="gradient"> {capitalizedProfileName}</span>
+              <span className="text-Primary font-semibold"> {capitalizedProfileName}</span>
             </h4>
             <h6 className="text-[16px] font-normal flex mb-2">
               <span className=""> Pakistan {profile.country} </span>
@@ -172,7 +172,7 @@ export default function FeaturedListings() {
             Featured Listings
           </span>
           <span className="text-2xl lg:text-4xl font-semibold relative">
-            <span className="gradient font-black"> Cloths Goods </span> Business
+            <span className="text-Primary"> Cloths Goods </span> Business
             <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
               src={Vector}

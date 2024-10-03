@@ -26,7 +26,7 @@ export default function OurListed() {
             Our Listed{" "}
           </span>{" "}
           <span className="text-2xl lg:text-4xl font-semibold relative ">
-            <span className="gradient font-black"> 10,000 </span> Business
+            <span className="text-Primary font-black"> 10,000 </span> Business
             listed
             <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
@@ -39,43 +39,21 @@ export default function OurListed() {
       <div className="mt-16">
         <Marquee
           className="w-[100%]"
-          // autoFill={true}
+          autoFill={true}
           pauseOnHover={true}
-          speed={60}
-          gradient={false}
-        >
+          speed={80}
+          text-Primary={false}>
           <div className="flex gap-20 place-items-center">
-            <div className="">
-              <img src={faiza} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={mariab} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={sapphire} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={clothing} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={agha} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={khaadi} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={zaha} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={bonanza} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src={sana} alt="our listed" className="xsm:w-28" />
-            </div>
-            <div className="">
-              <img src="" />
-            </div>
-
+            <img src={faiza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={mariab} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={sapphire} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={clothing} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={agha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={khaadi} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={zaha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={bonanza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src={sana} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+            <img src="" />
           </div>
         </Marquee>
       </div>

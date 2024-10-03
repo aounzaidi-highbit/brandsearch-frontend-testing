@@ -73,16 +73,16 @@ export default function Index() {
 
         {(subState) ? (
           <div className="p-10 lg:mt-32 text-center absolute inset-0 flex flex-col items-center justify-end lg:justify-center">
-            <h3 className={`lg:text-4xl md:text-2xl ${isError ? "text-red-500" : "text-[#287BB7] font-bold text-xl mb-20"}`}>
+            <h3 className={`lg:text-4xl md:text-2xl ${isError ? "text-red-500" : "text-Primary font-bold text-xl mb-20"}`}>
               {message}
             </h3>
           </div>
         ) : (
           <div className="mb-24 lg:mt-44 text-center absolute inset-0 flex flex-col items-center justify-end lg:justify-center">
-            <h4 className="font-bold lg:text-4xl xsm:text-2xl md:text-2xl mb-2"><span className="gradient3">Subscribe</span> <span className="font-normal">Now</span></h4>
+            <h4 className="font-bold lg:text-4xl xsm:text-2xl md:text-2xl mb-2"><span className="text-Primary">Subscribe</span> <span className="font-normal">Now</span></h4>
             <h3 className="md:text-2xl lg:text-4xl">
-              <span className="gradient3 font-black xsm:text-xl">Get All </span> <span className="xsm:text-xl">Updates And</span>
-              <span className="gradient3 font-black relative xsm:text-xl">
+              <span className="text-Primary font-black xsm:text-xl">Get All </span> <span className="xsm:text-xl">Updates And</span>
+              <span className="text-Primary font-black relative xsm:text-xl">
                 {" "}Offers
               </span>
             </h3>
@@ -90,12 +90,12 @@ export default function Index() {
               <input
                 type="email"
                 value={email}
-                className="shadow-box-shadow text-[12px] md:text-[15px] focus:outline-none font-medium text-[#287BB7] rounded-lg lg:rounded-full p-2 md:px-4 py-3 md:py-5 bg-white w-full"
+                className="shadow-box-shadow text-[12px] md:text-[15px] focus:outline-none font-medium text-Primary rounded-lg lg:rounded-full p-2 md:px-4 py-3 md:py-5 bg-white w-full"
                 placeholder="Enter Your Email to Stay Updated"
                 onChange={(e) => setEmail(e.target.value)}
               />
               <button
-                className="bg-[#287BB7] justify-center hover:bg-[#287BB7] text-md md:text-xl font-bold px-3 py-2 md:px-4 md:py-[18px] text-white w-full lg:w-[40%] rounded-lg lg:rounded-full lg:rounded-l-none absolute right-0 flex gap-2 items-center"
+                className="bg-Primary justify-center hover:bg-Primary text-md md:text-xl font-bold px-3 py-2 md:px-4 md:py-[18px] text-white w-full lg:w-[40%] rounded-lg lg:rounded-full lg:rounded-l-none absolute right-0 flex gap-2 items-center"
                 onClick={handleButtonClick}
                 disabled={loading}
               >
@@ -113,17 +113,17 @@ export default function Index() {
       <div className="lg:flex justify-between mt-6 items-center container mx-auto py-8">
         <ul className="flex gap-4 items-center mb-6 lg:mb-0">
           <li>
-            <a href="#" className="text-[#287BB7]">
+            <a href="#" className="text-Primary">
               <Link to="/" onClick={() => window.scrollTo(0, 0)}>Home</Link>
             </a>
           </li>
           <li>
-            <a href="#" className="text-[#287BB7]">
+            <a href="#" className="text-Primary">
               <Link to="/about" onClick={() => window.scrollTo(0, 0)}>About us</Link>
             </a>
           </li>
           <li>
-            <a href="#" className="text-[#287BB7]">
+            <a href="#" className="text-Primary">
               <Link to="/faqs" onClick={() => window.scrollTo(0, 0)}>Faqs</Link>
             </a>
           </li>
@@ -158,12 +158,12 @@ export default function Index() {
       <div className="flex justify-between items-center px-4 lg:px-32 mx-auto py-8">
         <ul className="flex gap-4 items-center">
           <li>
-            <a href="#" className="text-[#287BB7] text-sm">
+            <a href="#" className="text-Primary text-sm">
               <Link to="policy" onClick={() => window.scrollTo(0, 0)}>Privacy Policy</Link>
             </a>
           </li>
         </ul>
-        <div className="text-[#287BB7] text-sm">
+        <div className="text-Primary text-sm">
           <p>Copyright © {year} All rights reserved</p>
         </div>
       </div>

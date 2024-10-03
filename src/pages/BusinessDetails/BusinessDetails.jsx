@@ -245,13 +245,13 @@ export default function BusinessDetails() {
       <div className="mt-28 bg-white">
         < div className="lg:px-32 flex flex-col justify-between items-center gap-4 p-4 bg-[#e7f1f7]" >
           <div className="-mt-28">
-            <img src={profile.logo || defaultImg} onError={(e) => { e.target.src = defaultImg }} alt="image" className="bg-white w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-[#287BB7]" />
+            <img src={profile.logo || defaultImg} onError={(e) => { e.target.src = defaultImg }} alt="image" className="bg-white w-[120px] md:w-[150px] h-[120px] rounded-full md:h-[150px] border-4 border-Primary" />
           </div>
           <h2 className="text-[25px] md:text-[28px]">
-            <span className="font-bold gradient"> {profile?.name}</span>
+            <span className="font-bold text-Primary"> {profile?.name}</span>
           </h2>
           <p className="lg:w-[70%] md:w-[65%] w-[90%] text-center">{profile?.description}</p>
-          <h6 className="text-[18px] font-bold gradient flex items-center">
+          <h6 className="text-[18px] font-bold text-Primary flex items-center">
             <img src={locationIcon} alt="location-icon" />
             <span> Pakistan {profile.country} </span>
           </h6>
@@ -259,7 +259,7 @@ export default function BusinessDetails() {
             <div className="items-center xsm:text-center">
               <div className="items-center">
                 <div className="flex">
-                  <span className="bg-[#287BB7] font-bold text-white rounded-lg flex items-center text-xl px-2 mr-1">{averageRating.toFixed(1) || "0"}</span>
+                  <span className="bg-Primary font-bold text-white rounded-lg flex items-center text-xl px-2 mr-1">{averageRating.toFixed(1) || "0"}</span>
                   <div>
                     <div className="flex justify-center mb-1">{renderStars(averageRating)}</div>
                     <h6 className="font-normal text-[#8D8D8D] text-sm">
@@ -276,7 +276,7 @@ export default function BusinessDetails() {
                 </div>
                 <div className="flex flex-col justify-center">
                   <h2 className="text-[15px] font-light leading-5">
-                    Live <span className="font-bold gradient"> Site </span>
+                    Live <span className="font-bold text-Primary"> Site </span>
                   </h2>
                   <p className="text-[#666666] xsm:text-sm">{profile.website}</p>
                 </div>
@@ -287,14 +287,14 @@ export default function BusinessDetails() {
             <div>
               <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
                 <img src={facebook} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
-                <span><span className="gradient font-black">Facebook </span>Followers</span>
+                <span><span className="text-Primary font-black">Facebook </span>Followers</span>
                 <Link to={profile.facebook} className="flex items-center" target="_blank">
                   <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-[#287BB7] hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Facebook Page</span>
+                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-Primary hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Facebook Page</span>
                 </Link>
               </span>
               <div className="flex justify-center items-center flex-col py-2 md:py-4">
-                <h2 className="gradient font-black text-xl  lg:text-4xl">
+                <h2 className="text-Primary font-black text-xl  lg:text-4xl">
                   {profile?.facebook_followers}+
                 </h2>
               </div>
@@ -304,14 +304,14 @@ export default function BusinessDetails() {
               <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
                 <img src={instagram} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
 
-                <span><span className="gradient font-black">Instagram </span>Followers</span>
+                <span><span className="text-Primary font-black">Instagram </span>Followers</span>
                 <Link to={profile.insta} className="flex items-center" target="_blank">
                   <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
-                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-[#287BB7] hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Instagram Account</span>
+                  <span className="xsm:text-center text-[12px] sm:text-center mx-1 md:mx-0 text text-Primary hover:text-[#4ea0db] font-bold pl-1">Visit <span className="xsm:hidden">Brand's</span> Instagram Account</span>
                 </Link>
               </span>
               <div className="flex justify-center items-center flex-col py-2 md:py-4">
-                <h2 className="gradient font-black text-xl  lg:text-4xl">
+                <h2 className="text-Primary font-black text-xl  lg:text-4xl">
                   {profile?.insta_followers}+
                 </h2>
               </div>
@@ -319,20 +319,20 @@ export default function BusinessDetails() {
           </div>
 
           <div className="flex justify-center gap-4 w-full">
-            <button className=" flex items-center justify-center border bg-[#287BB7] w-[40%] md:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px]"
+            <button className=" flex items-center justify-center border bg-Primary w-[40%] md:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px]"
               onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}>
-              <span className="flex gap-1 md:gap-4 w-[100%] items-center">
+              <span className="flex gap-1 md:gap-4 items-center">
                 <img src={reviewIcon} alt="review-icon" className="w-12 filter invert" />
-                <span className="text-white lg:font-bold text-sm lg:text-[18px]">
+                <span className="text-white lg:font-bold text-sm lg:text-lg">
                   Write Review
                 </span>
               </span>
             </button>
-            <button className=" flex items-center justify-center border border-[#287BB7] w-[40%] md:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px] bg-white"
+            <button className=" flex items-center justify-center border border-Primary w-[40%] md:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px] bg-white"
               onClick={handleShareClick}>
               <span className="flex items-center gap-1 md:gap-4 ">
                 <img src={icon} alt="save" className="w-7 lg:w-8" />
-                <span className="text-[#287BB7] font-bold lg:text-lg">
+                <span className="text-Primary font-bold lg:text-lg">
                   {buttonText}
                 </span>
               </span>
@@ -357,7 +357,7 @@ export default function BusinessDetails() {
                 <div key={review.id} className="sm:w-[80%] xl:w-[70%] mx-auto flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl">
                   <div className="flex justify-between">
                     <div className="flex gap-2">
-                      <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
+                      <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-Primary">
                         {getInitials(review.user.first_name + " " + review.user.last_name || "A")}
                       </div>
                       <div className="">
@@ -395,7 +395,7 @@ export default function BusinessDetails() {
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-[#287BB7] text-white' : 'bg-gray-200 text-gray-600'}`}
+                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-Primary text-white' : 'bg-gray-200 text-gray-600'}`}
               >
                 {index + 1}
               </button>
@@ -404,7 +404,7 @@ export default function BusinessDetails() {
         </div>}
       {currentReviews.length > 2 && (
         <div className="flex xsm:m-5 m-10 md:m-20 xl:m-32 relative overflow-hidden py-16 xl:py-24 items-center">
-          <div className="bg-[#287BB7] w-full md:w-5/12 -z-50 absolute h-full rounded-3xl">
+          <div className="bg-Primary w-full md:w-5/12 -z-50 absolute h-full rounded-3xl">
             <h2 className="text-lg md:text-xl xl:text-3xl text-white ml-16 lg:ml-28 mt-3 xl:mt-5">
               <span className="font-bold"> Recommended </span>
               <br /> Reviews
@@ -431,7 +431,7 @@ export default function BusinessDetails() {
                         {review.description}
                       </div>
                       <div className="flex items-center gap-2 pt-2">
-                        <div className="border-2 rounded-full p-[6px] xl:p-2 flex justify-center items-center text-lg xl:text-xl border-[#287BB7]">
+                        <div className="border-2 rounded-full p-[6px] xl:p-2 flex justify-center items-center text-lg xl:text-xl border-Primary">
                           {getInitials(review.user.first_name + " " + review.user.last_name || "Anonymous")}
                         </div>
                         <div className="flex flex-col xl:text-lg font-bold">
@@ -447,12 +447,12 @@ export default function BusinessDetails() {
         </div>
       )}
 
-      <div className="bg-[#f3f8fb] p-10 md:p-20 xl:p-32 mt-32">
+      <div className="bg-[#e7f1f7] p-10 md:p-20 xl:p-32 mt-32">
         <div className="flex flex-col gap-10 lg:gap-0 lg:flex-row justify-between items-center">
           <div className="text-center lg:text-left justify-center items-center lg:w-3/6 px-4">
             <div className="">
               <h2 className="xsm:text-2xl text-3xl xl:text-4xl font-normal">
-                <span className="font-bold gradient"> Over All </span> Rating
+                <span className="font-bold text-Primary"> Over All </span> Rating
               </h2>
               <div className="flex justify-center lg:justify-start items-center gap-2">
                 <span className="text-[#737072] text-2xl font-bold">
@@ -499,7 +499,7 @@ export default function BusinessDetails() {
                 <div key={review.id} className="flex flex-col shadow-box-shadow p-4 bg-white rounded-xl w-[90%] md:w-[60%] mx-auto mb-5">
                   <div className="flex justify-between">
                     <div className="flex gap-2">
-                      <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-[#287BB7]">
+                      <div className="border-2 rounded-full w-10 md:w-14 h-10 md:h-14 flex justify-center items-center text-xl md:text-2xl border-Primary">
                         {getInitials(review.user.first_name + " " + review.user.last_name || "A")}
                       </div>
                       <div className="">
@@ -537,7 +537,7 @@ export default function BusinessDetails() {
               <button
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
-                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-[#287BB7] text-white' : 'bg-gray-200 text-gray-600'}`}
+                className={`px-4 py-2 mx-1 ${currentPage === index + 1 ? 'bg-Primary text-white' : 'bg-gray-200 text-gray-600'}`}
               >
                 {index + 1}
               </button>
@@ -547,7 +547,7 @@ export default function BusinessDetails() {
 
         <div className="dropReview xsm:m-5 m-10 md:m-20 xl:m-32" id="dropReview">
           <h3 className="text-2xl lg:text-3xl my-10">
-            <span className="font-black gradient"> Drop </span>
+            <span className="font-black text-Primary"> Drop </span>
             <span className=" font-bold" >Your Review</span>
           </h3>
           {isAuthenticated ? (

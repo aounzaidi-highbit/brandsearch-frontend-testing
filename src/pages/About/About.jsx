@@ -8,12 +8,12 @@ import phone from "../../assets/images/phone.png"
 const About = () => {
   return (
     <div>
-      <div className="bg-contact-image bg-cover bg-no-repeat bg-center ">
-        <div className="mx-32 py-10">
+      <div className="bg-[#e7f1f7] p-10">
+        <div className="">
           <div className="grid lg:grid-cols-2 gap-6 place-items-center">
             <div className="">
               <h2 className="text-5xl lg:text-6xl 2xl:text-7xl mb-6 lg:mb-8 lg:w-[100%]">
-                <span className="font-bold inline-block relative pb-3">
+                <span className="font-bold inline-block relative pb-3 text-Primary">
                   Better Things
                   <br />
                 </span>{" "}And
@@ -23,22 +23,20 @@ const About = () => {
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
               </p>
-              <button className="bg-[#287BB7] text-xl lg:text-2xl font-bold p-3 rounded-md text-white mt-4">
+              <button className="bg-Primary text-xl lg:text-2xl font-bold p-3 rounded-md text-white mt-4">
                 Get Started
               </button>
-            </div>
-            <div className="pt-10">
             </div>
           </div>
         </div>
       </div>
       <div className="flex justify-center items-center lg:my-16">
         <h2 className="text-center">
-          <span className="gradient text-xl lg:text-2xl block font-bold mb-1">
+          <span className="text-Primary text-xl lg:text-2xl block font-bold mb-1">
             Working Process
           </span>
           <span className="text-2xl lg:text-4xl font-light relative">
-            How <span className="gradient font-black">IT </span>  Working
+            How <span className="text-Primary font-black">IT </span>  Working
             <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
               src={Vector}
@@ -54,7 +52,7 @@ const About = () => {
             <img src={workIcon} alt="contact-icon" className=' absolute z-10 mt-24' width="40px" />
           </div>
           <div className="text mt-[7rem] text-center">
-            <p className='my-2 font-bold text-center gradient'>Find Interesting Businesses</p>
+            <p className='my-2 font-bold text-center text-Primary'>Find Interesting Businesses</p>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia corporis nobis cumque! Lorem ipsum dolor sit, amet consectetur </p>
           </div>
         </div>
@@ -66,7 +64,7 @@ const About = () => {
             <img src={phone} alt="phone" className='absolute mt-24' width='45px' />
           </div>
           <div className="text mt-[6rem] text-center">
-            <p className='my-2 font-bold text-center gradient'>Contact Few Owner</p>
+            <p className='my-2 font-bold text-center text-Primary'>Contact Few Owner</p>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia corporis nobis cumque! Lorem ipsum dolor sit, amet consectetur </p>
           </div>
         </div>
@@ -76,7 +74,7 @@ const About = () => {
             <img src={calanderIcon} alt="contact-icon" className=' absolute z-10 mt-24 ' />
           </div>
           <div className="text mt-[7rem] text-center">
-            <p className='my-2 font-bold text-center gradient'>Make A Reservation</p>
+            <p className='my-2 font-bold text-center text-Primary'>Make A Reservation</p>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quia corporis nobis cumque! Lorem ipsum dolor sit, amet consectetur </p>
           </div>
         </div>

@@ -182,7 +182,7 @@ const UserReviews = () => {
                                             <p className='text-sm md:text-[16px]'>{capitalizeWords(review.description)}</p>
                                         </div>
                                         <div className='flex flex-col lg:flex-row justify-between lg:items-center'>
-                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, navigate)} className='flex gap-1 hover:text-[#287BB7] cursor-pointer items-center my-3 lg:my-0 xsm:text-xs'>
+                                            <div onClick={() => handleBrandClick(brandName, review.brand_profile_id, navigate)} className='flex gap-1 hover:text-Primary cursor-pointer items-center my-3 lg:my-0 xsm:text-xs'>
                                                 <img src={linkIcon} alt="link-icon" className='w-5 h-5 xsm:w-4 xsm:h-4' />
                                                 View this review on
                                                 <span className='font-semibold'>{brandName}</span>

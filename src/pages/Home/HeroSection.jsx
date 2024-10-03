@@ -20,7 +20,7 @@ export default function HeroSection() {
           <div className="flex">
             <h2 className="text-4xl xsm:text-4xl lg:text-5xl 2xl:text-7xl mb-8 lg:mb-0 lg:w-[90%]">
               <span className="font-normal block">Explore All </span>
-              <span className="font-bold inline-block relative">
+              <span className="font-bold text-Primary inline-block relative">
                 Available
               </span>{" "}
               listings
@@ -45,7 +45,7 @@ export default function HeroSection() {
               className="absolute right-0"
               to={`/business-list?name=${name}`}
             >
-              <button className="bg-[#287BB7] hover:bg-[#287BB7] text-2xl font-bold px-6 py-3 xsm:w-16 text-white rounded-r-lg flex gap-2 items-center">
+              <button className="bg-Primary hover:bg-Primary text-2xl font-bold px-6 py-3 xsm:w-16 text-white rounded-r-lg flex gap-2 items-center">
                 <img
                   src={search}
                   className="h-[24px] w-[24px] xsm:w-[30px] xsm:h-[30px]"
@@ -59,7 +59,7 @@ export default function HeroSection() {
             className="text-[17px] text-[#464F54] font-semibold"
             data-aos="fade-right"
           >
-            <span className="font-bold text-[#000000]">Popular:</span>
+            <span className="font-bold text-Primary">Popular:</span>
             {" "}Clothing Brands, Shoes Brands, Perfumes Brands ...
           </h4>
         </div>

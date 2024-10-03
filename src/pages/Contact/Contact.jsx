@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import postIMG from "../../assets/images/contact.png";
-import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { contact } from "../../services/business";
 
 export default function Contact() {
@@ -47,13 +46,13 @@ export default function Contact() {
 
   return (
     <div>
-      <div className="px-32 bg-contact-image bg-cover bg-no-repeat bg-center">
+      <div className="px-32 bg-[#e7f1f7]">
         <div className="pt-10">
           <div className="flex justify-between items-center">
             <div className="">
               <h2 className="mb-4 pt-20 lg:pt-0">
                 <span className="text-6xl lg:text-5xl font-normal">
-                  <span className="gradient font-extrabold">Contact</span> Us
+                  <span className="text-Primary font-extrabold">Contact</span> Us
                 </span>
               </h2>
               <p className="text-[#464F54] lg:text-xl">
@@ -74,7 +73,7 @@ export default function Contact() {
                   type="text"
                   name="name"
                   required
-                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                  class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -90,7 +89,7 @@ export default function Contact() {
                   type="email"
                   name="email"
                   required
-                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                  class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -106,7 +105,7 @@ export default function Contact() {
                   type="text"
                   name="phone"
                   required
-                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                  class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
@@ -122,7 +121,7 @@ export default function Contact() {
                   type="text"
                   name="subject"
                   required
-                  class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                  class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                 />
@@ -140,7 +139,7 @@ export default function Contact() {
                 name="message"
                 required
                 rows="10"
-                class="w-full resize-none p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                class="w-full resize-none p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
               />
@@ -153,7 +152,7 @@ export default function Contact() {
             </div>
             <button
               type="submit"
-              className="bg-[#287BB7] shadow-box-shadow text-xl lg:text-xl p-3 rounded-lg text-white hover:bg-[#287BB7]"
+              className="bg-Primary shadow-box-shadow text-xl lg:text-xl p-3 rounded-lg text-white hover:bg-Primary"
               disabled={loading}
             >
               {loading ? "Sending..." : "Send Message"}

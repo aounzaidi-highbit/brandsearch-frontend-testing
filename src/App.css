@@ -3,16 +3,3 @@
 body {
   font-family: "Poppins", sans-serif;
 }
-
-.accordion-item:not(:last-child) {
-  border-bottom: 1px solid #e5e7eb;
-  /* Replace with Tailwind color classes if needed */
-}
-
-.accordion-title {
-  cursor: pointer;
-}
-
-.accordion-content {
-  display: none;
-}

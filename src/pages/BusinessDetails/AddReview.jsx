@@ -74,7 +74,7 @@ const AddReview = ({ brandId }) => {
             // setSubmitError(true);
 
             if (error.response) {
-                console.error("Error Response:", error.response.data);
+                console.error("Error Response:", error.response);
             } else {
                 console.error("Error Message:", error.message);
             }
@@ -165,7 +165,7 @@ const AddReview = ({ brandId }) => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         name="title"
-                        className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-[#87cdff] min-h-20 resize-none"
+                        className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-Primary min-h-20 resize-none"
                         placeholder="Enter the title of review"
                     />
                 </div>
@@ -179,21 +179,21 @@ const AddReview = ({ brandId }) => {
                         onChange={(e) => setReview(e.target.value)}
                         id="message"
                         rows="7"
-                        className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-[#87cdff] min-h-20 resize-none"
+                        className="w-full shadow-box-shadow text-black rounded-xl border p-4 focus:outline-Primary min-h-20 resize-none"
                         placeholder="Write your review"
                     ></textarea>
                 </div>
                 {loadingReview ? (
                     <button
                         type="button"
-                        className="gradient2 text-xl flex items-center justify-center px-[31.5px] py-2 rounded-md text-white min-w-[16%]"
+                        className="bg-Primary text-xl flex items-center justify-center px-[31.5px] py-2 rounded-md text-white min-w-[16%]"
                     >
                         Submiting .....
                     </button>
                 ) : submitSuccess ? (
                     <button
                         type="button"
-                        className="gradient2 text-xl py-2 px-3 flex gap-2.5 justify-center items-center rounded-md text-white min-w-[16%]"
+                        className="bg-Primary text-xl py-2 px-3 flex gap-2.5 justify-center items-center rounded-md text-white min-w-[16%]"
                         disabled
                     >
                         <img src={tickIcon} className="w-7" alt="submit-icon" />
@@ -202,7 +202,7 @@ const AddReview = ({ brandId }) => {
                 ) : (
                     <button
                         type="submit"
-                        className="gradient2 min-w-[16%] text-lg lg:text-xl py-2 px-3 rounded-md text-white"
+                        className="bg-Primary min-w-[16%] text-lg lg:text-xl py-2 px-3 rounded-md text-white"
                     >
                         Submit Review
                     </button>

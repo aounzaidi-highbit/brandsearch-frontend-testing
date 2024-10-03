@@ -20,7 +20,6 @@ module.exports = {
         "footer-image": "url('/src/assets/images/bottom.png')",
         "contact-image": "url('/src/assets/images/contact-image.png')",
         "categories-image": "url('/src/assets/images/bg-categories.png')",
-        // "blogs-image": "url('/src/assets/images/bg-blog.png')",
         "blogs-card-image": "url('/src/assets/images/blog-card.png')",
         "hero-background": "url('/src/assets/images/bg-hero.png')",
         "shimmer": 'linear-gradient(90deg, #f3f3f3 25%, #ecebeb 50%, #f3f3f3 75%)',
@@ -45,14 +44,15 @@ module.exports = {
       backgroundSize: {
         'shimmer-size': '200% 100%',
       },
-      borderColor: {
-        "background": "linear-gradient(111.08deg, #F4293E 0.67%, #FF8B49 100%)",
-      },
-      borderGradient: {
-        "border-gradient": "#287BB7",
-      },
+      // borderColor: {
+      //   "background": "linear-gradient(111.08deg, #F4293E 0.67%, #FF8B49 100%)",
+      // },
+      // borderGradient: {
+      //   "border-gradient": "Primary",
+      // },
       colors: {
-        autofill: 'white',
+        // autofill: 'white',
+        Primary: '#287BB7',
       },
     },
   },

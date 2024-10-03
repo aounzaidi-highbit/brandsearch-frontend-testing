@@ -89,7 +89,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
     if (width < 640) {
       setBgColor("#ffffff");
     } else {
-      setBgColor("#f4fbff");
+      setBgColor("#e7f1f7");
     }
   };
 
@@ -134,7 +134,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
           <div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto py-20">
             <h2 className="mb-6">
               <span className="text-2xl font-semibold">
-                <span className="gradient xsm:text-xl text-2xl font-semibold">Verify Your Account</span>
+                <span className="text-Primary xsm:text-xl text-2xl font-semibold">Verify Your Account</span>
               </span>
             </h2>
             <form className="w-full flex flex-col" onSubmit={handleOtpSubmit} autoComplete='off'>
@@ -147,7 +147,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
                       type="text"
                       maxLength="1"
                       required
-                      className="p-3 w-20 border-2 text-xl rounded-xl text-center outline-none focus:border-[#87cdff] transition-all duration-300"
+                      className="p-3 w-20 border-2 text-xl rounded-xl text-center outline-none focus:border-Primary transition-all duration-300"
                       value={digit}
                       onChange={(e) => {
                         const newOtp = [...otp];
@@ -166,7 +166,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
                 </div>
                 {otpError && <p className="text-red-500">{otpError}</p>}
               </div>
-              <button type="submit" className="gradient2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              <button type="submit" className="text-Primary2 rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 Verify
               </button>
             </form>
@@ -175,7 +175,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
           (<div className="flex flex-col items-center w-[70%] xsm:w-[90%] mx-auto">
             <h2 className="pt-5 mb-6">
               <span className="xsm:text-xl text-2xl gap-2 flex">
-                <span className="gradient font-semibold">Login {text}</span>
+                <span className="text-Primary font-semibold">Login {text}</span>
               </span>
             </h2>
             <form className="w-full flex flex-col" onSubmit={handleSubmit} autoComplete='off'>
@@ -194,7 +194,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
                       type="email"
                       name="email"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -208,7 +208,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
 
                   <div className="relative">
                     <div class="relative">
-                      <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password} onChange={handleChange} />
+                      <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300" value={formData.password} onChange={handleChange} />
                       <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
                     </div>
                     <img
@@ -217,7 +217,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
                       className="w-6 absolute top-5 right-4 cursor-pointer"
                       onClick={() => setShowPassword1(!showPassword1)}
                     />
-                    <Link to="/forgot-password" className="cursor-pointer absolute right-0 mt-2 text-[#287BB7]" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link>
+                    <Link to="/forgot-password" className="cursor-pointer absolute right-0 mt-2 text-Primary" onClick={() => window.scrollTo(0, 0)}>Forgot Password?</Link>
                   </div>
                 </div>
                 {errorMessage && (
@@ -226,14 +226,14 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
               </div>
               {verificationError ?
                 (<button
-                  className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
+                  className="bg-Primary rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
                   onClick={() => setShowOtpInput(true)}
                 >
                   Verify Now
                 </button>)
                 :
                 (<button
-                  className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
+                  className="bg-Primary rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto"
                   type="submit"
                 >
                   {loadingSubmit ? "Signing in ..." : "Signin"}
@@ -241,7 +241,7 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
             </form>
             <h4 className="text-[#686868] font-xl m-3">
               Don't Have An Account?
-              <Link to="/signup" className="text-[#287BB7]" state={{ brandId }}> Sign Up </Link>
+              <Link to="/signup" className="text-Primary" state={{ brandId }}> Sign Up </Link>
             </h4>
           </div>)}
       </div>

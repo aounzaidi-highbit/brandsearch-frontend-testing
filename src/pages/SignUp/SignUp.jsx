@@ -169,7 +169,7 @@ const SignUp = () => {
                       type="text"
                       maxLength="1"
                       required
-                      className="p-3 w-20 border-2 text-xl rounded-xl text-center outline-none focus:border-[#87cdff] transition-all duration-300"
+                      className="p-3 w-20 border-2 text-xl rounded-xl text-center outline-none focus:border-Primary transition-all duration-300"
                       value={digit}
                       onChange={(e) => {
                         const newOtp = [...otp];
@@ -188,7 +188,7 @@ const SignUp = () => {
                 </div>
                 {otpError && <p style={{ color: 'red' }}>{otpError}</p>}
               </div>
-              <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              <button type="submit" className="bg-Primary rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 Verify
               </button>
             </form>
@@ -218,7 +218,7 @@ const SignUp = () => {
                       type="text"
                       name="first_name"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.first_name}
                       onChange={handleChange}
                     />
@@ -233,7 +233,7 @@ const SignUp = () => {
                     <input
                       type="text"
                       name="last_name"
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.last_name}
                       onChange={handleChange}
                     />
@@ -251,7 +251,7 @@ const SignUp = () => {
                       type="text"
                       name="username"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.username}
                       onChange={handleChange}
                     />
@@ -267,7 +267,7 @@ const SignUp = () => {
                       type="email"
                       name="email"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -281,7 +281,7 @@ const SignUp = () => {
                   <div className="relative">
                     <div className="relative">
                       <div class="relative">
-                        <input type={showPassword1 ? "text" : "password"} name="password1" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password1} onChange={handleChange} />
+                        <input type={showPassword1 ? "text" : "password"} name="password1" required class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300" value={formData.password1} onChange={handleChange} />
                         <label for="password1" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
                       </div>
                       <img
@@ -295,7 +295,7 @@ const SignUp = () => {
                   <div className="relative">
                     <div className="relative">
                       <div class="relative">
-                        <input type={showPassword2 ? "text" : "password"} name="password2" required class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300" value={formData.password2} onChange={handleChange} />
+                        <input type={showPassword2 ? "text" : "password"} name="password2" required class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300" value={formData.password2} onChange={handleChange} />
                         <label for="password2" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Confirm Password</label>
                       </div>
                       <img
@@ -311,7 +311,7 @@ const SignUp = () => {
                       type="text"
                       name="phone"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.phone}
                       onChange={handleChange}
                     />
@@ -331,13 +331,13 @@ const SignUp = () => {
                 {formErrors.email && <p className="text-red-500 mt-2">{formErrors.email}</p>}
                 {formErrors.verified && <p className="text-red-500 mt-2">User is not verified, please verify to login</p>}
               </div>
-              <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
+              <button type="submit" className="bg-Primary rounded-full font-bold text-white px-4 py-4 w-[95%] mx-auto">
                 {loadingSubmit ? "Loading ..." : "Signup"}
               </button>
             </form>
             <h4 className="text-[#686868] font-xl m-3">
               Already Have An Account?
-              <Link to="/signin" className="ml-1 text-[#287BB7]">Login</Link>
+              <Link to="/signin" className="ml-1 text-Primary">Login</Link>
             </h4>
           </div>
         )}

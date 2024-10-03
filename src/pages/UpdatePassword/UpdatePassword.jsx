@@ -59,7 +59,7 @@ const UpdatePassword = () => {
                                     required
                                     value={password1}
                                     onChange={(e) => setPassword1(e.target.value)}
-                                    className="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                                    className="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                                 />
                                 <label htmlFor="password1" className="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">
                                     Enter Password
@@ -78,7 +78,7 @@ const UpdatePassword = () => {
                                     required
                                     value={password2}
                                     onChange={(e) => setPassword2(e.target.value)}
-                                    className="w-full p-4 border rounded-xl outline-none focus:border-[#87cdff] peer transition-all duration-300"
+                                    className="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                                 />
                                 <label htmlFor="password2" className="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">
                                     Confirm Password
@@ -91,7 +91,7 @@ const UpdatePassword = () => {
                                 />
                             </div>
                             {error && <p className="text-red-600 my-2">{error}</p>}
-                            <button type="submit" className="bg-[#287BB7] rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
+                            <button type="submit" className="bg-Primary rounded-full font-bold text-white px-4 py-4 w-[100%] mx-auto">
                                 {(message) ? 'Password Updated Successfully' : 'Update Password'}
                             </button>
                         </form>

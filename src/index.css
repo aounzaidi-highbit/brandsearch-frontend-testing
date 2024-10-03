@@ -2,60 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.item {
-    align-items: center;
-    color: #fff;
-    cursor: pointer;
-    display: flex;
-    font-size: 14px;
-    height: 40px;
-    justify-content: center;
-    width: 40px;
-}
-
-.disabled-page {
-    color: #808e9b;
-}
-
-.next,
-.previous {
-    font-size: 14px;
-    background: #287BB7;
-    text-align: center;
-    width: 100px;
-}
-
-.pagination {
-    align-items: center;
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    height: 60px;
-    justify-content: center;
-    list-style-type: none;
-    position: relative;
-    width: 1000px;
-}
-
-.pagination-page {
-    font-weight: 700;
-    color: #898989;
-}
-
-/* .previous {
-    display: none;
-} */
-
-/*scrollBar*/
 ::-webkit-scrollbar {
     width: 6px;
     height: 7px;
 }
-
-/* ::-webkit-scrollbar-track {
-    background: rgb(206, 203, 203);
-    border-radius: 10px;
-} */
 
 ::-webkit-scrollbar-thumb {
     background: #287BB7;
