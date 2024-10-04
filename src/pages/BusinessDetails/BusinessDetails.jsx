@@ -271,7 +271,7 @@ export default function BusinessDetails() {
             <a target={profile.website} href={modifyWebsiteUrl(profile.website)}>
               <div className="flex gap-2 items-center">
                 <div className="flex justify-center items-center">
-                  <img src={world} alt="world" className="w-8 lg:w-10 ml-1" />
+                  <img src={world} alt="world" className="w-8 lg:w-10 ml-1 primary-filter" />
                 </div>
                 <div className="flex flex-col justify-center">
                   <h2 className="text-[15px] font-light leading-5">
@@ -298,11 +298,9 @@ export default function BusinessDetails() {
                 </h2>
               </div>
             </div>
-
             <div>
               <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
                 {/* <img src={instagram} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" /> */}
-
                 <span><span className="text-Primary font-black">Instagram </span>Followers</span>
                 <Link to={profile.insta} className="flex items-center" target="_blank">
                   <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
@@ -316,7 +314,6 @@ export default function BusinessDetails() {
               </div>
             </div>
           </div>
-
           <div className="flex justify-center gap-4 w-full">
             <button className=" flex items-center justify-center border bg-Primary w-[40%] md:w-[30%] 2xl:w-[20%] h-16 p-6 rounded-[10px]"
               onClick={() => document.getElementById('dropReview').scrollIntoView({ behavior: 'smooth' })}>
@@ -351,7 +348,6 @@ export default function BusinessDetails() {
             .map((review) => {
               const isExpanded = expandedReviews[review.id];
               const truncatedDescription = review.description.substring(0, 180);
-
               return (
                 <div key={review.id} className="sm:w-[80%] xl:w-[70%] mx-auto flex flex-col my-4 shadow-box-shadow p-4 bg-white rounded-xl">
                   <div className="flex justify-between">
@@ -373,7 +369,6 @@ export default function BusinessDetails() {
                       {formatDate(review.created_at)}
                     </p>
                   </div>
-
                   <div className="ml-1 my-2 text-sm md:text-lg text-[#888686] xsm:text-start">
                     <p className="font-semibold text-black text-xl">{review.rating_title}</p>
                     <p>
@@ -388,7 +383,6 @@ export default function BusinessDetails() {
                 </div>
               );
             })}
-
           <div className="pagination-controls flex justify-center mt-4">
             {currentReviews.length >= 9 && (Array.from({ length: totalPages }, (_, index) => (
               <button
@@ -488,7 +482,7 @@ export default function BusinessDetails() {
         </div>
       </div>
       <div className="" id="showReview">
-        <div className="flex-col mx-auto text-justify bg-[#f3f8fb]">
+        <div className="flex-col mx-auto text-justify bg-[#e7f1f7]">
           {currentReviews
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .map((review) => {

@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     // container: {
     //   center: true,
@@ -42,27 +45,19 @@ module.exports = {
       backgroundSize: {
         'shimmer-size': '200% 100%',
       },
-      // borderColor: {
-      //   "background": "linear-gradient(111.08deg, #F4293E 0.67%, #FF8B49 100%)",
-      // },
-      // borderGradient: {
-      //   "border-gradient": "Primary",
-      // },
       colors: {
-        // autofill: 'white',
         Primary: '#287BB7',
+      },
+      filter: {
+        'Primary': 'invert(40%) sepia(95%) saturate(736%) hue-rotate(173deg) brightness(81%) contrast(81%)',
       },
     },
   },
   variants: {
     extend: {
-      backgroundColor: ['autofill'],
     },
   },
   plugins: [
-    require('tailwind-scrollbar-hide'),
-    function ({ addVariant }) {
-      addVariant('autofill', '&:-webkit-autofill');
-    }
+    require('tailwindcss-filters'),
   ],
-};
+}

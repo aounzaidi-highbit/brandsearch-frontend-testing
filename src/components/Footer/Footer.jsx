@@ -113,19 +113,13 @@ export default function Index() {
       <div className="lg:flex justify-between mt-6 items-center container mx-auto py-8">
         <ul className="flex gap-4 items-center mb-6 lg:mb-0">
           <li>
-            <a href="#" className="text-Primary">
-              <Link to="/" onClick={() => window.scrollTo(0, 0)}>Home</Link>
-            </a>
+            <Link to="/" className="text-Primary" onClick={() => window.scrollTo(0, 0)}>Home</Link>
           </li>
           <li>
-            <a href="#" className="text-Primary">
-              <Link to="/about" onClick={() => window.scrollTo(0, 0)}>About us</Link>
-            </a>
+            <Link to="/about" className="text-Primary" onClick={() => window.scrollTo(0, 0)}>About us</Link>
           </li>
           <li>
-            <a href="#" className="text-Primary">
-              <Link to="/faqs" onClick={() => window.scrollTo(0, 0)}>Faqs</Link>
-            </a>
+            <Link to="/faqs" className="text-Primary" onClick={() => window.scrollTo(0, 0)}>Faqs</Link>
           </li>
         </ul>
         <div className="flex gap-4 items-center">
@@ -158,9 +152,7 @@ export default function Index() {
       <div className="flex justify-between items-center px-4 lg:px-32 mx-auto py-8">
         <ul className="flex gap-4 items-center">
           <li>
-            <a href="#" className="text-Primary text-sm">
-              <Link to="policy" onClick={() => window.scrollTo(0, 0)}>Privacy Policy</Link>
-            </a>
+            <Link to="policy" className="text-Primary text-sm" onClick={() => window.scrollTo(0, 0)}>Privacy Policy</Link>
           </li>
         </ul>
         <div className="text-Primary text-sm">

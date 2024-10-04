@@ -3,3 +3,7 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+.primary-filter {
+  filter: invert(40%) sepia(95%) saturate(736%) hue-rotate(173deg) brightness(81%) contrast(81%);
+}

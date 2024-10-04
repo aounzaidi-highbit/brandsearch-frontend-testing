@@ -10,7 +10,7 @@ import zaha from "../../assets/brand-logos/zaha.svg";
 import bonanza from "../../assets/brand-logos/bonanza.svg";
 import sana from "../../assets/brand-logos/sana.svg";
 
-import Marquee from "react-fast-marquee";
+// import Marquee from "react-fast-marquee";
 
 export default function OurListed() {
   return (
@@ -37,25 +37,25 @@ export default function OurListed() {
         </h2>
       </div>
       <div className="mt-16">
-        <Marquee
+        {/* <Marquee
           className="w-[100%]"
           autoFill={true}
           pauseOnHover={true}
           speed={80}
-          text-Primary={false}>
-          <div className="flex gap-20 place-items-center">
-            <img src={faiza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={mariab} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={sapphire} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={clothing} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={agha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={khaadi} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={zaha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={bonanza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src={sana} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
-            <img src="" />
-          </div>
-        </Marquee>
+          text-Primary={false}> */}
+        <div className="flex gap-20 place-items-center">
+          <img src={faiza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={mariab} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={sapphire} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={clothing} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={agha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={khaadi} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={zaha} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={bonanza} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src={sana} alt="our listed" className="xsm:w-28 w-32 xl:w-40" />
+          <img src="" />
+        </div>
+        {/* </Marquee> */}
       </div>
     </div>
   );

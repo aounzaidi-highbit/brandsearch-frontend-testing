@@ -18,7 +18,6 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
   const [otpError, setOtpError] = useState('');
   const navigate = useNavigate();
 
-
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     const otpString = otp.join('');
@@ -189,27 +188,26 @@ const SignIn = ({ brandId, text, customStyles = {} }) => {
               <p className="text-xl mx-auto mt-3">or</p>
               <div className="p-2">
                 <div className="flex flex-col gap-5 w-full my-8">
-                  <div class="relative">
+                  <div className="relative">
                     <input
                       type="email"
                       name="email"
                       required
-                      class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
+                      className="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300"
                       value={formData.email}
                       onChange={handleChange}
                     />
                     <label
-                      for="email"
-                      class={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
+                      className={`absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform 
                     ${formData.email ? '-translate-y-1/2 scale-90 py-0 mt-0 bg-white px-1' : ''} peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-focus:py-0 peer-focus:mt-0 peer-focus:bg-white peer-focus:px-1`}>
                       Enter Email
                     </label>
                   </div>
 
                   <div className="relative">
-                    <div class="relative">
-                      <input type={showPassword1 ? "text" : "password"} name="password" required class="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300" value={formData.password} onChange={handleChange} />
-                      <label for="email" class="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
+                    <div className="relative">
+                      <input type={showPassword1 ? "text" : "password"} name="password" required className="w-full p-4 border rounded-xl outline-none focus:border-Primary peer transition-all duration-300" value={formData.password} onChange={handleChange} />
+                      <label  className="absolute left-0 p-3 ml-2 mt-1 text-gray-400 pointer-events-none transition-all duration-500 transform peer-focus:-translate-y-1/2 peer-focus:scale-90 peer-valid:-translate-y-1/2 peer-focus:py-0 peer-valid:py-0 peer-focus:mt-0 peer-valid:mt-0 peer-valid:scale-90 peer-focus:bg-[white] peer-valid:bg-white peer-focus:px-1 peer-valid:px-1">Enter Password</label>
                     </div>
                     <img
                       src={showPassword1 ? showPassword : hidePassword}

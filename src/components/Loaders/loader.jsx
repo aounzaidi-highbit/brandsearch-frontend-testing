@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const ListLoader = React.memo(() => {
   const legnth = [...Array(10)];
   return (
-    legnth.map((i) => (
+    legnth.map((_, i) => (
       <div key={i} className="mb-6">
         <div className="w-full flex items-center shadow-box-shadow px-5 rounded-lg py-8">
           <div className="w-[115px] h-[108px] rounded-full bg-shimmer bg-shimmer-size animate-shimmer"></div>
@@ -49,7 +49,7 @@ const CardLoader = React.memo(() => {
   const legnth = [...Array(6)];
   return (
     <div className="mx-8 sm:mx-0 gap-x-8 gap-y-6 xl:gap-x-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 h-[63vh]">
-      {legnth.slice(0, visibleProfiles).map((i) => (
+      {legnth.slice(0, visibleProfiles).map((_,i) => (
         <div key={i} className="bg-white rounded-3xl flex flex-col px-5 shadow-box-shadow h-auto">
           <div>
             <div className="mt-3 flex items-center border-none justify-center">

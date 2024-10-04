@@ -7,7 +7,7 @@ import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { getRatingDetails, reviewGet } from "../../services/business";
 import { CardLoader } from "../../components/Loaders/loader";
 import NoData from "../../components/NoData/noData";
-import AOS from "aos";
+// import AOS from "aos";
 import { useNavigate } from "react-router-dom";
 import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
 
@@ -151,12 +151,12 @@ export default function FeaturedListings() {
     getProfileWithReviews();
   }, []);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 4000,
-      once: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   AOS.init({
+  //     duration: 4000,
+  //     once: true,
+  //   });
+  // }, []);
 
   const navigate = useNavigate();
   const handleBrandClick = (profile) => {

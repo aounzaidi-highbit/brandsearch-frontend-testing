@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const HTTP_CLIENT = axios.create({
-  // baseURL: "http://192.168.100.163:8000/",
-  baseURL: "https://myapi.brandsearchengine.com/",
+  baseURL: "http://192.168.100.163:8000/",
+  // baseURL: "https://myapi.brandsearchengine.com/",
 });
 
 export const setupAxios = () => {
