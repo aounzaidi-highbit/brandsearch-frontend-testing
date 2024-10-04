@@ -1,6 +1,6 @@
 import React from "react";
 import policyIMG from "../../assets/images/policy.png";
-import Vector from "../../assets/images/Vector.png";
+// import Vector from "../../assets/images/Vector.png";
 
 export default function index() {
 

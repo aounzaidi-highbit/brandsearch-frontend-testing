@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { HTTP_CLIENT } from '../../utils/axiosClient';
-import showPassword from "../../assets/images/showPassword.png";
-import hidePassword from "../../assets/images/hidePassword.png";
+import showPassword from "../../assets/icons/show-password.svg";
+import hidePassword from "../../assets/icons/hide-password.svg";
 
 const UpdatePassword = () => {
     const [showPassword1, setShowPassword1] = useState(false);

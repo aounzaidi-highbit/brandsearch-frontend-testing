@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import faq from "../../assets/images/faq.png";
-import UpArrowIcon from "../../assets/images/upArrow.png";
-import DownArrowIcon from "../../assets/images/downArrow.png";
+import UpArrowIcon from "../../assets/icons/arrow.svg";
+// import DownArrowIcon from "../../assets/images/downArrow.png";
 import faqs from "./faqsData.js"
 
 export default function Index() {
@@ -50,7 +50,7 @@ export default function Index() {
                     {faq.question}
                   </span>
                   <span className="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
-                    <img src={(faqState === index) ? DownArrowIcon : UpArrowIcon} alt="arrow-icon" style={{ 'filter': 'invert(100%)' }} />
+                    {/* <img src={(faqState === index) ? DownArrowIcon : UpArrowIcon} alt="arrow-icon" style={{ 'filter': 'invert(100%)' }} /> */}
                   </span>
                 </button>
               </h2>

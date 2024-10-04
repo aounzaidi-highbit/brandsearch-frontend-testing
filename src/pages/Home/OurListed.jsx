@@ -1,14 +1,14 @@
 import React from "react";
-import Vector from "../../assets/images/Vector.png";
-import faiza from "../../assets/images/faiza.svg";
-import mariab from "../../assets/images/mariab.svg";
-import sapphire from "../../assets/images/sapphire.svg";
-import clothing from "../../assets/images/clothing-brand.svg";
-import agha from "../../assets/images/agha-noor.svg";
-import khaadi from "../../assets/images/khaadi.svg";
-import zaha from "../../assets/images/zaha.svg";
-import bonanza from "../../assets/images/bonanza.svg";
-import sana from "../../assets/images/sana.svg";
+// import Vector from "../../assets/images/Vector.png";
+import faiza from "../../assets/brand-logos/faiza.svg";
+import mariab from "../../assets/brand-logos/mariab.svg";
+import sapphire from "../../assets/brand-logos/sapphire.svg";
+import clothing from "../../assets/brand-logos/clothing-brand.svg";
+import agha from "../../assets/brand-logos/agha-noor.svg";
+import khaadi from "../../assets/brand-logos/khaadi.svg";
+import zaha from "../../assets/brand-logos/zaha.svg";
+import bonanza from "../../assets/brand-logos/bonanza.svg";
+import sana from "../../assets/brand-logos/sana.svg";
 
 import Marquee from "react-fast-marquee";
 
@@ -28,11 +28,11 @@ export default function OurListed() {
           <span className="text-2xl lg:text-4xl font-semibold relative ">
             <span className="text-Primary font-black"> 10,000 </span> Business
             listed
-            <img
+            {/* <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
               src={Vector}
               alt="arrow"
-            />
+            /> */}
           </span>
         </h2>
       </div>

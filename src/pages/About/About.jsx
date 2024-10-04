@@ -1,9 +1,6 @@
 import React from 'react'
-import Vector from "../../assets/images/Vector.png";
-import workIcon from "../../assets/images/work.png"
-import calanderIcon from "../../assets/images/calander.png"
-import circleIcon from "../../assets/images/circle.png"
-import phone from "../../assets/images/phone.png"
+import circleIcon from "../../assets/icons/circle.svg"
+// import phone from "../../assets/images/phone.png"
 
 const About = () => {
   return (
@@ -37,11 +34,11 @@ const About = () => {
           </span>
           <span className="text-2xl lg:text-4xl font-light relative">
             How <span className="text-Primary font-black">IT </span>  Working
-            <img
+            {/* <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
               src={Vector}
               alt="arrow"
-            />
+            /> */}
           </span>
         </h2>
       </div>
@@ -49,7 +46,7 @@ const About = () => {
       <div className="px-32 w-full gap-20 flex justify-around lg:my-32 mb-26 ">
         <div className="w-full h-[292.27px] rounded-md px-6 overflow-hidden shadow-box-shadow">
           <div className="flex justify-center items-center mt-[20px]">
-            <img src={workIcon} alt="contact-icon" className=' absolute z-10 mt-24' width="40px" />
+            {/* <img src={workIcon} alt="contact-icon" className=' absolute z-10 mt-24' width="40px" /> */}
           </div>
           <div className="text mt-[7rem] text-center">
             <p className='my-2 font-bold text-center text-Primary'>Find Interesting Businesses</p>
@@ -61,7 +58,7 @@ const About = () => {
           <div className="flex justify-center items-center mt-6">
             {/* <img src={contactIcon} alt="contact-icon" className=' absolute z-10 mt-24 filter invert-100' /> */}
             <img src={circleIcon} alt="circleIcon" className='absolute mt-24' width='65px' />
-            <img src={phone} alt="phone" className='absolute mt-24' width='45px' />
+            {/* <img src={phone} alt="phone" className='absolute mt-24' width='45px' /> */}
           </div>
           <div className="text mt-[6rem] text-center">
             <p className='my-2 font-bold text-center text-Primary'>Contact Few Owner</p>
@@ -71,7 +68,7 @@ const About = () => {
 
         <div className="w-full h-[292.27px] rounded-md px-6 overflow-hidden shadow-box-shadow">
           <div className="flex justify-center items-center mt-[20px] ">
-            <img src={calanderIcon} alt="contact-icon" className=' absolute z-10 mt-24 ' />
+            {/* <img src={calanderIcon} alt="contact-icon" className=' absolute z-10 mt-24 ' /> */}
           </div>
           <div className="text mt-[7rem] text-center">
             <p className='my-2 font-bold text-center text-Primary'>Make A Reservation</p>

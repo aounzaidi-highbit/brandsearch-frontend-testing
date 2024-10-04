@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from "react";
-import Vector from "../../assets/images/Vector.png";
-import world from "../../assets/images/world.png";
-import defaultImg from "../../assets/images/default-brand.png";
-import location from "../../assets/images/location.png";
+// import Vector from "../../assets/images/Vector.png";
+import world from "../../assets/icons/world.svg";
+import defaultImg from "../../assets/icons/default-brand.svg";
+// import location from "../../assets/images/location.png";
 import { HTTP_CLIENT } from "../../utils/axiosClient";
 import { getRatingDetails, reviewGet } from "../../services/business";
 import { CardLoader } from "../../components/Loaders/loader";
-import NoData from "../../components/NoData/NoData";
+import NoData from "../../components/NoData/noData";
 import AOS from "aos";
 import { useNavigate } from "react-router-dom";
 import { capitalizeWords, ensureProtocol, renderStars, slugify } from "../../utils/helper";
@@ -62,7 +62,7 @@ const ProfileCard = React.memo(({ profile, handleBrandClick, renderStars, ensure
             </h4>
             <h6 className="text-[16px] font-normal flex mb-2">
               <span className=""> Pakistan {profile.country} </span>
-              <img src={location} alt="location" className="ps-1" />
+              {/* <img src={location} alt="location" className="ps-1" /> */}
             </h6>
             <p className="text-[#8A8A8A] text-[14px] overflow-hidden">
               {profile.description?.length > 70
@@ -173,11 +173,11 @@ export default function FeaturedListings() {
           </span>
           <span className="text-2xl lg:text-4xl font-semibold relative">
             <span className="text-Primary"> Cloths Goods </span> Business
-            <img
+            {/* <img
               className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
               src={Vector}
               alt="arrow"
-            />
+            /> */}
           </span>
         </h2>
       </div>

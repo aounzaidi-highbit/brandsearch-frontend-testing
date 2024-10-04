@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import deleteIcon from "../../assets/images/delete.png";
-import editIcon from "../../assets/images/edit.png";
-import linkIcon from "../../assets/images/link-icon.png";
-import calander from "../../assets/images/calander.png";
+import deleteIcon from "../../assets/icons/delete.svg";
+import editIcon from "../../assets/icons/edit.svg";
+import linkIcon from "../../assets/icons/link-icon.svg";
+// import calander from "../../assets/images/calander.png";
 import { renderStars, capitalizeWords, getInitials, formatDate, handleBrandClick } from '../../utils/helper';
 import { getUserReviews, deleteUserReview, editReview } from '../../services/business';
 import ConfirmDeleteModal from '../../components/Modals/DeleteModal';
@@ -13,12 +13,12 @@ const UserReviews = () => {
     const [userReviews, setUserReviews] = useState([]);
     const [ratingCount, setRatingCount] = useState(0);
     const [showContent, setShowContent] = useState(false);
-    const [user, setUser] = useState("");
+    // const [user, setUser] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reviewToDelete, setReviewToDelete] = useState(null);
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [selectedReview, setSelectedReview] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
     const first_name = localStorage.getItem("first_name");
@@ -26,7 +26,7 @@ const UserReviews = () => {
     useEffect(() => {
         const token = localStorage.getItem("access_token");
         if (token) {
-            setIsAuthenticated(!!token);
+            // setIsAuthenticated(!!token);
             navigate('/user-reviews');
         }
         else {
@@ -69,7 +69,7 @@ const UserReviews = () => {
                 if (response.data && response.data.ratings) {
                     setUserReviews(response.data.ratings);
                     setRatingCount(response.data.rating_count);
-                    setUser(response.data.ratings[0]);
+                    // setUser(response.data.ratings[0]);
                 }
             } catch (error) {
                 console.error('Error fetching user reviews:', error);
@@ -173,7 +173,7 @@ const UserReviews = () => {
                                                 </div>
                                             </div>
                                             <p className='flex items-center gap-1 xsm:text-xs xsm:-mt-3 text-sm'>
-                                                <img src={calander} alt="calendar-icon" className='w-4 h-4 xsm:hidden' />
+                                                {/* <img src={calander} alt="calendar-icon" className='w-4 h-4 xsm:hidden' /> */}
                                                 {formatDate(review.created_at)}
                                             </p>
                                         </div>

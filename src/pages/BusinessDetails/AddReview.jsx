@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import tickIcon from "../../assets/images/tick.png";
+import tickIcon from "../../assets/icons/tick.svg";
 import { addReview, getSingleProfiles, reviewGet } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { StarRating } from "../../utils/helper";

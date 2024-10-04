@@ -1,26 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import world from "../../assets/images/world.png";
-import reviewIcon from "../../assets/images/review-icon.png";
-import calander from "../../assets/images/calander.png";
-import linkIcon from "../../assets/images/link-icon.png";
-import fullStar from "../../assets/images/full-star.png";
-import blankStar from "../../assets/images/blank-star.png";
-import facebook from "../../assets/images/facebook.png";
-import instagram from "../../assets/images/instagram.png";
+import world from "../../assets/icons/world.svg";
+import reviewIcon from "../../assets/icons/review-icon.svg";
+import linkIcon from "../../assets/icons/link-icon.svg";
+import fullStar from "../../assets/icons/full-star.svg";
+import blankStar from "../../assets/icons/blank-star.svg";
+// import facebook from "../../assets/images/facebook.png";
+// import instagram from "../../assets/images/instagram.png";
 import OurListed from "../Home/OurListed";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getSingleProfiles, getRatingDetails } from "../../services/business";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import defaultImg from "../../assets/images/default-brand.png";
+import defaultImg from "../../assets/icons/default-brand.svg";
 import { Navigation } from 'swiper/modules';
-import locationIcon from "../../assets/images/location.png";
+// import locationIcon from "../../assets/images/location.png";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import AddReview from "./AddReview";
 import SignIn from "../SignIn/SignIn";
-import copyIcon from '../../assets/images/copy.png';
-import tickIcon from "../../assets/images/tick.png";
+import copyIcon from '../../assets/icons/edit.svg';
+import tickIcon from "../../assets/icons/tick.svg";
 import { capitalizeWords, formatDate, getInitials, renderStars } from "../../utils/helper";
 
 export default function BusinessDetails() {
@@ -252,7 +251,7 @@ export default function BusinessDetails() {
           </h2>
           <p className="lg:w-[70%] md:w-[65%] w-[90%] text-center">{profile?.description}</p>
           <h6 className="text-[18px] font-bold text-Primary flex items-center">
-            <img src={locationIcon} alt="location-icon" />
+            {/* <img src={locationIcon} alt="location-icon" /> */}
             <span> Pakistan {profile.country} </span>
           </h6>
           <div className="flex items-center my-5 flex-row justify-center xsm:gap-5 gap-12 md:gap-20 lg:justify-center lg:gap-48 w-full">
@@ -286,7 +285,7 @@ export default function BusinessDetails() {
           <div className="flex gap-5 md:gap-8 lg:gap-36">
             <div>
               <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
-                <img src={facebook} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
+                {/* <img src={facebook} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" /> */}
                 <span><span className="text-Primary font-black">Facebook </span>Followers</span>
                 <Link to={profile.facebook} className="flex items-center" target="_blank">
                   <img src={linkIcon} alt="link-icon" className="w-[16px] h-[16px]" />
@@ -302,7 +301,7 @@ export default function BusinessDetails() {
 
             <div>
               <span className="flex flex-col sm:text-lg md:text-lg lg:text-xl font-light relative items-center">
-                <img src={instagram} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" />
+                {/* <img src={instagram} alt="brand-icon" className="mb-4 w-[50px] rounded-full h-[50px]" /> */}
 
                 <span><span className="text-Primary font-black">Instagram </span>Followers</span>
                 <Link to={profile.insta} className="flex items-center" target="_blank">
@@ -370,7 +369,7 @@ export default function BusinessDetails() {
                       </div>
                     </div>
                     <p className="text-[#888686] flex justify-center text-[15px] xsm:text-[12px]">
-                      <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" />
+                      {/* <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" /> */}
                       {formatDate(review.created_at)}
                     </p>
                   </div>
@@ -512,7 +511,7 @@ export default function BusinessDetails() {
                       </div>
                     </div>
                     <p className="text-[#888686] flex justify-center text-[15px] xsm:text-[12px]">
-                      <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" />
+                      {/* <img src={calander} alt="calander-icon" className="md:w-6 md:h-5 w-3 h-3 mt-[1px] mr-2" /> */}
                       {formatDate(review.created_at)}
                     </p>
                   </div>

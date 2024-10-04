@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import brandsIcon from "../../assets/images/brands-icon.png";
-import search from "../../assets/images/search.svg";
+import search from "../../assets/icons/search-list.svg";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function HeroSection() {

@@ -1,7 +1,6 @@
-import brandLogo from "../../assets/images/brand-logo.svg";
-import forwardImg from "../../assets/images/forward.png";
-import menu from "../../assets/images/menu.png";
-import arrow from "../../assets/images/arrow.png";
+import brandLogo from "../../assets/icons/brand-logo.svg";
+import menu from "../../assets/icons/menu.svg";
+import arrow from "../../assets/icons/arrow.svg";
 import { capitalizeWords, getInitials } from "../../utils/helper";
 import { Link, useLocation } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -148,7 +147,8 @@ export default function Header() {
                 <button type="button"
                   className="text-black flex gap-2 items-center bg-transparent focus:outline-none font-medium rounded-lg text-sm lg:text-[18px] px-4 py-2 text-center">
                   <Link className="flex gap-2 md:hover:text-Primary xsm:text-[18px]" to="/signin">
-                    <img src={forwardImg} alt="forwarding" />Login
+                    {/* <img src={forwardImg} alt="forwarding" /> */}
+                    Login
                   </Link>
                 </button>
               )}

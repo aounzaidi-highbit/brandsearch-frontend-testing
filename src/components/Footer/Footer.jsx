@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import footerImg from "../../assets/images/image.png";
-import bell from "../../assets/images/bell.svg";
-import fb from "../../assets/images/fb.png";
-import twitter from "../../assets/images/twitter.png";
-import yt from "../../assets/images/yt.png";
+import bell from "../../assets/icons/bell.svg";
+// import facebook from "../../assets/icons/facebook.svg";
+// import twitter from "../../assets/icons/twitter.png";
+// import yt from "../../assets/icons/yt.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -130,25 +130,25 @@ export default function Index() {
         </ul>
         <div className="flex gap-4 items-center">
           <div className="">
-            <img
-              src={fb}
+            {/* <img
+              src={facebook}
               alt="footer-icon"
               className="transition ease-in-out delay-150 hover:-translate-1 hover:scale-110 duration-200 cursor-pointer"
-            />
+            /> */}
           </div>
           <div>
-            <img
+            {/* <img
               src={twitter}
               alt="footer-icon"
               className="transition ease-in-out delay-150 hover:-translate-1 hover:scale-110 duration-200 cursor-pointer"
-            />
+            /> */}
           </div>
           <div>
-            <img
+            {/* <img
               src={yt}
               alt="footer-icon"
               className="w-[3.5rem] transition ease-in-out delay-150 hover:-translate-1 hover:scale-110 duration-200 cursor-pointer"
-            />
+            /> */}
           </div>
         </div>
       </div>

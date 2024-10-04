@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import Vector from "../../assets/images/Vector.png";
-import search from "../../assets/images/search-list.png";
+// import Vector from "../../assets/images/Vector.png";
+import search from "../../assets/icons/search-list.svg";
 import OurListed from "../Home/OurListed";
 import { getAllProfiles, getRatingDetails, getSearchProfile } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import ReactPaginate from "react-paginate";
-import defaultImg from "../../assets/images/default-brand.png";
-import linkIcon from "../../assets/images/link-icon.png";
-import star from "../../assets/images/star.png";
-import sort from "../../assets/images/sort.png";
+import defaultImg from "../../assets/icons/default-brand.svg";
+import linkIcon from "../../assets/icons/link-icon.svg";
+import star from "../../assets/icons/full-star.svg";
+import sort from "../../assets/icons/sort.svg";
 import { capitalizeWords, ensureProtocol, handleBrandClick, renderStars } from "../../utils/helper";
-import filter from "../../assets/images/filter.png";
-import cross from "../../assets/images/cross.png";
-import NoData from "../../components/NoData/NoData";
+import filter from "../../assets/icons/filter.svg";
+import cross from "../../assets/icons/cross.svg";
+import NoData from "../../components/NoData/noData";
 import { ListLoader } from "../../components/Loaders/loader";
 
 const BusinessList = () => {
@@ -152,7 +152,7 @@ const BusinessList = () => {
               <span className="text-xl lg:text-2xl block font-bold mb-1 text-Primary">All Brands</span>
               <span className="text-2xl lg:text-4xl font-light relative">
                 <span className="text-Primary font-black">Top </span> Brand in one place
-                <img className="flex justify-end absolute right-0 -bottom-5 h-[28px]" src={Vector} alt="arrow" />
+                {/* <img className="flex justify-end absolute right-0 -bottom-5 h-[28px]" src={Vector} alt="arrow" /> */}
               </span>
             </h2>
           </div>

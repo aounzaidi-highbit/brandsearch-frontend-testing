@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import Vector from "../../assets/images/vector-category.png";
-import cloths from "../../assets/images/cloths.png";
+// import Vector from "../../assets/images/vector-category.png";
+import cloths from "../../assets/icons/cloths.svg";
 import { getAllCategories } from "../../services/business";
 import { setupAxios } from "../../utils/axiosClient";
 import { Link } from "react-router-dom";
@@ -49,10 +49,10 @@ const PopularCategories = () => {
             </span>
             <span className="text-2xl lg:text-4xl font-semibold relative">
               Browse Top Categories
-              <img
+              {/* <img
                 className="flex justify-end absolute right-0 -bottom-5 h-[28px]"
                 src={Vector}
-                alt="arrow" />
+                alt="arrow" /> */}
             </span>
           </h2>
         </div>

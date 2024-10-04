@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import google from "../../assets/images/google.svg";
-import showPassword from "../../assets/images/showPassword.png";
-import hidePassword from "../../assets/images/hidePassword.png";
+import google from "../../assets/icons/google.svg";
+import showPassword from "../../assets/icons/show-password.svg";
+import hidePassword from "../../assets/icons/hide-password.svg";
 import axios from "axios";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Link, useNavigate } from "react-router-dom";

@@ -1,6 +1,6 @@
-import fullStar from "../assets/images/full-star.png";
-import halfStarImage from "../assets/images/half-star.png";
-import blankStar from "../assets/images/blank-star.png";
+import fullStar from "../assets/icons/full-star.svg";
+import halfStarImage from "../assets/icons/half-star.svg";
+import blankStar from "../assets/icons/blank-star.svg";
 
 const handleBrandClick = (brandName, brandId, navigate) => {
     navigate(`/review/${slugify(brandName)}`, { state: { id: brandId } });
